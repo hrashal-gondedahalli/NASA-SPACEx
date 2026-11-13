@@ -36,6 +36,7 @@ app.$('a-cadetName').value='Raj';app.run('Academy.saveName()');app.click('startB
 app.run("document.querySelectorAll('[data-part]').find(x=>x.dataset.part==='satellite').click()");
 assert.equal(app.$('credits').textContent,'🪙 80 credits');
 let reloaded=boot(app.storage);assert.equal(reloaded.active(),'home');assert.match(reloaded.$('welcomeCadet').textContent,/Raj/);reloaded.click('resumeBtn');assert.equal(reloaded.active(),'workshop');assert.equal(reloaded.$('satellite').classList.contains('hidden'),false);
+reloaded.run("['bodypart','engine','tank'].forEach(togglePart)");
 reloaded.click('testBtn');reloaded.click('launchBtn');assert.equal(reloaded.$('navContinue').disabled,true);reloaded.flush();assert.equal(reloaded.$('navContinue').disabled,false);reloaded.click('continueFlight');reloaded.click('deployBtn');reloaded.click('dataBtn');
 reloaded=boot(app.storage);reloaded.click('resumeBtn');assert.equal(reloaded.active(),'explore');assert.equal(reloaded.$('objScience').textContent,'✅ Complete');
 reloaded.click('returnBtn');const earned=reloaded.$('credits').textContent;reloaded.click('returnBtn');assert.equal(reloaded.$('credits').textContent,earned);assert.equal(reloaded.active(),'returned');
@@ -51,4 +52,42 @@ reloaded=boot(app.storage);reloaded.click('resumeBtn');assert.equal(reloaded.$('
 const migrated=boot(new Map([['orbitAcademySave',JSON.stringify({name:'Legacy',xp:70,planets:['Mars'],missions:['launch'],launch:true})]]));assert.match(migrated.$('welcomeCadet').textContent,/Legacy/);assert.equal(migrated.$('a-xpStat').textContent,70);
 const unavailable=boot(new Map(),true);assert.match(unavailable.$('saveStatus').textContent,/unavailable/);unavailable.click('startBtn');assert.equal(unavailable.active(),'destination');
 const ids=[...html.replace(/<script>[\s\S]*?<\/script>/g,'').matchAll(/id="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length,'unique element IDs');
-console.log('PASS: profile, navigation, rocket save/resume, flight objectives, reward guard, quiz resume, migration, unavailable storage, unique IDs');
+// Rocket workshop requirements and credit conservation, including saved legacy parts.
+const builder=boot();builder.click('startBtn');builder.click('toBuild');
+assert.equal(builder.run('installed.size'),0);assert.equal(builder.$('scoreStat').textContent,'0/100');
+assert.equal(builder.$('emptyBlueprint').classList.contains('hidden'),false);
+builder.click('testBtn');assert.equal(builder.$('launchBtn').disabled,true);assert.equal(builder.$('navContinue').disabled,true);
+for(const name of ['Rocket body','Engine','Fuel tank'])assert(builder.$('readinessSummary').textContent.includes(name));
+builder.run("$('launchBtn').onclick()");assert.equal(builder.active(),'workshop','Launch handler guards direct calls');
+builder.run("parts.forEach(p=>togglePart(p.id))");assert.equal(builder.run('credits'),25);assert.equal(builder.run('installed.size'),6);
+builder.click('testBtn');assert.equal(builder.$('launchBtn').disabled,false);assert.equal(builder.$('testProgress').style.width,'100%');
+for(const id of ['bodypart','engine','tank']){
+ builder.run('togglePart('+JSON.stringify(id)+')');builder.click('testBtn');
+ assert.equal(builder.$('launchBtn').disabled,true);assert.equal(builder.$('navContinue').disabled,true);
+ builder.run('togglePart('+JSON.stringify(id)+')');
+}
+builder.run("['fins','satellite','nose'].forEach(togglePart)");builder.click('testBtn');
+assert.equal(builder.$('launchBtn').disabled,false,'Optional parts never block launch');
+assert.equal(builder.run('credits'),60);
+builder.run("for(let i=0;i<5;i++){togglePart('engine');togglePart('engine');}");
+assert.equal(builder.run('credits'),60,'Repeated remove/add never creates or loses credits');
+let restored=boot(builder.storage);assert.equal(restored.run('installed.size'),3);assert.equal(restored.run('credits'),60);
+restored.click('resumeBtn');assert.equal(restored.$('launchBtn').disabled,false);
+restored.click('backBuild');restored.click('resetBuild');assert.equal(restored.run('credits'),100);assert.equal(restored.run('installed.size'),0);
+restored.click('resetBuild');assert.equal(restored.run('credits'),100,'Reset cannot refund twice');
+restored=boot(restored.storage);assert.equal(restored.run('installed.size'),0,'Empty saved designs stay empty');
+restored.run("document.getElementById('board').ondrop({preventDefault(){},dataTransfer:{getData(){return 'engine';}}})");
+assert.equal(restored.run('credits'),85);
+restored.run("document.getElementById('board').ondrop({preventDefault(){},dataTransfer:{getData(){return 'engine';}}})");
+assert.equal(restored.run('credits'),85,'Dropping an installed part does not remove or rebuy it');
+restored=boot(restored.storage);assert.equal(restored.run("installed.has('engine')"),true,'Drops persist without a click');
+const legacy=boot(new Map([['juniorAstronautSave',JSON.stringify({version:1,rocket:{credits:80,installed:['bodypart','engine','tank','nose','satellite'],purchased:['satellite']}})]]));
+legacy.run("togglePart('engine')");assert.equal(legacy.run('credits'),80,'Free legacy parts give no refund');
+legacy.run("togglePart('satellite')");assert.equal(legacy.run('credits'),100);
+legacy.run("togglePart('engine')");assert.equal(legacy.run('credits'),85);
+legacy.run("resetDesign()");assert.equal(legacy.run('credits'),100);assert.equal(legacy.run('installed.size'),0);
+const poor=boot(new Map([['juniorAstronautSave',JSON.stringify({version:1,rocket:{credits:0,installed:[],purchased:[]}})]]));
+poor.run("togglePart('engine')");assert.equal(poor.run('installed.size'),0);assert.equal(poor.run('credits'),0);
+assert.match(poor.$('buildHint').textContent,/Not enough credits/);
+console.log('PASS: profile, navigation, save/resume, objectives, rewards, quiz, migration, storage, unique IDs, empty workshop, all core launch gates, optional parts, refunds, resets, drops, legacy credits, insufficient funds');
+
