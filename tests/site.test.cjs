@@ -21,6 +21,10 @@ test('desktop and touch mobile website regression checks',async()=>{
    const click=async selector=>{if(mobile)await page.locator(selector).tap();else await page.click(selector);};
    const fits=async()=>assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'No horizontal page overflow');
    await page.goto(base);await fits();await click('#startBtn');await click('#toBuild');await fits();
+   assert.equal(await page.locator('[data-part].chosen').count(),0,'New blueprint is empty');
+   assert.equal(await page.locator('#scoreStat').textContent(),'0/100');
+   await click('#testBtn');assert(await page.locator('#launchBtn').isDisabled());assert(await page.locator('#navContinue').isDisabled());
+   assert.match(await page.locator('#readinessSummary').textContent(),/Rocket body, Engine, Fuel tank/);await click('#backBuild');
    assert(await page.evaluate(()=>sketch.width>100&&sketch.height>100),'Canvas sized after opening workshop');
    await click('#drawBtn');await page.locator('#board').scrollIntoViewIfNeeded();
    const box=await page.locator('#sketch').boundingBox();
@@ -32,6 +36,7 @@ test('desktop and touch mobile website regression checks',async()=>{
    await click('#clearDraw');assert(!(await ink()),'Clear sketch removes pixels');await click('#drawBtn');
    const creditsBefore=await page.locator('#credits').textContent();await click('[data-part="fins"]');await click('[data-part="fins"]');assert.equal(await page.locator('#credits').textContent(),creditsBefore,'Part removal refunds purchase');
    await click('[data-part="satellite"]');await click('#resetBuild');assert.equal(await page.locator('#credits').textContent(),creditsBefore,'Reset refunds purchases');
+   for(const id of ['bodypart','engine','tank'])await click('[data-part="'+id+'"]');
    await click('[data-part="satellite"]');await click('#testBtn');await click('#launchBtn');await click('#homeBtn');await page.waitForTimeout(2900);assert.equal(await page.locator('#launchTitle').textContent(),'T-minus 3','Leaving launch cancels timer');
    await click('#startBtn');await click('#toBuild');await click('#testBtn');await click('#launchBtn');await page.waitForTimeout(2900);await click('#steerLeft');await click('#thrustBtn');assert.match(await page.locator('#flightReadout').textContent(),/left.*fast/);await click('#continueFlight');await click('#deployBtn');await click('#dataBtn');await click('#returnBtn');await fits();assert.match(await page.locator('#finalDest').textContent(),/Moon/);await click('#againBtn');
    await page.goto(base+'/junior-astronaut-mission-trainer/');await page.waitForURL(base+'/');await fits();await click('button[onclick="Academy.openMission(\'gravity\')"]');assert.equal(await page.locator('#a-weightResult').textContent(),'48.6 N');await page.selectOption('#a-worldSelect','9.81');assert.equal(await page.locator('#a-weightResult').textContent(),'294.3 N');await click('#homeBtn');
@@ -46,4 +51,5 @@ test('desktop and touch mobile website regression checks',async()=>{
   }
  }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
 });
+
 
