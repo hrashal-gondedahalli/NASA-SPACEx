@@ -4,7 +4,18 @@ A browser-based space learning project for children, with one **Mission Control*
 
 Built with HTML, CSS and JavaScript. No account, backend or production build step is required.
 
-## 3D Orbital Lab (new)
+## Visual rocket builder
+
+The simulator now opens as a full-viewport blue blueprint workspace, inspired by the spatial layout in the supplied SFS references, with original CSS part artwork and the existing 3D rocket model. The page does not scroll; the parts rail and dialogs scroll independently when necessary.
+
+- Tap a capsule, tank or engine picture, or drag a tile onto the blueprint. Stage 1/2 selects which connected stage receives tanks and engines. Capsule cycles the payload mass. The model remains a two-stage snapped stack, not arbitrary free placement.
+- Remove tanks/engines using the rail controls. Undo restores the last 40 edits. Clear asks for confirmation and can be undone. Save/Load use the existing browser save format.
+- Front blueprint view uses an orthographic camera. Drag the background to pan; wheel/pinch or plus/minus buttons zoom; Centre restores the view. The 3D button switches to a rotatable preview.
+- Launch stays in the top bar. Settings and Help open accessible native dialogs. The four illustrated help cards keep instructions short; detailed physics limits, keyboard controls, records and credits are under Grown-up notes.
+- Flight fills the workspace with a compact throttle, directional buttons, map, pause, staging and assistance controls. Desktop shows extra telemetry; mobile prioritises height, speed and fuel. No physical simulation rules changed.
+- Responsive portrait and landscape layouts use the available viewport and safe-area insets. All part pictures are code-native CSS artwork; no screenshot assets or SFS branding are bundled.
+
+## 3D Orbital Lab
 
 Open **3D Simulator** on Mission Control, or visit `simulator/`.
 This is an original SFS-inspired educational sandbox, not a copy of SFS or a claim of feature parity.
