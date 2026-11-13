@@ -27,7 +27,9 @@ function boot(storage=new Map(),blocked=false){
  function query(root,s){const selectors=s.split(' ');let roots=[root];for(const selector of selectors)roots=roots.flatMap(r=>descendants(r).filter(el=>matches(el,selector)));return roots;}
  const tree=parse(html.replace(/<script>[\s\S]*?<\/script>/g,''));const listeners={};
  const document={getElementById:id=>query(tree,'#'+id)[0]||null,querySelector:s=>query(tree,s)[0]||null,querySelectorAll:s=>query(tree,s),addEventListener:(type,fn)=>(listeners[type]??=[]).push(fn)};
- const sandbox={document,localStorage:{getItem:k=>{if(blocked)throw Error('blocked');return storage.get(k)||null;},setItem:(k,v)=>{if(blocked)throw Error('blocked');storage.set(k,v);}},ResizeObserver:class{observe(){}},setTimeout:fn=>{timers.push(fn);return timers.length;},clearTimeout:()=>{},queueMicrotask:fn=>pending.push(fn),URLSearchParams,location:{search:''},confirm:()=>true,console};sandbox.window=sandbox;sandbox.scrollTo=()=>{};sandbox.addEventListener=()=>{};
+ let flightPhase='ready';
+ const Voyage={start:()=>{flightPhase='flying';document.getElementById('launchActions').classList.add('hidden');},stop:()=>{},status:()=>flightPhase,complete:()=>{flightPhase='success';document.getElementById('launchActions').classList.remove('hidden');}};
+ const sandbox={Voyage,document,localStorage:{getItem:k=>{if(blocked)throw Error('blocked');return storage.get(k)||null;},setItem:(k,v)=>{if(blocked)throw Error('blocked');storage.set(k,v);}},ResizeObserver:class{observe(){}},setTimeout:fn=>{timers.push(fn);return timers.length;},clearTimeout:()=>{},queueMicrotask:fn=>pending.push(fn),URLSearchParams,location:{search:''},confirm:()=>true,console};sandbox.window=sandbox;sandbox.scrollTo=()=>{};sandbox.addEventListener=()=>{};
  context=vm.createContext(sandbox);scripts.forEach(s=>vm.runInContext(s,context));
  const $=document.getElementById;return {$,context,storage,active:()=>document.querySelector('.screen.active').attrs.id,click:id=>$(id).click(),run:s=>vm.runInContext(s,context),flush:()=>{while(timers.length)timers.shift()();}};
 }
@@ -37,7 +39,7 @@ app.run("document.querySelectorAll('[data-part]').find(x=>x.dataset.part==='sate
 assert.equal(app.$('credits').textContent,'🪙 80 credits');
 let reloaded=boot(app.storage);assert.equal(reloaded.active(),'home');assert.match(reloaded.$('welcomeCadet').textContent,/Raj/);reloaded.click('resumeBtn');assert.equal(reloaded.active(),'workshop');assert.equal(reloaded.$('satellite').classList.contains('hidden'),false);
 reloaded.run("['bodypart','engine','tank'].forEach(togglePart)");
-reloaded.click('testBtn');reloaded.click('launchBtn');assert.equal(reloaded.$('navContinue').disabled,true);reloaded.flush();assert.equal(reloaded.$('navContinue').disabled,false);reloaded.click('continueFlight');reloaded.click('deployBtn');reloaded.click('dataBtn');
+reloaded.click('testBtn');reloaded.click('launchBtn');assert.equal(reloaded.$('navContinue').disabled,true);reloaded.flush();assert.equal(reloaded.$('navContinue').disabled,true,'Countdown cannot bypass flight');reloaded.click('continueFlight');assert.equal(reloaded.active(),'launch');reloaded.run('Voyage.complete();MissionControl.refreshNav()');assert.equal(reloaded.$('navContinue').disabled,false);reloaded.click('continueFlight');reloaded.click('deployBtn');reloaded.click('dataBtn');
 reloaded=boot(app.storage);reloaded.click('resumeBtn');assert.equal(reloaded.active(),'explore');assert.equal(reloaded.$('objScience').textContent,'✅ Complete');
 reloaded.click('returnBtn');const earned=reloaded.$('credits').textContent;reloaded.click('returnBtn');assert.equal(reloaded.$('credits').textContent,earned);assert.equal(reloaded.active(),'returned');
 reloaded.click('navContinue');assert.equal(reloaded.active(),'a-planets');reloaded.run('Academy.stampPlanet()');reloaded.click('navContinue');assert.equal(reloaded.active(),'a-quiz');reloaded.run('Academy.answerQuiz(1)');reloaded.run('Academy.capture()');
@@ -90,4 +92,5 @@ const poor=boot(new Map([['juniorAstronautSave',JSON.stringify({version:1,rocket
 poor.run("togglePart('engine')");assert.equal(poor.run('installed.size'),0);assert.equal(poor.run('credits'),0);
 assert.match(poor.$('buildHint').textContent,/Not enough credits/);
 console.log('PASS: profile, navigation, save/resume, objectives, rewards, quiz, migration, storage, unique IDs, empty workshop, all core launch gates, optional parts, refunds, resets, drops, legacy credits, insufficient funds');
+
 
