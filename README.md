@@ -1,23 +1,26 @@
 # Junior Astronaut Mission Trainer 🚀
 
-A browser-based space learning project for children, with two connected experiences: **Space Aero** for rocket building and simulated voyages, and **Orbit Academy** for astronaut training and science activities.
+A browser-based space learning project for children, with one **Mission Control** dashboard connecting rocket building, Space Voyage, astronaut training, Planet Explorer, Space Quiz and Gravity Playground.
 
 Built with HTML, CSS and JavaScript. No account, backend or production build step is required.
 
-## Try the apps
+## Open Mission Control
 
-| App | Open online | Main activities |
-| --- | --- | --- |
-| **Space Aero** | [Rocket workshop & space voyage](https://hrashal-gondedahalli.github.io/NASA-SPACEx/) | Customize a rocket, draw a blueprint, launch, explore and earn credits |
-| **Orbit Academy** | [Junior astronaut training](https://hrashal-gondedahalli.github.io/NASA-SPACEx/junior-astronaut-mission-trainer/) | Complete checklists, discover planets, answer a quiz and compare gravity |
+[Start your astronaut adventure](https://hrashal-gondedahalli.github.io/NASA-SPACEx/).
 
-Each app includes a link to the other.
+The former Orbit Academy URL redirects to Mission Control. Existing Academy progress is imported automatically on the same browser and origin.
+
+- Enter and save an astronaut name on the dashboard.
+- Choose an activity or use **Continue adventure** to resume the last activity.
+- **Home**, **Back**, **Continue** and **Restart activity** provide shared navigation. Restart asks for confirmation and preserves profile, XP, badges and completed voyages.
+- Flight school → Rocket Building → readiness check → Space Voyage → objectives → results → Planet Explorer → Space Quiz.
+- Activities are also available individually from the dashboard. The Voyage card resumes its own checkpoint even after a visit to another activity.
 
 ## Space Aero
 
 ### How to play
 
-1. Select **Start Your Mission** and choose a destination.
+1. Select **Build a rocket** and choose a destination.
 2. Enter the workshop. Your rocket starts with an engine, fuel tank, body and nose cone.
 3. Customize the rocket with component tiles. Click or tap to add/remove optional parts, or drag a tile onto the blueprint with a mouse.
 4. Turn **Draw** on to sketch with a mouse, touch or pen. Use **Clear sketch** to erase the drawing.
@@ -53,7 +56,7 @@ The current controls change the rocket animation's position and speed. Fuel cons
 | --- | --- | --- |
 | **Launch Sequence** | Complete five pre-flight learning checks | Flight Ready badge, 40 XP and one completed mission |
 | **Planet Explorer** | Read facts about Mercury, Venus, Earth and Mars; collect discovery stamps | 15 XP per new planet; Planet Pathfinder badge after all four |
-| **Space Quiz** | Answer five multiple-choice questions with explanations | 10 XP per correct answer plus 10 XP per completed attempt; Space Scholar badge and mission completion at 3/5 or better |
+| **Space Quiz** | Answer five multiple-choice questions with explanations | First attempt: 10 XP per correct answer plus 10 XP; later attempts award 10 XP per improvement to the best score; Space Scholar badge and mission completion at 3/5 or better |
 | **Gravity Playground** | Adjust rover mass from 5–100 kg and compare weight on Moon, Mars, Earth and Jupiter | Science activity explaining mass and weight |
 
 The cadet dashboard includes a name, XP, level, completed mission count and four achievement badges. **Mission Master** is awarded after completing all three training missions. Each 100 XP increases the cadet level.
@@ -73,12 +76,11 @@ For example, a 30 kg rover weighs **48.6 N on the Moon** and **294.3 N on Earth*
 
 ## Saved progress
 
-| App | Storage behaviour |
-| --- | --- |
-| **Space Aero** | Credits, rocket design, sketch and mission state last for the current page session. Refreshing resets them. |
-| **Orbit Academy** | Cadet name, XP, best quiz score, discovery stamps and completion flags are stored in this browser's local storage. |
+One versioned browser save (`juniorAstronautSave`) holds the astronaut name, XP, badges, completed training, credits, rocket components, purchased-part refunds, blueprint strokes, completed-voyage count, objectives, unfinished checklist, quiz answers and science-lab settings.
 
-Orbit Academy progress does not sync between devices or browsers. Clearing site data removes saved progress. If storage writes are unavailable, the app remains usable for the current visit. An unfinished checklist or quiz attempt is not restored after a refresh.
+Refresh opens Mission Control with a **Continue** button. A paused countdown resumes at the readiness check so it can restart safely. Completed results cannot award the same flight credits twice. Restarting an activity keeps earned badges and the profile; restarting a rocket mission refunds purchased parts under the existing workshop rules.
+
+Progress does not sync between devices or browsers. Clearing site data removes saved progress. If storage is unavailable, the app remains usable for the current visit and shows a save-status message. Existing `orbitAcademySave` data is imported without deleting the original.
 
 ## Run locally
 
@@ -92,8 +94,8 @@ python3 -m http.server 8000
 
 Open:
 
-- Space Aero: <http://localhost:8000/>
-- Orbit Academy: <http://localhost:8000/junior-astronaut-mission-trainer/>
+- Mission Control: <http://localhost:8000/>
+- Legacy Academy URL (redirect): <http://localhost:8000/junior-astronaut-mission-trainer/>
 
 The app itself requires only a modern browser with JavaScript, Canvas, Pointer Events and ResizeObserver support. Node.js is needed only for the automated tests.
 
@@ -107,6 +109,8 @@ npx playwright install --with-deps chromium
 npm test
 ```
 
+The dependency-free state checks can run separately with `node --test tests/mission-control.test.cjs`. They check embedded-script behavior using a DOM adapter and do not verify browser rendering.
+
 The Playwright tests start their own local server and cover:
 
 - Desktop and emulated touch mobile layouts, including horizontal overflow checks.
@@ -114,7 +118,7 @@ The Playwright tests start their own local server and cover:
 - Component purchase refunds and design reset.
 - Countdown cancellation, flight controls and mission completion.
 - Moon/Earth weight calculations.
-- Orbit Academy saved progress and unavailable storage.
+- Shared profile, rocket/sketch persistence, quiz resume, legacy redirect and unavailable storage.
 - Uncaught browser JavaScript errors along the tested journeys.
 
 To use an existing Chromium installation:
@@ -129,8 +133,9 @@ GitHub Actions runs these checks on pull requests and pushes to `main`. Touch em
 
 | Path | Purpose |
 | --- | --- |
-| `index.html` | Space Aero markup, styles and game logic |
-| `junior-astronaut-mission-trainer/index.html` | Orbit Academy markup, styles and learning activities |
+| `index.html` | Unified Mission Control, engineering, flight and Academy activities |
+| `junior-astronaut-mission-trainer/index.html` | Legacy redirect to Mission Control |
+| `tests/mission-control.test.cjs` | Dependency-free state and migration checks |
 | `tests/site.test.cjs` | Automated browser regression checks and temporary test server |
 | `package.json` | Test command and Playwright dependency |
 | `.github/workflows/site-checks.yml` | GitHub Actions browser checks |
@@ -147,11 +152,10 @@ This is an educational prototype. It has no NASA or SpaceX API integration, live
 
 Planned improvements, not yet implemented:
 
-- A unified Mission Control dashboard and shared progress across both apps.
-- Persistent Space Aero designs, credits and completed missions.
 - An empty-workshop building mode with removable core components.
 - Fuel-based gameplay, obstacles, failure feedback and retry flows.
 - Distinct Earth-orbit satellite and Moon-landing missions.
 - Expanded planet activities, quizzes and accessibility checks.
 
 The experience uses simplified game rules and is not real spacecraft guidance or astronaut training.
+
