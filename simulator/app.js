@@ -50,14 +50,14 @@ function clearInput(){held.clear();touches.clear();document.querySelectorAll('[d
 function setThrottle(value){s.throttle=P.clamp(value,0,1);$('throttle').value=Math.round(s.throttle*100);$('throttleValue').textContent=Math.round(s.throttle*100)+'%';}
 $('throttle').oninput=()=>setThrottle(Number($('throttle').value)/100);$('cutoff').onclick=()=>setThrottle(0);
 function status(text){$('flightStatus').textContent=text;}
-function start(){if(P.validate(design,scenario==='moon'?'Moon':'Earth').length||!rendererReady)return;s=P.create(design,scenario);s.phase='flying';paused=false;terminal=false;warp=1;map=false;zoom=1;trailPoints=[];predPoints=[];predictionTime=-100;last=0;acc=0;clearInput();setThrottle(0);$('attitude').value=scenario==='launch'?'guide':'manual';$('result').hidden=true;buildPlanet();buildRocket();setEditorLocked(true);$('pause').textContent='Pause';$('timewarp').textContent='Time ×1';$('viewMode').textContent='Orbital map';status(scenario==='launch'?'Ready on the pad. Raise throttle to lift off.':'Flight started. Set throttle to manoeuvre.');$('scene').focus({preventScroll:true});}
+function start(){if(P.validate(design,scenario==='moon'?'Moon':'Earth').length||!rendererReady)return;s=P.create(design,scenario);s.phase='flying';paused=false;terminal=false;warp=1;map=false;zoom=1;trailPoints=[];predPoints=[];predictionTime=-100;last=0;acc=0;clearInput();setThrottle(0);$('attitude').value=scenario==='launch'?'guide':'manual';$('result').hidden=true;buildPlanet();buildRocket();setEditorLocked(true);$('pause').textContent='Pause';$('timewarp').textContent='Time ×1';$('viewMode').textContent='Orbital map';status(scenario==='launch'?'Ready on the pad. Raise throttle to lift off.':'Flight started. Set throttle to manoeuvre.');$('scene').focus({preventScroll:true});hud();}
 $('launch').onclick=start;
 function reset(){records.maxAltitude=Math.max(Number(records.maxAltitude)||0,s.maxAltitude);writeSave();s.phase='ready';paused=false;terminal=false;clearInput();setThrottle(0);$('result').hidden=true;setEditorLocked(false);updatePreview();$('pause').textContent='Pause';warp=1;$('timewarp').textContent='Time ×1';status('Back in assembly. Your current design is preserved.');}
 function restart(){if(s.phase==='flying'&&!confirm('Leave this flight and return to assembly? Your design stays; the active flight is discarded.'))return;reset();}
 $('restart').onclick=restart;$('resultRetry').onclick=reset;
-function pause(){if(s.phase!=='flying')return;paused=!paused;clearInput();last=0;acc=0;$('pause').textContent=paused?'Resume':'Pause';status(paused?'Flight paused. Fuel and simulation time are frozen.':'Flight resumed.');}
+function pause(){if(s.phase!=='flying')return;paused=!paused;clearInput();last=0;acc=0;$('pause').textContent=paused?'Resume':'Pause';status(paused?'Flight paused. Fuel and simulation time are frozen.':'Flight resumed.');hud();}
 $('pause').onclick=pause;
-function stage(){if(P.separate(s)){buildRocket();status(s.message);}else status('No further stages available.');}
+function stage(){if(paused)return;if(P.separate(s)){buildRocket();status(s.message);}else status('No further stages available.');hud();}
 $('stage').onclick=stage;
 $('viewMode').onclick=()=>{map=!map;$('viewMode').textContent=map?'Flight view':'Orbital map';zoom=1;};$('cameraMode').onclick=()=>{orbitCamera=!orbitCamera;$('cameraMode').textContent=orbitCamera?'Camera: free':'Camera: chase';};
 $('timewarp').onclick=()=>{warp=warp===1?5:warp===5?20:1;$('timewarp').textContent='Time ×'+warp;};
