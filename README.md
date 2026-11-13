@@ -4,19 +4,19 @@ Browser-based rocket building, flight and Moonbase survival. No login, backend o
 
 ## Rocket Builder
 
-Open [Rocket Builder](https://hrashal-gondedahalli.github.io/NASA-SPACEx/simulator/?v=flight-20261113-3).
+Open [Rocket Builder](https://hrashal-gondedahalli.github.io/NASA-SPACEx/simulator/?v=space-20261113-4).
 
 - 17 illustrated parts across control, landing, protection, staging, fuel, engines, boosters, utility and aero. Tap or drag to add to either connected stage; tap fitted equipment to remove it. Counts are capped, and undo/save/load remain available.
 - Four tank sizes change fuel capacity, mass and visible height. Three engine types change thrust, efficiency and dry mass; choosing a type changes the selected stage's engine type. Side boosters add fuel, thrust and mass and require side releases.
 - Separators enable staging. Parachutes deploy only in Earth air below 5 km and 250 m/s. Extended landing legs raise the model's safe touchdown limit to 12 m/s (8 without). RCS adds steering authority using separate propellant. Heat shields reduce heating in a simplified model. Nose cones reduce drag. Fairings can be jettisoned to shed mass. Use the flight ⚙ menu to deploy equipment or release fairings/side boosters.
 - Construction is still a two-stage connected stack, not an arbitrary SFS free-placement editor. Booster fuel is shared within its stage; dropping boosters discards the proportional remaining fuel. Parts are original code-native illustrations and meshes, not SFS assets.
-- Earth launch defaults to a pad-anchored camera: the rocket visibly rises relative to the pad. The camera position and aim remain fixed while its orthographic extent widens to keep ascent in view. Follow and Free modes are available. Wheel/pinch/button zoom in flight selects spacecraft-centred Follow; map zoom focuses the spacecraft rather than Earth's centre.
+- Earth launch defaults to a pad-anchored camera: the rocket visibly rises relative to the pad. The Earth view stays framed on the pad and automatically widens as altitude increases. Moon descent uses a fixed perspective camera with a depth range that includes the entire lunar globe. Follow and Free modes are available. Moon descent also defaults to a fixed surface view with visible landmarks; the rocket is enlarged as an overview marker. Zoom preserves the selected Fixed/Follow/Free mode, framing the current rocket position once when zooming a fixed view. Map zoom focuses the spacecraft.
 - Earth uses a bundled Blue Marble surface image, ocean/land detail, atmosphere, daylight sky and a local launchpad/ground reference. No live weather is implied. Image source: [Three.js r170 texture collection](https://github.com/mrdoob/three.js/blob/r170/examples/textures/planets/earth_atmos_2048.jpg); [NASA Blue Marble credit and background](https://science.nasa.gov/resource/blue-marble/). Credit: NASA Goddard Space Flight Center / Reto Stöckli and Robert Simmon; texture distributed with Three.js. See `simulator/textures/CREDITS.md`.
 - All quiz screens, question gates and quiz badges have been removed. Mission completion depends on gameplay objectives only. Names, earlier earned XP and non-quiz saves are retained; retired activity bookmarks return safely to Mission Control.
 
 ## Flight model and limits
 
-Three-dimensional position/velocity, inverse-square gravity, fuel mass flow, mass-dependent thrust, simplified atmospheric drag and heating. Planets have one-tenth real radius with surface gravity retained. Separate Earth-orbit and Moon-descent practice scenarios are available; no Earth-to-Moon transfer, terrain collision mesh, docking or full rigid-body dynamics. Parachutes do not work on the Moon. Heating, shielding, RCS, touchdown thresholds and engine parameters are fictional educational rules, not operational spacecraft engineering.
+Three-dimensional position/velocity, inverse-square gravity, fuel mass flow, mass-dependent thrust, simplified atmospheric drag and heating. Planets have one-tenth real radius with surface gravity retained. Separate Earth-orbit, Moon-descent and 30 km lunar-orbit practice scenarios are available; no Earth-to-Moon transfer, terrain collision mesh, docking or full rigid-body dynamics. Parachutes do not work on the Moon. Heating, shielding, RCS, touchdown thresholds and engine parameters are fictional educational rules, not operational spacecraft engineering.
 
 Arrow keys/WASD steer, X cuts thrust, Space stages, P pauses. Touch buttons support simultaneous input. Switching away or opening a dialog pauses flight. Time warp requires engines off and altitude above the atmosphere. Designs/records save in this browser; active flights do not survive a refresh.
 
@@ -52,3 +52,11 @@ Serve the repository root with `python -m http.server 8000`, then open `/simulat
 GitHub Pages publishes `main` from the repository root. All assets are relative and bundled locally. Selecting another branch in GitHub does not change the public website. URL asset versions prevent stale mixed layouts after updates.
 
 Design/code were developed with AI assistance. List the team's actual tools and NASA/third-party resources in its challenge submission. This independent project is not endorsed by NASA, SpaceX or Spaceflight Simulator.
+
+## Space and destination maps
+
+Space uses a dark sky, restrained stars, directional sunlight, a day/night terminator and a sunlit atmospheric rim around Earth. The Moon uses bundled surface imagery with visible maria/craters. Local crater landmarks make lunar descent visibly move against the surface. Imagery and scientific reference credits are in `simulator/textures/CREDITS.md`.
+
+Map's selector switches between the local flight orbit, an Earth–Moon overview and close views of either world. The Moon follows a Kepler ellipse with NASA mean eccentricity and ecliptic inclination. Sizes and separation share the existing 1:10 model scale; the period follows the model gravitational parameters. Initial phase is arbitrary, not today's Moon position. Companion bodies are visual references, not additional gravity or a playable transfer.
+
+Gold is an osculating two-body coast trajectory derived from position/velocity, with Ap/Pe markers for visible apsides; it is not a prescribed route. The curve stops at the surface or escape asymptote. Thrust and atmospheric drag will change the future orbit. Lunar orbit practice starts in a physically circular orbit at 30 km above the model Moon; prograde/retrograde burns alter the path. The legend and in-app grown-up notes explain the model limits.
