@@ -5,7 +5,7 @@ const run=(s,n,input={})=>{for(let i=0;i<n*120;i++)P.step(s,input,1/120);return 
 const flight=(scenario='launch')=>({...P.create(P.DEFAULT,scenario),phase:'flying'});
 test('rocket design controls mass, thrust-to-weight, delta-v and launch validity',()=>{
  assert.deepEqual(P.validate(P.DEFAULT),[]);const d=P.design(P.DEFAULT),before=P.specs(d);d.stages[0].tanks++;assert(P.specs(d).mass>before.mass);assert(P.specs(d).twr<before.twr);d.stages[0].engines=0;assert(P.validate(d).some(x=>/engine/.test(x)));
- assert(P.specs(P.DEFAULT).deltaV>6000);assert.deepEqual(P.design({stages:[{tanks:-99,engines:50}]}).stages[0],{tanks:0,engines:3});
+ assert(P.specs(P.DEFAULT).deltaV>6000);const normalized=P.design({stages:[{tanks:-99,engines:50}]}).stages[0];assert.equal(normalized.tanks,0);assert.equal(normalized.engines,3);assert.deepEqual(normalized.tankSizes,[]);
 });
 test('launchpad supports an idle rocket; thrust consumes fuel and lifts it',()=>{
  const s=flight();run(s,2);assert.equal(P.telemetry(s).altitude,0);assert.equal(s.phase,'flying');const m=P.mass(s);s.throttle=1;run(s,8);assert(P.telemetry(s).altitude>100);assert(P.mass(s)<m);assert(s.v[1]>0);
@@ -40,3 +40,9 @@ test('starter rocket can launch and attain an atmosphere-clearing Earth orbit',(
  }
  assert.equal(s.phase,'flying');assert(s.orbit,'Reach a sustained orbit using thrust, guidance and staging');assert(P.telemetry(s).periapsis>75000);assert(P.telemetry(s).fuel>0);
 });
+
+
+test('tank sizes and engine types have distinct fuel, mass and thrust',()=>{const d=P.design(P.DEFAULT),a=P.specs(d);d.stages[0].tankSizes[0]='large';assert(P.specs(d).mass>a.mass);assert(P.specs(d).stages[0].fuel>a.stages[0].fuel);d.stages[0].engineType='heavy';assert(P.specs(d).stages[0].thrust>a.stages[0].thrust);});
+test('recovery parts are functional and cannot deploy a parachute on the Moon',()=>{const d=P.design(P.DEFAULT);d.parachute=true;d.legs=true;const s=P.create(d);s.phase='flying';assert(P.deploy(s,'parachute'));assert(s.parachuteDeployed);assert(P.deploy(s,'legs'));assert(s.legsDeployed);const m=P.create(d,'moon');m.phase='flying';assert(!P.deploy(m,'parachute'));});
+test('separators, fairings, RCS and side boosters affect the flight model',()=>{const d=P.design(P.DEFAULT);d.separator=false;const s=P.create(d,'orbit');s.phase='flying';assert(!P.separate(s));d.fairing=true;d.rcs=true;d.stages[0].boosters=2;assert(P.validate(d).some(x=>x.includes('side release')));d.stages[0].radialSeparator=true;const b=P.create(d,'orbit');b.phase='flying';const mass=P.mass(b);assert(P.detachBoosters(b));assert(P.mass(b)<mass);assert(!P.detachBoosters(b));const before=P.mass(b);assert(P.deploy(b,'fairing'));assert(P.mass(b)<before);run(b,2,{yaw:1});assert(b.rcsFuel<40);});
+test('heat shield reduces temperature in the simplified atmospheric heating model',()=>{const d=P.design(P.DEFAULT),plain=P.create(d),protectedDesign={...d,heatShield:true},shielded=P.create(protectedDesign);for(const s of [plain,shielded]){s.phase='flying';s.launched=true;s.p[1]+=20000;s.v=[1800,0,0];}run(plain,1);run(shielded,1);assert(shielded.temperature<plain.temperature);assert(shielded.shield<100);});

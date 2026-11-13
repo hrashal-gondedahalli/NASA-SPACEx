@@ -60,26 +60,25 @@ test('desktop and touch mobile website regression checks',async()=>{
    await flyRoute();assert.equal(await page.evaluate(()=>Voyage.status()),'success',JSON.stringify(await page.evaluate(()=>Voyage.telemetry())));assert(await page.locator('#navContinue').isEnabled());
    const flightSave=await page.evaluate(()=>JuniorSave.data.voyage);assert.equal(flightSave.destination,'Moon');assert(flightSave.score>0);await click('#voyagePrimary');assert(await page.locator('#returnBtn').isDisabled());
    assert.equal(flightSave.landed,true);for(let i=0;i<3;i++)await click('#destinationLearning .row:first-of-type button:nth-child('+(i+1)+')');
-   await click('#destinationLearning .row:nth-of-type(2) button:nth-child(2)');await click('#destinationLearning .row:nth-of-type(3) button:nth-child(3)');await click('#returnBtn');await fits();assert.match(await page.locator('#finalDest').textContent(),/Moon/);
+   await click('#returnBtn');await fits();assert.match(await page.locator('#finalDest').textContent(),/Moon/);
    await click('#homeBtn');await click('button[onclick="SpaceMissions.choose(\'Earth Orbit\')"]');await click('#testBtn');await click('#launchBtn');await click('#voyagePrimary');await page.clock.runFor(3200);await flyRoute();
    assert.equal(await page.evaluate(()=>Voyage.status()),'success');await click('#voyagePrimary');assert(await page.locator('#returnBtn').isDisabled());await click('#deployBtn');
-   await click('#destinationLearning .row:nth-of-type(2) button:first-child');assert(await page.locator('#returnBtn').isDisabled(),'Cannot skip first question');
-   await click('#destinationLearning .row:first-of-type button:nth-child(2)');assert.match(await page.locator('#destinationLearning .feedback').first().textContent(),/Try again/);
-   await page.reload();await click('#resumeBtn');assert.match(await page.locator('#objectives').textContent(),/Deploy observation satellite/);await click('#destinationLearning .row:first-of-type button:first-child');await click('#returnBtn');
+   await page.reload();await click('#resumeBtn');assert.match(await page.locator('#objectives').textContent(),/Deploy observation satellite/);assert(await page.locator('#returnBtn').isEnabled());await click('#returnBtn');
    assert.equal(await page.locator('#a-topXP').textContent(),'200');const paid=await page.locator('#credits').textContent();await page.evaluate(()=>document.getElementById('returnBtn').onclick());assert.equal(await page.locator('#credits').textContent(),paid);await click('#homeBtn');assert.match(await page.locator('#a-achievements').textContent(),/Orbit Operator/);await click('#resumeBtn');
    await click('#againBtn');await click('#toBuild');for(const id of ['bodypart','engine','tank'])await click('[data-part="'+id+'"]');await click('#testBtn');await click('#launchBtn');await click('#voyagePrimary');await page.clock.runFor(3200);await page.keyboard.down('ArrowUp');await page.clock.runFor(22000);await page.keyboard.up('ArrowUp');assert.equal(await page.evaluate(()=>Voyage.status()),'failed');assert.match(await page.locator('#voyageExplanation').textContent(),/repairs/);await click('#voyagePrimary');assert.equal(await page.evaluate(()=>Voyage.status()),'ready');assert.equal(await page.locator('#voyageFuel').textContent(),'100%');await click('#homeBtn');await page.clock.resume();
    await page.goto(base+'/junior-astronaut-mission-trainer/');await page.waitForURL(base+'/');await fits();await click('button[onclick="Academy.openMission(\'gravity\')"]');assert.equal(await page.locator('#a-weightResult').textContent(),'48.6 N');await page.selectOption('#a-worldSelect','9.81');assert.equal(await page.locator('#a-weightResult').textContent(),'294.3 N');await click('#homeBtn');
-   await click('button[onclick="Academy.openMission(\'launch\')"]');for(const item of await page.locator('#a-checklist input').all())await item.check();await click('#a-launchComplete');await click('#homeBtn');await page.reload();assert.equal(await page.locator('#a-missionStat').textContent(),'1/3');
+   await click('button[onclick="Academy.openMission(\'launch\')"]');for(const item of await page.locator('#a-checklist input').all())await item.check();await click('#a-launchComplete');await click('#homeBtn');await page.reload();assert.equal(await page.locator('#a-missionStat').textContent(),'1/2');
    await click('button[onclick="Academy.openMission(\'planets\')"]');await fits();await click('#homeBtn');
    await page.fill('#a-cadetName','Cadet');await click('button[onclick="Academy.saveName()"]');await click('#startBtn');await click('#toBuild');await click('[data-part="satellite"]');
    await click('#drawBtn');await page.locator('#board').scrollIntoViewIfNeeded();const savedBox=await page.locator('#sketch').boundingBox();await page.mouse.move(savedBox.x+20,savedBox.y+100);await page.mouse.down();await page.mouse.move(savedBox.x+80,savedBox.y+120);await page.mouse.up();
    const savedCredits=await page.locator('#credits').textContent();await page.reload();assert.equal(await page.locator('#a-cadetName').inputValue(),'Cadet');await click('#resumeBtn');assert(await page.locator('#workshop').isVisible());assert.equal(await page.locator('#credits').textContent(),savedCredits);assert(await ink(),'Sketch survives refresh');
-   await click('#homeBtn');await click('button[onclick="Academy.openMission(\'quiz\')"]');await click('#a-answers button:nth-child(2)');await page.reload();await click('#resumeBtn');assert.equal(await page.locator('#a-quizScore').textContent(),'1');assert(await page.locator('#a-nextQuestion').isEnabled());
+   assert.equal(await page.locator('#a-quiz').count(),0);
    await click('#homeBtn');await page.evaluate(()=>Storage.prototype.setItem=()=>{throw Error('Storage unavailable')});await page.fill('#a-cadetName','Cadet');await click('button[onclick="Academy.saveName()"]');assert.match(await page.locator('#saveStatus').textContent(),/unavailable/);
    assert.deepEqual(errors,[],'No uncaught browser errors');await context.close();
   }
  }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
 });
+
 
 
 

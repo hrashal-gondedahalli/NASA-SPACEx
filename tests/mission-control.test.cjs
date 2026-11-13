@@ -50,13 +50,8 @@ reloaded.run("['bodypart','engine','tank'].forEach(togglePart)");
 reloaded.click('testBtn');reloaded.click('launchBtn');assert.equal(reloaded.$('navContinue').disabled,true);reloaded.flush();assert.equal(reloaded.$('navContinue').disabled,true,'Countdown cannot bypass flight');reloaded.click('continueFlight');assert.equal(reloaded.active(),'launch');reloaded.run('Voyage.complete();MissionControl.refreshNav()');assert.equal(reloaded.$('navContinue').disabled,false);reloaded.click('continueFlight');reloaded.click('deployBtn');reloaded.click('dataBtn');
 reloaded=boot(app.storage);reloaded.click('resumeBtn');assert.equal(reloaded.active(),'explore');assert.equal(reloaded.$('objScience').textContent,'✅ Complete');
 reloaded.click('returnBtn');const earned=reloaded.$('credits').textContent;reloaded.click('returnBtn');assert.equal(reloaded.$('credits').textContent,earned);assert.equal(reloaded.active(),'returned');
-reloaded.click('navContinue');assert.equal(reloaded.active(),'a-planets');reloaded.run('Academy.stampPlanet()');reloaded.click('navContinue');assert.equal(reloaded.active(),'a-quiz');reloaded.run('Academy.answerQuiz(1)');reloaded.run('Academy.capture()');
-reloaded=boot(app.storage);reloaded.click('resumeBtn');assert.equal(reloaded.active(),'a-quiz');assert.equal(reloaded.$('a-quizScore').textContent,1);assert.equal(reloaded.$('a-nextQuestion').disabled,false);
-reloaded.run('Academy.nextQuiz()');
-for(const answer of [2,2,0,1]){reloaded.run('Academy.answerQuiz('+answer+')');reloaded.run('Academy.nextQuiz()');}
-reloaded.run('Academy.capture()');const completedXP=reloaded.$('a-xpStat').textContent;
-reloaded=boot(app.storage);reloaded.click('resumeBtn');assert.equal(reloaded.$('a-xpStat').textContent,completedXP);assert.equal(reloaded.$('a-nextQuestion').textContent,'Try again');
-reloaded.click('navRestart');assert.equal(reloaded.$('a-quizScore').textContent,0);assert.equal(reloaded.$('a-cadetName').value,'Raj');
+reloaded.click('navContinue');assert.equal(reloaded.active(),'a-planets');reloaded.run('Academy.stampPlanet()');reloaded.click('navContinue');assert.equal(reloaded.active(),'home');assert.equal(reloaded.$('a-cadetName').value,'Raj');
+const oldQuizSave=boot(new Map([['juniorAstronautSave',JSON.stringify({version:1,resume:'a-quiz',academy:{name:'Legacy',xp:90,missions:['quiz','launch'],quizScore:5}})]]));assert.equal(oldQuizSave.active(),'home');assert.equal(oldQuizSave.$('a-xpStat').textContent,90);assert.equal(oldQuizSave.$('a-quiz'),null);
 reloaded.run("MissionControl.open('a-launch')");reloaded.$('a-checklist').querySelectorAll('input')[0].checked=true;reloaded.run('Academy.capture()');
 reloaded=boot(app.storage);reloaded.click('resumeBtn');assert.equal(reloaded.$('a-checklist').querySelectorAll('input')[0].checked,true);
 const migrated=boot(new Map([['orbitAcademySave',JSON.stringify({name:'Legacy',xp:70,planets:['Mars'],missions:['launch'],launch:true})]]));assert.match(migrated.$('welcomeCadet').textContent,/Legacy/);assert.equal(migrated.$('a-xpStat').textContent,70);
@@ -99,7 +94,7 @@ legacy.run("resetDesign()");assert.equal(legacy.run('credits'),100);assert.equal
 const poor=boot(new Map([['juniorAstronautSave',JSON.stringify({version:1,rocket:{credits:0,installed:[],purchased:[]}})]]));
 poor.run("togglePart('engine')");assert.equal(poor.run('installed.size'),0);assert.equal(poor.run('credits'),0);
 assert.match(poor.$('buildHint').textContent,/Not enough credits/);
-console.log('PASS: profile, navigation, save/resume, objectives, rewards, quiz, migration, storage, unique IDs, empty workshop, all core launch gates, optional parts, refunds, resets, drops, legacy credits, insufficient funds');
+console.log('PASS: profile, navigation, save/resume, objectives, rewards, quiz removal, migration, storage, unique IDs, empty workshop, all core launch gates, optional parts, refunds, resets, drops, legacy credits, insufficient funds');
 
 
 
@@ -115,16 +110,12 @@ for(const name of ['Earth Orbit','Moon']){
  if(name==='Moon'){
   const row=mission.$('destinationLearning').children.find(x=>x.attrs.class==='row');row.children.forEach(b=>b.click());
  }else mission.click('deployBtn');
- let rows=mission.$('destinationLearning').children.filter(x=>x.attrs.class==='row');
- const offset=name==='Moon'?1:0,correct=name==='Moon'?[1,2]:[0,0];
- rows[offset+1].children[correct[1]].click();assert(mission.$('returnBtn').disabled,'Second answer alone cannot complete quiz');
- rows=mission.$('destinationLearning').children.filter(x=>x.attrs.class==='row');rows[offset].children[2].click();assert(mission.$('returnBtn').disabled,'Wrong answer keeps mission open');
  const resumed=boot(mission.storage,false,true);resumed.click('resumeBtn');assert.equal(resumed.active(),'explore');
- rows=resumed.$('destinationLearning').children.filter(x=>x.attrs.class==='row');rows[offset].children[correct[0]].click();
  assert.equal(resumed.$('returnBtn').disabled,false);resumed.click('returnBtn');assert.equal(resumed.active(),'returned');
  assert.equal(resumed.run('JuniorSave.data.academy.xp'),100);assert(resumed.run('JuniorSave.data.academy.voyages.includes('+JSON.stringify(name)+')'));
  const paid=resumed.run('credits');resumed.click('returnBtn');assert.equal(resumed.run('credits'),paid);
  resumed.run('Academy.awardVoyage('+JSON.stringify(name)+')');assert.equal(resumed.run('JuniorSave.data.academy.xp'),100);
  const done=boot(resumed.storage,false,true);done.click('resumeBtn');assert.equal(done.active(),'returned');assert.equal(done.run('credits'),paid);
- console.log('PASS: '+name+' arrival gates, objectives, quiz feedback, resume, badge, XP and duplicate reward protection');
+ console.log('PASS: '+name+' arrival gates, objectives, objectives without questions, resume, badge, XP and duplicate reward protection');
 }
+

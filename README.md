@@ -1,8 +1,24 @@
-# Junior Astronaut Mission Trainer 🚀
+# Junior Astronaut Mission Trainer
 
-A browser-based space learning project for children, with one **Mission Control** dashboard connecting rocket building, Space Voyage, astronaut training, Planet Explorer, Space Quiz and Gravity Playground.
+Browser-based rocket building, flight and Moonbase survival. No login, backend or build step is needed.
 
-Built with HTML, CSS and JavaScript. No account, backend or production build step is required.
+## Rocket Builder
+
+Open [Rocket Builder](https://hrashal-gondedahalli.github.io/NASA-SPACEx/simulator/?v=flight-20261113-3).
+
+- 17 illustrated parts across control, landing, protection, staging, fuel, engines, boosters, utility and aero. Tap or drag to add to either connected stage; tap fitted equipment to remove it. Counts are capped, and undo/save/load remain available.
+- Four tank sizes change fuel capacity, mass and visible height. Three engine types change thrust, efficiency and dry mass; choosing a type changes the selected stage's engine type. Side boosters add fuel, thrust and mass and require side releases.
+- Separators enable staging. Parachutes deploy only in Earth air below 5 km and 250 m/s. Extended landing legs raise the model's safe touchdown limit to 12 m/s (8 without). RCS adds steering authority using separate propellant. Heat shields reduce heating in a simplified model. Nose cones reduce drag. Fairings can be jettisoned to shed mass. Use the flight ⚙ menu to deploy equipment or release fairings/side boosters.
+- Construction is still a two-stage connected stack, not an arbitrary SFS free-placement editor. Booster fuel is shared within its stage; dropping boosters discards the proportional remaining fuel. Parts are original code-native illustrations and meshes, not SFS assets.
+- Earth launch defaults to a pad-anchored camera: the rocket visibly rises relative to the pad. The camera position and aim remain fixed while its orthographic extent widens to keep ascent in view. Follow and Free modes are available. Wheel/pinch/button zoom in flight selects spacecraft-centred Follow; map zoom focuses the spacecraft rather than Earth's centre.
+- Earth uses a bundled Blue Marble surface image, ocean/land detail, atmosphere, daylight sky and a local launchpad/ground reference. No live weather is implied. Image source: [Three.js r170 texture collection](https://github.com/mrdoob/three.js/blob/r170/examples/textures/planets/earth_atmos_2048.jpg); [NASA Blue Marble credit and background](https://science.nasa.gov/resource/blue-marble/). Credit: NASA Goddard Space Flight Center / Reto Stöckli and Robert Simmon; texture distributed with Three.js. See `simulator/textures/CREDITS.md`.
+- All quiz screens, question gates and quiz badges have been removed. Mission completion depends on gameplay objectives only. Names, earlier earned XP and non-quiz saves are retained; retired activity bookmarks return safely to Mission Control.
+
+## Flight model and limits
+
+Three-dimensional position/velocity, inverse-square gravity, fuel mass flow, mass-dependent thrust, simplified atmospheric drag and heating. Planets have one-tenth real radius with surface gravity retained. Separate Earth-orbit and Moon-descent practice scenarios are available; no Earth-to-Moon transfer, terrain collision mesh, docking or full rigid-body dynamics. Parachutes do not work on the Moon. Heating, shielding, RCS, touchdown thresholds and engine parameters are fictional educational rules, not operational spacecraft engineering.
+
+Arrow keys/WASD steer, X cuts thrust, Space stages, P pauses. Touch buttons support simultaneous input. Switching away or opening a dialog pauses flight. Time warp requires engines off and altitude above the atmosphere. Designs/records save in this browser; active flights do not survive a refresh.
 
 ## Moonbase: Seven Days — outpost survival
 
@@ -28,229 +44,11 @@ Suggested safe route: oxygen 2, recycling 1, greenhouse 1, research 0; repair on
 
 Run `npm test` for engine and desktop/mobile regression checks. Outpost-specific tests cover full survival, failed missions, energy rejection without mutation, delayed harvest and advice, storm consequences, corrupted/blocked storage, reload, restart confirmation and independent Academy storage. The browser checks produce `test-results/outpost-desktop.png` and `outpost-mobile.png`.
 
-## Visual rocket builder
 
-The simulator now opens as a full-viewport blue blueprint workspace, inspired by the spatial layout in the supplied SFS references, with original CSS part artwork and the existing 3D rocket model. The page does not scroll; the parts rail and dialogs scroll independently when necessary.
+## Run, test and publish
 
-- Tap a capsule, tank or engine picture, or drag a tile onto the blueprint. Stage 1/2 selects which connected stage receives tanks and engines. Capsule cycles the payload mass. The model remains a two-stage snapped stack, not arbitrary free placement.
-- Remove tanks/engines using the rail controls. Undo restores the last 40 edits. Clear asks for confirmation and can be undone. Save/Load use the existing browser save format.
-- Front blueprint view uses an orthographic camera. Drag the background to pan; wheel/pinch or plus/minus buttons zoom; Centre restores the view. The 3D button switches to a rotatable preview.
-- Launch stays in the top bar. Settings and Help open accessible native dialogs. The four illustrated help cards keep instructions short; detailed physics limits, keyboard controls, records and credits are under Grown-up notes.
-- Flight fills the workspace with a compact throttle, directional buttons, map, pause, staging and assistance controls. Desktop shows extra telemetry; mobile prioritises height, speed and fuel. No physical simulation rules changed.
-- Responsive portrait and landscape layouts use the available viewport and safe-area insets. All part pictures are code-native CSS artwork; no screenshot assets or SFS branding are bundled.
+Serve the repository root with `python -m http.server 8000`, then open `/simulator/`. ES modules need HTTP. Install test dependencies with `npm install`, then `npx playwright install chromium` and `npm test`. `CHROMIUM_PATH` may point to an installed Chromium executable. Browser tests capture desktop/mobile screenshots in `test-results/` and check the real WebGL renderer.
 
-## 3D Orbital Lab
+GitHub Pages publishes `main` from the repository root. All assets are relative and bundled locally. Selecting another branch in GitHub does not change the public website. URL asset versions prevent stale mixed layouts after updates.
 
-Open **3D Simulator** on Mission Control, or visit `simulator/`.
-This is an original SFS-inspired educational sandbox, not a copy of SFS or a claim of feature parity.
-
-- Three.js WebGL 2 rendering, procedural Earth/Moon, modular 3D rocket, chase/free camera, mouse/touch orbit and zoom. Pinned Three.js 0.170.0 and its MIT license are vendored locally: no CDN, account, API key, backend or production build is needed.
-- Two-stage snapped stack: configure 0–4 tanks and 0–3 engines per stage, plus payload mass. Live mass, Earth thrust-to-weight and ideal delta-v. Invalid designs cannot launch. This is not yet a free-placement parts editor.
-- Three-dimensional position and velocity, inverse-square gravity, finite propellant, mass-dependent acceleration, exponential atmospheric drag, manual pitch/yaw, prograde/retrograde attitude and altitude-programmed launch guidance.
-- Stage separation removes booster mass and unused fuel; it does not refill the upper stage. No artificial braking in vacuum.
-- Earth launch, Earth orbit practice and Moon landing practice (starts at 1,200 m; **not** an Earth-to-Moon transfer).
-- Globe map with a full 3D ballistic coast prediction (ignores thrust/drag), apsides, stable-orbit detection, time warp restricted to engines-off flight above the atmosphere, and landing/crash outcomes.
-- Saved rocket design and separate launch-orbit / orbit-practice / Moon-landing records in local storage (`junior-orbital-lab-v1`); guest flight works when storage is blocked. Existing academy saves are unchanged. Active flights do not survive reload.
-
-### First flight
-
-1. Keep the starter rocket and Earth launch. Enter flight and raise throttle to 100%.
-2. Launch guidance pitches gradually toward horizontal. Separate the booster after fuel exhaustion.
-3. Cut engines once apoapsis is above 80–110 km. Coast toward apoapsis, then burn prograde to raise periapsis above 75 km. Launch guidance is a pitch program, not a complete autopilot.
-4. Open the orbital map. Both apsides must clear 75 km for more than 3 seconds to record stable orbit.
-5. For easier practice, start Earth orbit directly, or try the separate Moon descent. Land below 8 m/s and within 20 degrees of upright.
-
-Keyboard: arrows/WASD pitch and yaw, X engine cutoff, Space staging (outside focused buttons), P pause. Mouse drag or touch drag rotates the camera, wheel/pinch zooms. Hold the on-screen controls on touch devices. Switching tabs pauses flight. Time warp cannot be used below 80 km on Earth or 10 km on the Moon or with engines firing.
-
-### Model limits
-
-SI units are used, but planet radii are one-tenth real size with surface gravity retained to shorten missions. Drag, attitude and surface contact are simplified. No terrain, axial rotation, heating, aerodynamic lift, n-body transfers, docking, roll, torque or full rigid-body dynamics. Touchdown uses the point-mass surface contact; scenery and attached parts do not have independent collision bodies. The Earth orbit practice scenario is recorded separately from an orbit attained by launching. Performance depends on WebGL 2 support; unsupported devices show a recovery message and a link to the training site.
-
-Physics reference: [NASA specific impulse](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/specific-impulse/) for thrust and propellant flow. The game uses simplified fictional engine parameters.
-
-### Local checks and publishing
-
-Serve the repository root over HTTP (`python -m http.server 8000`), then open `/simulator/`. ES modules require HTTP; opening `index.html` as a `file://` URL is unsupported. `npm install && npx playwright install chromium && npm test` runs physics and browser regression checks. `CHROMIUM_PATH` can point at an existing Chromium binary. Browser tests also capture desktop/mobile previews and map screenshots in `test-results/`.
-
-GitHub Pages continues to publish from the existing repository root. All paths are relative and work under `/NASA-SPACEx/`. No hosting changes are required after this branch is merged.
-
-## Open Mission Control
-
-[Start your astronaut adventure](https://hrashal-gondedahalli.github.io/NASA-SPACEx/).
-
-The former Orbit Academy URL redirects to Mission Control. Existing Academy progress is imported automatically on the same browser and origin.
-
-- Enter and save an astronaut name on the dashboard.
-- Choose an activity or use **Continue adventure** to resume the last activity.
-- **Home**, **Back**, **Continue** and **Restart activity** provide shared navigation. Restart asks for confirmation and preserves profile, XP, badges and completed voyages.
-- Flight school → Rocket Building → readiness check → Space Voyage → objectives → results → Planet Explorer → Space Quiz.
-- Activities are also available individually from the dashboard. The Voyage card resumes its own checkpoint even after a visit to another activity.
-
-## Space Aero
-
-### How to play
-
-1. Select **Build a rocket** and choose a destination.
-2. Enter the workshop. New designs start with an empty blueprint and 100 credits. Saved designs resume with their installed parts.
-3. Customize the rocket with component tiles. Click or tap to add/remove any part, or drag a tile onto the blueprint with a mouse.
-4. Turn **Draw** on to sketch with a mouse, touch or pen. Use **Clear sketch** to erase the drawing.
-5. Select **Test My Rocket** to review component readiness.
-6. Launch, steer through three navigation gates, avoid debris and brake to dock before exploration.
-7. Deploy an installed satellite, collect science data and return to Earth for your mission score and credits.
-8. Select **Plan Another Mission** to play again.
-
-### Features
-
-- **Eight destinations:** Moon, Mars, Jupiter, Saturn, Mercury, Venus, Asteroid Belt and Earth Orbit.
-- **Six component types:** engine, fuel tank, rocket body, fins, satellite and nose cone.
-- **Workshop credits:** start with 100 credits; all purchased parts are fully refunded when removed or when the design is reset. Reset leaves an empty blueprint. Free parts from older saves do not generate refunds.
-- **Blueprint canvas:** decorative freehand drawing, clear/reset controls and sketch preservation when the viewport resizes.
-- **Readiness checks:** body, engine and fuel tank are required; each missing part is named and explained. Launch and Continue remain disabled until all three are installed. Fins, satellite and nose cone are optional. The progress bar tracks required parts; the design score tracks all components and starts at zero.
-- **Playable voyage:** countdown, momentum-based thrust and steering, fuel, hull damage, ordered navigation gates, safe docking, pause, failure feedback and retry. Leaving the flight screen stops its animation loop.
-- **Exploration objectives:** satellite deployment and science collection, followed by a results screen and credit rewards.
-
-### Space Voyage
-
-Hold a control to keep using it. Thrust accelerates the ship along its nose; coasting saves fuel. Turn before thrusting to change direction. Pass the three cyan gates in order (each restores 12 fuel), avoid rocks and walls (25 hull damage per collision), then enter the gold docking zone at **65 game units/second or less**. A depleted hull, exhausted fuel with no remaining motion, or a 180-second flight limit ends the attempt with feedback and a retry option.
-
-| Action | Keyboard | On-screen control |
-| --- | --- | --- |
-| Rotate left | Left arrow / A | Hold Left |
-| Rotate right | Right arrow / D | Hold Right |
-| Thrust | Up arrow / W / Space | Hold Thrust |
-| Brake | Down arrow / S | Hold Brake |
-| Pause / resume | P / Escape | Pause / Resume |
-
-Touch supports simultaneous steering and thrust. Losing focus or hiding the tab pauses the flight and clears held controls. Retry restores fuel, hull, gates and time. Successful flights save a report with destination, flight score, fuel, hull and duration. Refresh returns unfinished flights to readiness rather than restoring moving spacecraft.
-
-All destinations currently share this navigation-and-docking course. Flight rules, distances, braking and times are simplified for learning; destination-specific orbit and Moon-landing challenges are future work.
-
-## Orbit Academy
-
-| Activity | What the player does | Progress earned |
-| --- | --- | --- |
-| **Launch Sequence** | Complete five pre-flight learning checks | Flight Ready badge, 40 XP and one completed mission |
-| **Planet Explorer** | Read facts about Mercury, Venus, Earth and Mars; collect discovery stamps | 15 XP per new planet; Planet Pathfinder badge after all four |
-| **Space Quiz** | Answer five multiple-choice questions with explanations | First attempt: 10 XP per correct answer plus 10 XP; later attempts award 10 XP per improvement to the best score; Space Scholar badge and mission completion at 3/5 or better |
-| **Gravity Playground** | Adjust rover mass from 5–100 kg and compare weight on Moon, Mars, Earth and Jupiter | Science activity explaining mass and weight |
-
-The cadet dashboard includes a name, XP, level, completed mission count and four achievement badges. **Mission Master** is awarded after completing all three training missions. Each 100 XP increases the cadet level.
-
-### Gravity calculations
-
-Weight is calculated as **mass × gravitational acceleration**, in newtons (N). Mass stays the same between worlds.
-
-| World | Gravity used |
-| --- | --- |
-| Moon | 1.62 m/s² |
-| Mars | 3.71 m/s² |
-| Earth | 9.81 m/s² |
-| Jupiter | 24.79 m/s² |
-
-For example, a 30 kg rover weighs **48.6 N on the Moon** and **294.3 N on Earth**.
-
-## Saved progress
-
-One versioned browser save (`juniorAstronautSave`) holds the latest successful flight report, the astronaut name, XP, badges, completed training, credits, rocket components, purchased-part refunds, blueprint strokes, completed-voyage count, objectives, unfinished checklist, quiz answers and science-lab settings.
-
-Refresh opens Mission Control with a **Continue** button. A paused countdown resumes at the readiness check so it can restart safely. Completed results cannot award the same flight credits twice. Restarting an activity keeps earned badges and the profile; restarting a rocket mission refunds purchased parts under the existing workshop rules.
-
-Progress does not sync between devices or browsers. Clearing site data removes saved progress. If storage is unavailable, the app remains usable for the current visit and shows a save-status message. Existing `orbitAcademySave` data is imported without deleting the original.
-
-## Run locally
-
-Clone the repository and serve it with Python 3:
-
-```sh
-git clone https://github.com/hrashal-gondedahalli/NASA-SPACEx.git
-cd NASA-SPACEx
-python3 -m http.server 8000
-```
-
-Open:
-
-- Mission Control: <http://localhost:8000/>
-- Legacy Academy URL (redirect): <http://localhost:8000/junior-astronaut-mission-trainer/>
-
-The app itself requires only a modern browser with JavaScript, Canvas, Pointer Events and ResizeObserver support. Node.js is needed only for the automated tests.
-
-## Automated checks
-
-Use **Node.js 22 or newer**:
-
-```sh
-npm install
-npx playwright install --with-deps chromium
-npm test
-```
-
-The dependency-free state checks can run separately with `node --test tests/mission-control.test.cjs`. They check embedded-script behavior using a DOM adapter and do not verify browser rendering.
-
-The Playwright tests start their own local server and cover:
-
-- Desktop and emulated touch mobile layouts, including horizontal overflow checks.
-- Blueprint drawing, clearing and preservation through resizing.
-- Empty workshop, all core launch gates, optional parts, repeated refunds, empty reset, saved designs, drop persistence, legacy starter credits and insufficient funds.
-- Ready/countdown/flight lifecycle, real keyboard routes through all gates to docking, pause, multi-touch steering/thrust, touch cancellation, collision failure and retry.
-- Moon/Earth weight calculations.
-- Shared profile, rocket/sketch persistence, quiz resume, legacy redirect and unavailable storage.
-- Uncaught browser JavaScript errors along the tested journeys.
-
-To use an existing Chromium installation:
-
-```sh
-CHROMIUM_PATH=/path/to/chromium npm test
-```
-
-GitHub Actions runs these checks on pull requests and pushes to `main`. Touch emulation does not replace testing on physical iOS and Android devices.
-
-## Repository structure
-
-| Path | Purpose |
-| --- | --- |
-| `index.html` | Unified Mission Control, engineering, flight and Academy activities |
-| `junior-astronaut-mission-trainer/index.html` | Legacy redirect to Mission Control |
-| `tests/mission-control.test.cjs` | Dependency-free state and migration checks |
-| `assets/voyage-engine.js` | Deterministic fixed-step flight model, checkpoints and collision rules |
-| `assets/voyage.js` | Canvas cockpit, input handling, pause and results lifecycle |
-| `assets/voyage.css` | Responsive cockpit styling |
-| `tests/voyage-engine.test.cjs` | Physics, failure conditions and full-route checks |
-| `tests/site.test.cjs` | Automated browser regression checks and temporary test server |
-| `package.json` | Test command and Playwright dependency |
-| `.github/workflows/site-checks.yml` | GitHub Actions browser checks |
-
-## Deployment
-
-The site is hosted on **GitHub Pages**. The existing **pages build and deployment** workflow publishes the configured source after changes reach `main`; inspect its status in the repository's **Actions** tab.
-
-Use the full app links above, including `/NASA-SPACEx/`. No bundling, API keys or server-side setup is required.
-
-## Current scope and next steps
-
-This is an educational prototype. It uses a curated NASA DONKI archive reference for outpost gameplay. It has no live NASA or SpaceX API integration, live mission telemetry, user accounts or cloud storage.
-
-Planned improvements, not yet implemented:
-
-- Distinct Earth-orbit satellite and Moon-landing missions.
-- Expanded planet activities, quizzes and accessibility checks.
-
-The experience uses simplified game rules and is not real spacecraft guidance or astronaut training.
-
-
-
-
-
-
-## Step 5 — complete destination missions
-
-Start **Satellite Operator** or **Lunar Explorer** from Mission Control. Existing workshop and flight controls are shared with the other activities.
-
-- **Earth Orbit:** build a rocket with body, engine, tank and satellite; pass three navigation gates, dock at speed ≤ 65, deploy the satellite and answer two destination questions.
-- **Moon:** build, fly through the gates and reach lunar approach; land upright on the gold pad (vertical speed ≤ 28, horizontal ≤ 15 game units/s), collect three distinct samples and answer two lunar questions. The descent receives at least 65 fuel as a landing reserve. Thrust slows descent and brake consumes fuel to stabilise. The game model is simplified, not real lunar flight physics.
-- Each destination awards its own badge and **100 XP once**. Returning grants the existing design/objective credit reward once per flight. Replaying remains possible without farming badge XP.
-- Exploration objectives and quiz answers survive refresh; interrupted flights restart from readiness. Wrong quiz answers explain the fact and can be retried.
-- Mission completion is gated on the successful arrival, destination objective and both correct quiz answers. Other destination sandbox activities remain available.
-
-Validation: `npm test`. Tests cover deterministic full flight/landing routes, failed landings, objective and quiz gates, save/resume, reward idempotence, and desktop/touch browser flows. Browser checks require Playwright Chromium (`npx playwright install chromium`, or `CHROMIUM_PATH=/path/to/chromium npm test`).
-
-
+Design/code were developed with AI assistance. List the team's actual tools and NASA/third-party resources in its challenge submission. This independent project is not endorsed by NASA, SpaceX or Spaceflight Simulator.
