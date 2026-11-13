@@ -25,7 +25,7 @@ The former Orbit Academy URL redirects to Mission Control. Existing Academy prog
 3. Customize the rocket with component tiles. Click or tap to add/remove any part, or drag a tile onto the blueprint with a mouse.
 4. Turn **Draw** on to sketch with a mouse, touch or pen. Use **Clear sketch** to erase the drawing.
 5. Select **Test My Rocket** to review component readiness.
-6. Begin the countdown, try the flight controls, then continue to exploration.
+6. Launch, steer through three navigation gates, avoid debris and brake to dock before exploration.
 7. Deploy an installed satellite, collect science data and return to Earth for your mission score and credits.
 8. Select **Plan Another Mission** to play again.
 
@@ -36,19 +36,24 @@ The former Orbit Academy URL redirects to Mission Control. Existing Academy prog
 - **Workshop credits:** start with 100 credits; all purchased parts are fully refunded when removed or when the design is reset. Reset leaves an empty blueprint. Free parts from older saves do not generate refunds.
 - **Blueprint canvas:** decorative freehand drawing, clear/reset controls and sketch preservation when the viewport resizes.
 - **Readiness checks:** body, engine and fuel tank are required; each missing part is named and explained. Launch and Continue remain disabled until all three are installed. Fins, satellite and nose cone are optional. The progress bar tracks required parts; the design score tracks all components and starts at zero.
-- **Animated launch:** countdown, destination display, steering and animation-speed controls. Leaving the launch screen cancels its countdown.
+- **Playable voyage:** countdown, momentum-based thrust and steering, fuel, hull damage, ordered navigation gates, safe docking, pause, failure feedback and retry. Leaving the flight screen stops its animation loop.
 - **Exploration objectives:** satellite deployment and science collection, followed by a results screen and credit rewards.
 
-### Flight controls
+### Space Voyage
+
+Hold a control to keep using it. Thrust accelerates the ship along its nose; coasting saves fuel. Turn before thrusting to change direction. Pass the three cyan gates in order (each restores 12 fuel), avoid rocks and walls (25 hull damage per collision), then enter the gold docking zone at **65 game units/second or less**. A depleted hull, exhausted fuel with no remaining motion, or a 180-second flight limit ends the attempt with feedback and a retry option.
 
 | Action | Keyboard | On-screen control |
 | --- | --- | --- |
-| Steer left | Left arrow | Left |
-| Steer right | Right arrow | Right |
-| Faster animation | Up arrow | Thrust |
-| Slower animation | Down arrow | Slow down |
+| Rotate left | Left arrow / A | Hold Left |
+| Rotate right | Right arrow / D | Hold Right |
+| Thrust | Up arrow / W / Space | Hold Thrust |
+| Brake | Down arrow / S | Hold Brake |
+| Pause / resume | P / Escape | Pause / Resume |
 
-The current controls change the rocket animation's position and speed. Fuel consumption, collision detection, landing physics and destination-specific success/failure challenges are not implemented. All destinations currently share the same exploration flow.
+Touch supports simultaneous steering and thrust. Losing focus or hiding the tab pauses the flight and clears held controls. Retry restores fuel, hull, gates and time. Successful flights save a report with destination, flight score, fuel, hull and duration. Refresh returns unfinished flights to readiness rather than restoring moving spacecraft.
+
+All destinations currently share this navigation-and-docking course. Flight rules, distances, braking and times are simplified for learning; destination-specific orbit and Moon-landing challenges are future work.
 
 ## Orbit Academy
 
@@ -76,7 +81,7 @@ For example, a 30 kg rover weighs **48.6 N on the Moon** and **294.3 N on Earth*
 
 ## Saved progress
 
-One versioned browser save (`juniorAstronautSave`) holds the astronaut name, XP, badges, completed training, credits, rocket components, purchased-part refunds, blueprint strokes, completed-voyage count, objectives, unfinished checklist, quiz answers and science-lab settings.
+One versioned browser save (`juniorAstronautSave`) holds the latest successful flight report, the astronaut name, XP, badges, completed training, credits, rocket components, purchased-part refunds, blueprint strokes, completed-voyage count, objectives, unfinished checklist, quiz answers and science-lab settings.
 
 Refresh opens Mission Control with a **Continue** button. A paused countdown resumes at the readiness check so it can restart safely. Completed results cannot award the same flight credits twice. Restarting an activity keeps earned badges and the profile; restarting a rocket mission refunds purchased parts under the existing workshop rules.
 
@@ -116,7 +121,7 @@ The Playwright tests start their own local server and cover:
 - Desktop and emulated touch mobile layouts, including horizontal overflow checks.
 - Blueprint drawing, clearing and preservation through resizing.
 - Empty workshop, all core launch gates, optional parts, repeated refunds, empty reset, saved designs, drop persistence, legacy starter credits and insufficient funds.
-- Countdown cancellation, flight controls and mission completion.
+- Ready/countdown/flight lifecycle, real keyboard routes through all gates to docking, pause, multi-touch steering/thrust, touch cancellation, collision failure and retry.
 - Moon/Earth weight calculations.
 - Shared profile, rocket/sketch persistence, quiz resume, legacy redirect and unavailable storage.
 - Uncaught browser JavaScript errors along the tested journeys.
@@ -136,6 +141,10 @@ GitHub Actions runs these checks on pull requests and pushes to `main`. Touch em
 | `index.html` | Unified Mission Control, engineering, flight and Academy activities |
 | `junior-astronaut-mission-trainer/index.html` | Legacy redirect to Mission Control |
 | `tests/mission-control.test.cjs` | Dependency-free state and migration checks |
+| `assets/voyage-engine.js` | Deterministic fixed-step flight model, checkpoints and collision rules |
+| `assets/voyage.js` | Canvas cockpit, input handling, pause and results lifecycle |
+| `assets/voyage.css` | Responsive cockpit styling |
+| `tests/voyage-engine.test.cjs` | Physics, failure conditions and full-route checks |
 | `tests/site.test.cjs` | Automated browser regression checks and temporary test server |
 | `package.json` | Test command and Playwright dependency |
 | `.github/workflows/site-checks.yml` | GitHub Actions browser checks |
@@ -152,10 +161,10 @@ This is an educational prototype. It has no NASA or SpaceX API integration, live
 
 Planned improvements, not yet implemented:
 
-- Fuel-based gameplay, obstacles, failure feedback and retry flows.
 - Distinct Earth-orbit satellite and Moon-landing missions.
 - Expanded planet activities, quizzes and accessibility checks.
 
 The experience uses simplified game rules and is not real spacecraft guidance or astronaut training.
+
 
 

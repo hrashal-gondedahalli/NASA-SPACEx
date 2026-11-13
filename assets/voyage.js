@@ -27,7 +27,7 @@
   overlay('✦','Your voyage to '+name,'Pass all 3 glowing gates to calibrate navigation. Avoid the rocks, then brake to 65 or less inside the gold docking zone. Each gate restores 12 fuel.',begin,'Ready for launch →');
   hud();render();last=0;accumulator=0;frame=requestAnimationFrame(loop);window.MissionControl?.refreshNav();
  }
- function begin(){s.phase='countdown';countdown=3;$('pauseFlight').disabled=false;clearInput();canvas.focus({preventScroll:true});$('voyagePrimary').hidden=true;$('voyageTitle').textContent='3';$('voyageExplanation').textContent='Hands on the controls, astronaut.';}
+ function begin(){s.phase='countdown';countdown=3;last=0;accumulator=0;$('pauseFlight').disabled=false;clearInput();canvas.focus({preventScroll:true});$('voyagePrimary').hidden=true;$('voyageTitle').textContent='3';$('voyageExplanation').textContent='Hands on the controls, astronaut.';}
  function pause(){pausedFrom=s.phase;s.phase='paused';clearInput();$('pauseFlight').textContent='Resume';overlay('Ⅱ','Flight paused','Take your time. Your fuel and flight timer are paused too.',resume,'Resume flight →');}
  function resume(){s.phase=pausedFrom;last=0;accumulator=0;$('pauseFlight').textContent='Pause';$('voyageOverlay').classList.toggle('hidden',s.phase!=='countdown');if(s.phase==='countdown'){$('voyagePrimary').hidden=true;$('voyageExplanation').textContent='Hands on the controls, astronaut.';}canvas.focus({preventScroll:true});}
  function togglePause(){if(s.phase==='paused')resume();else if(['flying','countdown'].includes(s.phase))pause();}
@@ -49,7 +49,7 @@
   $('flightReadout').textContent=text;
   if(g!==lastHud){announce(g+' of 3 navigation gates complete. '+(g===3?'Brake to dock.':'Fuel replenished.'));lastHud=g;}
  }
- function loop(t){if(!active()){stop();return;}const elapsed=last?Math.min((t-last)/1000,.1):0;last=t;
+ function loop(t){if(!active()){stop();return;}const elapsed=last?Math.max(0,Math.min((t-last)/1000,.1)):0;last=t;
   if(s.phase==='countdown'){countdown-=elapsed;$('voyageTitle').textContent=String(Math.max(1,Math.ceil(countdown)));if(countdown<=0){s.phase='flying';$('voyageOverlay').classList.add('hidden');announce('Liftoff. Use thrust to move and left or right to turn.');}}
   else if(s.phase==='flying'){accumulator+=elapsed;while(accumulator>=1/120&&s.phase==='flying'){E.step(s,input,1/120);accumulator-=1/120;}if(['success','failed'].includes(s.phase))finish();}
   hud();render();frame=requestAnimationFrame(loop);
