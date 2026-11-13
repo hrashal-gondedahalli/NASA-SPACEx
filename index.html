@@ -22,24 +22,24 @@ a{color:var(--cyan)} header{flex-wrap:wrap}.build-layout>*{min-width:0}button,a{
 <main>
 <div class="academy">
 <section id="home" class="screen active">
-<div class="hero"><div><div class="eyebrow">✦ MISSION CONTROL</div><h1>Ready to become a<br><span>Junior Astronaut?</span></h1><p>Train your astronaut skills, explore amazing worlds, solve space challenges and earn your mission badges. Your adventure starts at Mission Control!</p><div class="row"><a href="simulator/?v=blueprint-20261113-2" class="simulator-link" style="display:inline-block;background:#a7e6ce;color:#08231c;padding:12px 18px;border-radius:12px;font-weight:800;text-decoration:none">🚀 Build a rocket →</a><button id="startBtn">🎮 Practice game</button><button id="resumeBtn" class="hidden">Continue adventure →</button></div><p id="welcomeCadet" class="muted"></p></div><div class="hero-art"><span class="spark s1">✦</span><span class="spark s2">✧</span><span class="spark s3">✦</span><div class="planet-art"></div><div class="astronaut">🧑‍🚀</div></div></div>
-<div class="stats"><div class="stat"><strong id="a-xpStat">0</strong><span>⭐ EXPERIENCE POINTS</span></div><div class="stat"><strong id="a-badgeStat">0/4</strong><span>🏅 BADGES EARNED</span></div><div class="stat"><strong id="a-missionStat">0/3</strong><span>🚀 TRAINING MISSIONS</span></div><div class="stat"><strong id="a-levelStat">1</strong><span>🪐 CADET LEVEL</span></div></div>
+<div class="hero"><div><div class="eyebrow">✦ MISSION CONTROL</div><h1>Ready to become a<br><span>Junior Astronaut?</span></h1><p>Train your astronaut skills, explore amazing worlds, solve space challenges and earn your mission badges. Your adventure starts at Mission Control!</p><div class="row"><a href="simulator/?v=flight-20261113-3" class="simulator-link" style="display:inline-block;background:#a7e6ce;color:#08231c;padding:12px 18px;border-radius:12px;font-weight:800;text-decoration:none">🚀 Build a rocket →</a><button id="startBtn">🎮 Practice game</button><button id="resumeBtn" class="hidden">Continue adventure →</button></div><p id="welcomeCadet" class="muted"></p></div><div class="hero-art"><span class="spark s1">✦</span><span class="spark s2">✧</span><span class="spark s3">✦</span><div class="planet-art"></div><div class="astronaut">🧑‍🚀</div></div></div>
+<div class="stats"><div class="stat"><strong id="a-xpStat">0</strong><span>⭐ EXPERIENCE POINTS</span></div><div class="stat"><strong id="a-badgeStat">0/5</strong><span>🏅 BADGES EARNED</span></div><div class="stat"><strong id="a-missionStat">0/2</strong><span>🚀 TRAINING MISSIONS</span></div><div class="stat"><strong id="a-levelStat">1</strong><span>🪐 CADET LEVEL</span></div></div>
 <div class="section-head"><div><div class="eyebrow">YOUR TRAINING DECK</div><h2>Choose your next mission</h2><p>Complete activities to earn XP and unlock achievements.</p></div></div>
-<div class="missions"><article class="mission"><span class="emoji">🏠</span><span class="tag">NEW · OUTPOST SURVIVAL · AGES 7–12</span><h3>Moonbase: Seven Days</h3><p>Keep two astronauts healthy. Share power, recycle water, grow food and shelter from a NASA archive-inspired space-weather event.</p><a href="outpost/" class="outpost-link" style="color:#a7e6ce;font-weight:800">Start your outpost mission →</a></article><article class="mission"><span class="emoji">🌐</span><span class="tag">NEW · 3D SPACEFLIGHT SANDBOX</span><h3>Rocket Builder</h3><p>Build a two-stage rocket, launch under gravity, follow your orbital trajectory and practise landing on the Moon. Three-dimensional flight and camera controls.</p><a href="simulator/?v=blueprint-20261113-2" style="color:#a7e6ce;font-weight:800">Open rocket builder →</a></article>
-<article class="mission"><span class="emoji">🛰️</span><span class="tag">COMPLETE MISSION · EARTH ORBIT</span><h3>Satellite Operator</h3><p>Build with a satellite, pass the gates, deploy your payload and answer two questions. Earn 100 XP and a badge on first completion.</p><button onclick="SpaceMissions.choose('Earth Orbit')">Start Earth orbit →</button></article>
+<div class="missions"><article class="mission"><span class="emoji">🏠</span><span class="tag">NEW · OUTPOST SURVIVAL · AGES 7–12</span><h3>Moonbase: Seven Days</h3><p>Keep two astronauts healthy. Share power, recycle water, grow food and shelter from a NASA archive-inspired space-weather event.</p><a href="outpost/" class="outpost-link" style="color:#a7e6ce;font-weight:800">Start your outpost mission →</a></article><article class="mission"><span class="emoji">🌐</span><span class="tag">NEW · 3D SPACEFLIGHT SANDBOX</span><h3>Rocket Builder</h3><p>Build a two-stage rocket, launch under gravity, follow your orbital trajectory and practise landing on the Moon. Three-dimensional flight and camera controls.</p><a href="simulator/?v=flight-20261113-3" style="color:#a7e6ce;font-weight:800">Open rocket builder →</a></article>
+<article class="mission"><span class="emoji">🛰️</span><span class="tag">COMPLETE MISSION · EARTH ORBIT</span><h3>Satellite Operator</h3><p>Build with a satellite, pass the gates, deploy your payload. Earn 100 XP and a badge on first completion.</p><button onclick="SpaceMissions.choose('Earth Orbit')">Start Earth orbit →</button></article>
 <article class="mission"><span class="emoji">🌙</span><span class="tag">COMPLETE MISSION · MOON</span><h3>Lunar Explorer</h3><p>Build, travel, land gently and collect three samples. Learn lunar facts and earn 100 XP and a badge on first completion.</p><button onclick="SpaceMissions.choose('Moon')">Start Moon mission →</button></article>
 <article class="mission"><span class="emoji">🛠️</span><span class="tag">2D TRAINING</span><h3>Practice Workshop</h3><p>Choose a destination, assemble your rocket and check its readiness.</p><button onclick="MissionControl.open('destination')">Open practice workshop →</button></article>
 <article class="mission"><span class="emoji">🌌</span><span class="tag">FLY YOUR DESIGN</span><h3>Space Voyage</h3><p>Continue your current flight or test your rocket before a new launch.</p><button onclick="MissionControl.voyage()">Enter Space Voyage →</button></article>
 <article class="mission"><span class="emoji">🚀</span><span class="tag">MISSION 01 · FLIGHT SCHOOL</span><h3>Launch Sequence</h3><p>Learn the steps of a simulated space mission. Complete your pre-flight checklist.</p><button onclick="Academy.openMission('launch')">Enter flight school →</button></article>
 <article class="mission"><span class="emoji">🪐</span><span class="tag">MISSION 02 · SPACE EXPLORER</span><h3>Planet Explorer</h3><p>Travel around the solar system and discover fascinating planet facts.</p><button onclick="Academy.openMission('planets')">Explore planets →</button></article>
-<article class="mission"><span class="emoji">🧠</span><span class="tag">MISSION 03 · KNOWLEDGE LAB</span><h3>Space Quiz</h3><p>Test your space knowledge with a quick astronaut challenge.</p><button onclick="Academy.openMission('quiz')">Start quiz →</button></article>
+
 <article class="mission"><span class="emoji">🌙</span><span class="tag">BONUS LAB · SCIENCE</span><h3>Gravity Playground</h3><p>Compare gravity on different worlds and calculate a rover’s simulated weight.</p><button onclick="Academy.openMission('gravity')">Try gravity lab →</button></article>
 </div>
-<div class="bottomgrid"><div class="panel"><h3>🧑‍🚀 Astronaut profile</h3><p class="muted" id="saveStatus" role="status">Progress saves automatically in this browser.</p><div class="profile-row"><div class="avatar">👨‍🚀</div><div style="flex:1"><label for="a-cadetName" class="sub">Your astronaut name</label><input id="a-cadetName" maxlength="22" placeholder="Enter your name"></div><button onclick="Academy.saveName()">Save</button></div><div class="bar"><div id="a-xpBar"></div></div><small class="sub" id="a-nextLevel">0 / 100 XP to next level</small></div><div class="panel"><h3>🏅 Achievement badges</h3><div id="a-achievements"><div class="achievement"><span>🔒</span><div><b>Flight Ready</b><small>Complete the launch checklist</small></div></div><div class="achievement"><span>🔒</span><div><b>Planet Pathfinder</b><small>Explore all 4 planets</small></div></div><div class="achievement"><span>🔒</span><div><b>Space Scholar</b><small>Score 3 correct quiz answers</small></div></div><div class="achievement"><span>🔒</span><div><b>Mission Master</b><small>Complete all 3 training missions</small></div></div></div></div></div>
+<div class="bottomgrid"><div class="panel"><h3>🧑‍🚀 Astronaut profile</h3><p class="muted" id="saveStatus" role="status">Progress saves automatically in this browser.</p><div class="profile-row"><div class="avatar">👨‍🚀</div><div style="flex:1"><label for="a-cadetName" class="sub">Your astronaut name</label><input id="a-cadetName" maxlength="22" placeholder="Enter your name"></div><button onclick="Academy.saveName()">Save</button></div><div class="bar"><div id="a-xpBar"></div></div><small class="sub" id="a-nextLevel">0 / 100 XP to next level</small></div><div class="panel"><h3>🏅 Achievement badges</h3><div id="a-achievements"><div class="achievement"><span>🔒</span><div><b>Flight Ready</b><small>Complete the launch checklist</small></div></div><div class="achievement"><span>🔒</span><div><b>Planet Pathfinder</b><small>Explore all 4 planets</small></div></div><div class="achievement"><span>🔒</span><div><b>Mission Master</b><small>Complete both training missions</small></div></div></div></div></div>
 </section>
 <section id="a-launch" class="screen"><div class="eyebrow">MISSION 01 / FLIGHT SCHOOL</div><h1 class="screen-title">🚀 Launch Sequence Trainer</h1><p class="sub">A pretend mission-control simulation. Check each system before the virtual countdown!</p><div class="training-grid"><div class="panel"><h3>Pre-flight checklist</h3><div id="a-checklist"></div><div class="bar"><div id="a-checkBar"></div></div><p class="sub" id="a-checkCount">0 of 5 checks complete</p><button class="primary" id="a-launchComplete" disabled onclick="Academy.completeLaunch()">Complete training ✓</button></div><div class="panel"><div class="planet-display">🚀</div><h3 style="margin-top:15px">Mission Control</h3><p class="sub">Your virtual spacecraft is waiting at the launch pad. Complete all five learning checks to receive your Flight Ready badge.</p><div class="fact">Did you know? Real launch teams use detailed checklists so that every team member can confirm important systems are ready.</div></div></div></section>
 <section id="a-planets" class="screen"><div class="eyebrow">MISSION 02 / SPACE EXPLORER</div><h1 class="screen-title">🪐 Planet Explorer</h1><p class="sub">Choose a world to visit in your imagination. Collect all four discovery stamps!</p><div class="training-grid"><div class="panel"><div class="planet-display" id="a-planetEmoji">🔴</div><h2 id="a-planetName">Mars</h2><p id="a-planetFact" class="sub"></p><div class="fact" id="a-planetFun"></div><div style="display:flex;gap:9px;margin-top:15px"><button onclick="Academy.changePlanet(-1)">← Previous</button><button class="primary" onclick="Academy.stampPlanet()">Collect discovery stamp ✦</button><button onclick="Academy.changePlanet(1)">Next →</button></div></div><div class="panel"><h3>🌌 Discovery stamps</h3><div id="a-stampList"></div><p class="sub">Discover all four worlds to earn Planet Pathfinder.</p></div></div></section>
-<section id="a-quiz" class="screen"><div class="eyebrow">MISSION 03 / KNOWLEDGE LAB</div><h1 class="screen-title">🧠 Astronaut Knowledge Quiz</h1><p class="sub">Choose the best answer. Learn something new with every question!</p><div class="panel" style="max-width:760px"><div class="row" style="justify-content:space-between"><span class="pill" id="a-quizCount">QUESTION 1 / 5</span><span class="pill">⭐ Score: <b id="a-quizScore">0</b></span></div><h2 id="a-question" style="margin-top:20px">Which planet is known as the Red Planet?</h2><div class="quiz-options" id="a-answers"></div><div class="feedback" id="a-feedback" aria-live="polite"></div><button class="primary" id="a-nextQuestion" disabled onclick="Academy.nextQuiz()">Next question →</button></div></section>
+
 <section id="a-gravity" class="screen"><div class="eyebrow">BONUS LAB / GRAVITY</div><h1 class="screen-title">🌙 Gravity Playground</h1><p class="sub">Compare how much a pretend 30 kg space rover would weigh on different worlds.</p><div class="training-grid"><div class="panel"><label for="a-worldSelect">Choose a world</label><select id="a-worldSelect" style="display:block;width:100%;padding:12px;margin:10px 0;background:#0a132a;color:white;border:1px solid var(--line);border-radius:10px"><option value="1.62">Moon</option><option value="3.71">Mars</option><option value="9.81">Earth</option><option value="24.79">Jupiter</option></select><label for="a-massSlider">Rover mass: <b id="a-massValue">30 kg</b></label><input id="a-massSlider" class="slider" type="range" min="5" max="100" value="30"><p class="sub">Simulated weight on selected world</p><div class="gravity-result" id="a-weightResult">48.6 N</div><div class="fact" id="a-gravityFact">The Moon has weaker gravity than Earth.</div></div><div class="planet-display">⚖️</div></div></section>
 </div>
 <section id="destination" class="screen"><div class="eyebrow">MISSION 01 / DESTINATION</div><h1>Where will you go?</h1><p class="muted">Choose your destination. Each world has a different challenge.</p><div class="destinations" id="destinations"></div><div class="row"><button id="backWelcome">← Back</button><button class="primary" id="toBuild">ENTER ROCKET WORKSHOP →</button></div></section>
@@ -147,19 +147,18 @@ renderWorlds();renderParts();updateBuild();
 (()=>{
 
 const $=id=>document.getElementById('a-'+id);
-const defaults={xp:0,launch:false,planets:[],quizDone:false,quizScore:0,name:'',missions:[]};
-let state={...defaults,...(JuniorSave.data.academy||{})};
+const defaults={xp:0,launch:false,planets:[],name:'',missions:[]};
+let state={...defaults,...(JuniorSave.data.academy||{})};delete state.quizDone;delete state.quizScore;
 state.xp=Number.isFinite(state.xp)?Math.max(0,state.xp):0;
 state.planets=Array.isArray(state.planets)?[...new Set(state.planets.filter(p=>['Mercury','Venus','Earth','Mars'].includes(p)))]:[];
-state.missions=Array.isArray(state.missions)?[...new Set(state.missions.filter(m=>['launch','planets','quiz'].includes(m)))]:[];
+state.missions=Array.isArray(state.missions)?[...new Set(state.missions.filter(m=>['launch','planets'].includes(m)))]:[];
 state.name=typeof state.name==='string'?state.name.slice(0,22):'';
-state.quizScore=Number.isFinite(state.quizScore)?Math.max(0,Math.min(5,state.quizScore)):0;
 function persist(){JuniorSave.data.academy=state;JuniorSave.write();renderStats();}
 function toast(msg){$('toast').textContent=msg;$('toast').style.display='block';setTimeout(()=>$('toast').style.display='none',2200);}
 function level(){return Math.floor(state.xp/100)+1;}
 function addXP(n){state.xp+=n;persist();toast('+'+n+' XP earned! ⭐');}
 function completeMission(id){if(!state.missions.includes(id)){state.missions.push(id);persist();}}
-function renderStats(){const badges=[state.launch,state.planets.length===4,state.quizScore>=3,state.missions.length===3,...['Earth Orbit','Moon'].map(id=>(state.voyages||[]).includes(id))];$('xpStat').textContent=state.xp;$('topXP').textContent=state.xp;$('badgeStat').textContent=badges.filter(Boolean).length+'/6';$('missionStat').textContent=state.missions.length+'/3';$('levelStat').textContent=level();$('topLevel').textContent=level();$('xpBar').style.width=(state.xp%100)+'%';$('nextLevel').textContent=(state.xp%100)+' / 100 XP to next level';$('achievements').innerHTML=[['🚀','Flight Ready','Complete the launch checklist',state.launch],['🪐','Planet Pathfinder','Explore all 4 planets',state.planets.length===4],['🧠','Space Scholar','Score 3 correct quiz answers',state.quizScore>=3],['🏆','Mission Master','Complete all 3 training missions',state.missions.length===3],['🛰️','Orbit Operator','Complete the Earth orbit mission',(state.voyages||[]).includes('Earth Orbit')],['🌙','Lunar Explorer','Complete the Moon mission',(state.voyages||[]).includes('Moon')]].map(a=>'<div class="achievement"><span>'+(a[3]?a[0]:'🔒')+'</span><div><b class="'+(a[3]?'complete':'')+'">'+a[1]+'</b><small>'+a[2]+'</small></div></div>').join('');}
+function renderStats(){const badges=[state.launch,state.planets.length===4,state.missions.length===2,...['Earth Orbit','Moon'].map(id=>(state.voyages||[]).includes(id))];$('xpStat').textContent=state.xp;$('topXP').textContent=state.xp;$('badgeStat').textContent=badges.filter(Boolean).length+'/5';$('missionStat').textContent=state.missions.length+'/2';$('levelStat').textContent=level();$('topLevel').textContent=level();$('xpBar').style.width=(state.xp%100)+'%';$('nextLevel').textContent=(state.xp%100)+' / 100 XP to next level';$('achievements').innerHTML=[['🚀','Flight Ready','Complete the launch checklist',state.launch],['🪐','Planet Pathfinder','Explore all 4 planets',state.planets.length===4],['🏆','Mission Master','Complete both training missions',state.missions.length===2],['🛰️','Orbit Operator','Complete the Earth orbit mission',(state.voyages||[]).includes('Earth Orbit')],['🌙','Lunar Explorer','Complete the Moon mission',(state.voyages||[]).includes('Moon')]].map(a=>'<div class="achievement"><span>'+(a[3]?a[0]:'🔒')+'</span><div><b class="'+(a[3]?'complete':'')+'">'+a[1]+'</b><small>'+a[2]+'</small></div></div>').join('');}
 function openMission(id){MissionControl.open('a-'+id);}
 function goHome(){MissionControl.open('home');}
 function saveName(){state.name=$('cadetName').value.trim();persist();MissionControl.refreshHome();toast(state.name?'Welcome, Cadet '+state.name+'!':'Profile saved');}
@@ -171,26 +170,6 @@ const planets=[{name:'Mercury',emoji:'🌑',fact:'Mercury is the closest planet 
 function renderPlanets(){const p=planets[planetIndex];$('planetEmoji').textContent=p.emoji;$('planetName').textContent=p.name;$('planetFact').textContent=p.fact;$('planetFun').textContent='✨ '+p.fun;$('stampList').innerHTML=planets.map(x=>'<div class="achievement"><span>'+(state.planets.includes(x.name)?x.emoji:'🔒')+'</span><div><b>'+x.name+'</b><small>'+(state.planets.includes(x.name)?'Discovery collected':'Not explored yet')+'</small></div></div>').join('');}
 function changePlanet(d){planetIndex=(planetIndex+d+planets.length)%planets.length;renderPlanets();}
 function stampPlanet(){const p=planets[planetIndex];if(state.planets.includes(p.name))return toast('You already discovered '+p.name+'!');state.planets.push(p.name);addXP(15);if(state.planets.length===4){completeMission('planets');toast('All planets explored! Pathfinder badge earned!');}renderPlanets();renderStats();}
-const questions=[{q:'Which planet is known as the Red Planet?',a:['Venus','Mars','Neptune','Mercury'],c:1,e:'Mars looks reddish because of iron-rich dust on its surface.'},{q:'What is the name of our galaxy?',a:['Andromeda','Whirlpool','Milky Way','Sombrero'],c:2,e:'Our Solar System is part of the Milky Way galaxy.'},{q:'Which star is closest to Earth?',a:['Sirius','Polaris','The Sun','Vega'],c:2,e:'The Sun is our nearest star and provides light and heat.'},{q:'What do astronauts wear to work outside a spacecraft?',a:['A spacesuit','A raincoat','A diving suit','A uniform'],c:0,e:'Spacesuits help astronauts stay safe in the space environment.'},{q:'Which planet is famous for its rings?',a:['Earth','Saturn','Mars','Mercury'],c:1,e:'Saturn has a spectacular system of rings made mostly of ice and rocky particles.'}];let quizIndex=0,quizPoints=0,quizStarted=false,answered=false,quizAnswer=null,quizFinished=false;
-function startQuiz(){quizFinished=false;quizIndex=0;quizPoints=0;quizStarted=true;showQuestion();}
-function showQuestion(){answered=false;quizAnswer=null;const q=questions[quizIndex];$('quizCount').textContent='QUESTION '+(quizIndex+1)+' / '+questions.length;$('quizScore').textContent=quizPoints;$('question').textContent=q.q;$('feedback').textContent='';$('nextQuestion').disabled=true;$('nextQuestion').textContent=quizIndex===questions.length-1?'Finish quiz →':'Next question →';$('answers').innerHTML=q.a.map((a,i)=>'<button onclick="Academy.answerQuiz('+i+')">'+String.fromCharCode(65+i)+'. '+a+'</button>').join('');}
-function answerQuiz(i){if(answered)return;answered=true;quizAnswer=i;const q=questions[quizIndex];const buttons=$('answers').querySelectorAll('button');buttons.forEach((b,j)=>{b.disabled=true;if(j===q.c)b.style.borderColor='#6ee7b7';});if(i===q.c){quizPoints++;$('feedback').textContent='✓ Correct! '+q.e;}else{$('feedback').textContent='Not quite. '+q.e;}$('quizScore').textContent=quizPoints;$('nextQuestion').disabled=false;}
-function quizResult(){
- $('question').textContent='Quiz complete! You scored '+quizPoints+' out of '+questions.length+'.';
- $('quizScore').textContent=quizPoints;$('quizCount').textContent='QUIZ COMPLETE';
- $('answers').innerHTML='<div class="fact">Great work, Cadet! Review the facts and try again to improve your score.</div>';
- $('feedback').textContent=quizPoints>=3?'🏅 Space Scholar badge unlocked!':'Keep learning — you can try again!';
- $('nextQuestion').textContent='Try again';$('nextQuestion').disabled=false;
-}
-function nextQuiz(){
- if(quizFinished){startQuiz();return;}if(!answered)return;
- if(quizIndex<questions.length-1){quizIndex++;showQuestion();return;}
- const previous=state.quizScore;state.quizScore=Math.max(previous,quizPoints);
- if(quizPoints>=3)completeMission('quiz');
- // Reopening a completed result must not award the same XP twice.
- const reward=state.quizDone?Math.max(0,quizPoints-previous)*10:quizPoints*10+10;
- state.quizDone=true;quizFinished=true;if(reward)addXP(reward);persist();quizResult();
-}
 function updateGravity(){const g=Number($('worldSelect').value),m=Number($('massSlider').value),name=$('worldSelect').selectedOptions[0].text;$('massValue').textContent=m+' kg';$('weightResult').textContent=(m*g).toFixed(1)+' N';$('gravityFact').textContent='On '+name+', the rover’s weight is mass × gravity. Its mass stays '+m+' kg wherever it travels!';}
 $('worldSelect').addEventListener('change',updateGravity);$('massSlider').addEventListener('input',updateGravity);
 $('cadetName').value=state.name||'';renderStats();updateGravity();
@@ -199,37 +178,30 @@ const draft=state.draft&&typeof state.draft==='object'?state.draft:{};
 let checklist=Array.isArray(draft.checklist)?draft.checklist:[];
 if(Number.isInteger(draft.planetIndex))planetIndex=Math.max(0,Math.min(3,draft.planetIndex));
 if(draft.gravity){$('worldSelect').value=['1.62','3.71','9.81','24.79'].includes(draft.gravity.world)?draft.gravity.world:'1.62';$('massSlider').value=Math.max(5,Math.min(100,Number(draft.gravity.mass)||30));updateGravity();}
-if(draft.quiz&&Number.isInteger(draft.quiz.index)){
- const q=draft.quiz;quizIndex=Math.max(0,Math.min(4,q.index));quizPoints=Math.max(0,Math.min(5,Number(q.points)||0));quizStarted=true;
- showQuestion();if(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<4){if(q.answer===questions[quizIndex].c)quizPoints--;answerQuiz(q.answer);}
- if(q.finished){quizFinished=true;quizResult();}
-}
 function capture(){
  if(document.querySelector('#a-checklist input'))checklist=Array.from(document.querySelectorAll('#a-checklist input')).map(x=>x.checked);
- state.draft={checklist,planetIndex,gravity:{world:$('worldSelect').value,mass:Number($('massSlider').value)},quiz:quizStarted?{index:quizIndex,points:quizPoints,answer:quizAnswer,finished:quizFinished}:null};
+ state.draft={checklist,planetIndex,gravity:{world:$('worldSelect').value,mass:Number($('massSlider').value)}};
  persist();
 }
 function enter(id){
  if(id==='a-planets')renderPlanets();
  if(id==='a-launch'){renderChecklist();document.querySelectorAll('#a-checklist input').forEach((x,i)=>x.checked=!!checklist[i]);updateChecks();}
- if(id==='a-quiz'&&!quizStarted)startQuiz();
 }
 function restart(id){
  if(id==='a-launch'){checklist=[];renderChecklist();}
  if(id==='a-planets'){planetIndex=0;renderPlanets();}
- if(id==='a-quiz')startQuiz();
  if(id==='a-gravity'){$('worldSelect').value='1.62';$('massSlider').value=30;updateGravity();}
  capture();
 }
-window.Academy={awardVoyage:(id)=>{state.voyages=state.voyages||[];if(!state.voyages.includes(id)){state.voyages.push(id);addXP(100);}persist();},openMission,goHome,saveName,updateChecks,completeLaunch,changePlanet,stampPlanet,answerQuiz,nextQuiz,enter,restart,capture,
- quizComplete:()=>quizFinished,trainingComplete:()=>state.launch,name:()=>state.name};
+window.Academy={awardVoyage:(id)=>{state.voyages=state.voyages||[];if(!state.voyages.includes(id)){state.voyages.push(id);addXP(100);}persist();},openMission,goHome,saveName,updateChecks,completeLaunch,changePlanet,stampPlanet,enter,restart,capture,
+ trainingComplete:()=>state.launch,name:()=>state.name};
 })();
 
 </script>
 <script src="assets/voyage.js"></script>
 <script>
 (()=>{
- const names={home:'Mission Control','a-launch':'Launch training',destination:'Choose destination',workshop:'Rocket Building',testing:'Rocket readiness',launch:'Space Voyage',explore:'Mission objectives',returned:'Mission results','a-planets':'Planet Explorer','a-quiz':'Space Quiz','a-gravity':'Gravity Playground'};
+ const names={home:'Mission Control','a-launch':'Launch training',destination:'Choose destination',workshop:'Rocket Building',testing:'Rocket readiness',launch:'Space Voyage',explore:'Mission objectives',returned:'Mission results','a-planets':'Planet Explorer','a-gravity':'Gravity Playground'};
  const saved=JuniorSave.data.rocket||{};
  credits=Number.isFinite(saved.credits)?Math.max(0,saved.credits):100;
  if(Array.isArray(saved.installed))installed=new Set(saved.installed.filter(id=>parts.some(p=>p.id===id)));
@@ -272,15 +244,14 @@ window.Academy={awardVoyage:(id)=>{state.voyages=state.voyages||[];if(!state.voy
  if(id==='destination')renderWorlds();if(id==='workshop')updateBuild();
  Academy.enter(id);show(id);
  }
- const previous={'a-launch':'home',destination:'home',workshop:'destination',testing:'workshop',launch:'testing',explore:'home',returned:'home','a-planets':'home','a-quiz':'a-planets','a-gravity':'home'};
+ const previous={'a-launch':'home',destination:'home',workshop:'destination',testing:'workshop',launch:'testing',explore:'home',returned:'home','a-planets':'home','a-gravity':'home'};
  function refreshNav(){
  $('missionNav').classList.toggle('hidden',current==='home');$('navContinue').disabled=false;
- const labels={'a-launch':'Continue to Rocket Building →',destination:'Continue to workshop →',workshop:'Continue to readiness check →',testing:'Continue to launch →',launch:'Continue to objectives →',explore:'Return to Earth →',returned:'Continue to Planet Explorer →','a-planets':'Continue to Space Quiz →','a-quiz':'Return to Mission Control →','a-gravity':'Continue to Planet Explorer →'};
+ const labels={'a-launch':'Continue to Rocket Building →',destination:'Continue to workshop →',workshop:'Continue to readiness check →',testing:'Continue to launch →',launch:'Continue to objectives →',explore:'Return to Earth →',returned:'Continue to Planet Explorer →','a-planets':'Return to Mission Control →','a-gravity':'Continue to Planet Explorer →'};
  $('navContinue').textContent=labels[current]||'Continue →';
  if(current==='testing')$('navContinue').disabled=missingCore().length>0;
  if(current==='a-launch')$('navContinue').disabled=!Academy.trainingComplete();
  if(current==='launch')$('navContinue').disabled=$('launchActions').classList.contains('hidden');
- if(current==='a-quiz')$('navContinue').disabled=!Academy.quizComplete();
  }
  function changed(id){current=id;if(!id.startsWith('a-')&&id!=='home')rocketStage=id;if(id!=='home'){resume=id;JuniorSave.data.resume=id;}refreshHome();refreshNav();capture();}
  function voyage(){open(missionClaimed?'returned':rocketStage==='launch'?'testing':rocketStage);}
@@ -288,7 +259,7 @@ window.Academy={awardVoyage:(id)=>{state.voyages=state.voyages||[];if(!state.voy
  $('navContinue').onclick=()=>{
  const clicks={destination:'toBuild',workshop:'testBtn',testing:'launchBtn',launch:'continueFlight',explore:'returnBtn'};
  if(clicks[current]){$(clicks[current]).click();return;}
- open({'a-launch':'destination',returned:'a-planets','a-planets':'a-quiz','a-quiz':'home','a-gravity':'a-planets'}[current]||'home');
+ open({'a-launch':'destination',returned:'a-planets','a-planets':'home','a-gravity':'a-planets'}[current]||'home');
  };
  $('navRestart').onclick=()=>{
  if(!confirm('Restart this activity? Completed badges and your astronaut profile will be kept.'))return;
@@ -312,6 +283,7 @@ window.Academy={awardVoyage:(id)=>{state.voyages=state.voyages||[];if(!state.voy
 <script src="assets/missions.js"></script>
 <div class="toast" id="a-toast" role="status"></div>
 </body></html>
+
 
 
 
