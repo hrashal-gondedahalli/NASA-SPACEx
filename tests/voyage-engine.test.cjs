@@ -35,3 +35,17 @@ test('a complete route is reachable with finite fuel and no collisions',()=>{
  assert.equal(s.phase,'success',JSON.stringify(s));assert.equal(s.gates.filter(g=>g.done).length,3);assert.equal(s.collisions,0);assert(s.fuel>0);assert(E.rating(s)>0);
 });
 module.exports={pilot};
+
+
+test('Moon requires a soft landing after a complete travel route',()=>{
+ const s={...E.create('Moon'),phase:'flying'};let landingSeen=false;
+ for(let i=0;i<120*150&&s.phase==='flying';i++){
+  landingSeen ||= s.stage==='landing';E.step(s,s.stage==='landing'?{brake:s.vy>23}:pilot(s),1/120);
+ }
+ assert(landingSeen);assert.equal(s.phase,'success',JSON.stringify(s));assert(s.fuel>0);assert.equal(s.y,E.PAD.y-16);
+});
+test('lunar hard impact, missed pad and tilted landing fail with retry guidance',()=>{
+ for(const change of [{vy:70},{x:E.PAD.x+200},{angle:-.5}]){
+  const s={...E.create('Moon'),phase:'flying',stage:'landing',x:E.PAD.x,y:E.PAD.y-16,angle:-Math.PI/2,...change};E.step(s,{},1/120);assert.equal(s.phase,'failed');assert.match(s.message,/another try/);
+ }
+});
