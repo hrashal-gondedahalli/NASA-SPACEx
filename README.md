@@ -20,9 +20,30 @@ Three-dimensional position/velocity, inverse-square gravity, fuel mass flow, mas
 
 Arrow keys/WASD steer, X cuts thrust, Space stages, P pauses. Touch buttons support simultaneous input. Switching away or opening a dialog pauses flight. Time warp requires engines off and altitude above the atmosphere. Designs/records save in this browser; active flights do not survive a refresh.
 
-## Moonbase: Seven Days
+## Moonbase: Seven Days — outpost survival
 
-The independent outpost game at `outpost/` retains its seven-day resource-management mission, archived NASA DONKI reference, local saves and attribution. It does not require a flight or a quiz. See its in-app science panel for the distinction between real archive facts and fictional game consequences.
+Start **Moonbase: Seven Days** on Mission Control or open `outpost/`. The 3D flight lab also links to the outpost. It is directly playable without passing a flight challenge, so younger children can start here.
+
+- Seven decision rounds for two fictional astronauts, designed for ages 7–12. Three main gauges: battery power, oxygen and crew health. Water, food, next-day harvest and discovery points live in the supply locker.
+- Allocate levels 0–2 to oxygen production, water recycling, greenhouse and research. Habitat needs 20 power each day; each level uses 10. Solar generation plus stored battery limits spending. Unused power charges a battery capped at 60.
+- Crew consumes 18 oxygen, 12 water and 12 food each round. Oxygen production adds 12 per level; recycling adds 8 water per level. Greenhouse uses 3 water per level and produces 10 food per level **the next round**, making shelter days affect later supplies.
+- Day 2 reduces solar generation from 60 to 40 until repaired. A repair costs 10 extra power and 6 oxygen and restores 60 solar power for the following round. Day 3 brings a fictional radiation alert: shelter costs 10 power and pauses greenhouse/research; unprotected indoor work costs 18 health, outside repair costs 35. Rest can recover 4 health when all stores are at least 20. Each store below 20 costs 12 health. Zero in any vital store or crew health triggers safe evacuation.
+- Ask Earth once for advice (5 power), delivered at the start of the round two game days later. No supplies arrive. This delay is fictional and is not the Moon’s real signal travel time.
+- Live plan preview, power validation, daily explanations, journal, saved completion badge, confirmation before restarting, desktop/touch controls and local browser progress. Outpost storage uses `junior-outpost-v1` and does not modify flight/academy saves. Storage failure leaves play available for the current visit. Invalid saves start a new mission with a visible notice. The badge belongs to this standalone mission and is replaced when starting over; it does not add Academy XP.
+
+### NASA resource used in gameplay
+
+The day 3 event is motivated by an archived **NASA CCMC DONKI** weekly report, ID `20240516-7D-001`, issued `2024-05-16T17:40:05Z`, covering 8–14 May 2024. It lists 12 X-class and 80 M-class flares. The game embeds this small attributed factual summary (see `outpost/engine.js`, `SOURCE`) and links the source in the visible science panel:
+
+- [Archived DONKI weekly report](https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/Alert/30944/1)
+- [NASA CCMC May 2024 event overview](https://ccmc.gsfc.nasa.gov/storms/may2024/)
+
+This is a curated archive reference, not a live API feed. The event motivates a shelter/production trade-off; flare classes and Earth geomagnetic indices are **not** converted into lunar astronaut dose. Resource units, health penalties, crop timing, scenario dates and communication delay are fictional teaching rules. Decision rounds do not model the lunar day/night cycle. NASA does not endorse the game. Design/code were developed with AI assistance; final submission should disclose the team’s actual AI use and cite this resource.
+
+Suggested safe route: oxygen 2, recycling 1, greenhouse 1, research 0; repair on day 2; shelter on day 3; rest otherwise. Research can be added when stores and power allow. Complete all seven rounds with vital stores and health above zero to earn Moonbase Keeper.
+
+Run `npm test` for engine and desktop/mobile regression checks. Outpost-specific tests cover full survival, failed missions, energy rejection without mutation, delayed harvest and advice, storm consequences, corrupted/blocked storage, reload, restart confirmation and independent Academy storage. The browser checks produce `test-results/outpost-desktop.png` and `outpost-mobile.png`.
+
 
 ## Run, test and publish
 
