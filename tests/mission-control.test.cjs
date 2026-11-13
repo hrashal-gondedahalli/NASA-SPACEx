@@ -3,10 +3,18 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync(__dirname+'/../index.html','utf8');
 const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
-function boot(storage=new Map(),blocked=false){
+function boot(storage=new Map(),blocked=false,withMissions=false){
  let context;const pending=[],timers=[];
  class Element{
   constructor(tag,attrs={}){this.tagName=tag;this.attrs=attrs;this.children=[];this.style={};this.value=attrs.value||'';this.checked=false;this.disabled='disabled' in attrs;this.textContent='';this.dataset={};for(const [k,v]of Object.entries(attrs))if(k.startsWith('data-'))this.dataset[k.slice(5)]=v;this.classList={contains:c=>(this.attrs.class||'').split(' ').includes(c),add:c=>this.attrs.class=[...new Set((this.attrs.class||'').split(' ').concat(c))].join(' '),remove:c=>this.attrs.class=(this.attrs.class||'').split(' ').filter(x=>x!==c).join(' '),toggle:(c,force)=>{const add=force===undefined?!this.classList.contains(c):force;this.classList[add?'add':'remove'](c);}};}
+  set id(v){this.attrs.id=v;}
+  get id(){return this.attrs.id;}
+  set className(v){this.attrs.class=v;}
+  get className(){return this.attrs.class||'';}
+  append(...elements){for(const el of elements){el.parent=this;this.children.push(el);}}
+  replaceChildren(...elements){this.children=[];this.append(...elements);}
+  before(el){const parent=this.parent;el.parent=parent;parent.children.splice(parent.children.indexOf(this),0,el);}
+  setAttribute(k,v){this.attrs[k]=v;}
   set innerHTML(s){this.children=parse(s).children;}
   get innerHTML(){return '';}
   querySelectorAll(selector){return query(this,selector);}
@@ -15,22 +23,22 @@ function boot(storage=new Map(),blocked=false){
   addEventListener(type,fn){(this.listeners??={})[type]=fn;}
   getBoundingClientRect(){return {width:400,height:420,left:0,top:0};}
   getContext(){return new Proxy({},{get:()=>()=>{}});}
-  click(){if(this.disabled)return;if(this.onclick)this.onclick();else if(this.attrs.onclick)vm.runInContext(this.attrs.onclick,context);for(const fn of listeners.click||[])fn();while(pending.length)pending.shift()();}
+  click(){if(this.disabled)return;if(this.onclick)this.onclick();else if(this.attrs.onclick)vm.runInContext(this.attrs.onclick,context);for(const fn of listeners.click||[])fn({target:{closest:()=>null}});while(pending.length)pending.shift()();}
  }
  function parse(source){const root=new Element('root'),stack=[root];for(const m of source.matchAll(/<!--[^]*?-->|<([^>]+)>|([^<]+)/g)){
   if(m[2]){stack.at(-1).textContent+=m[2];continue;}const t=m[1];if(!t||t.startsWith('!'))continue;if(t[0]==='/'){if(stack.length>1)stack.pop();continue;}
   const name=t.match(/^([^\s/]+)/)?.[1];if(!name)continue;const attrs={};for(const a of t.slice(name.length).matchAll(/([^\s=/>]+)(?:="([^"]*)"|='([^']*)'|=([^\s>]+))?/g))attrs[a[1]]=a[2]??a[3]??a[4]??'';
-  const el=new Element(name,attrs);stack.at(-1).children.push(el);if(!['meta','input','br','hr','img','link'].includes(name)&&!t.endsWith('/'))stack.push(el);
+  const el=new Element(name,attrs);el.parent=stack.at(-1);stack.at(-1).children.push(el);if(!['meta','input','br','hr','img','link'].includes(name)&&!t.endsWith('/'))stack.push(el);
  }return root;}
  function descendants(root){return root.children.flatMap(c=>[c,...descendants(c)]);}
  function matches(el,s){if(s.endsWith(':checked'))return el.checked&&matches(el,s.slice(0,-8));if(s[0]==='#')return el.attrs.id===s.slice(1);if(s[0]==='.')return s.slice(1).split('.').every(c=>el.classList.contains(c));if(s[0]==='[')return s.slice(1,-1)in el.attrs;return el.tagName===s;}
  function query(root,s){const selectors=s.split(' ');let roots=[root];for(const selector of selectors)roots=roots.flatMap(r=>descendants(r).filter(el=>matches(el,selector)));return roots;}
  const tree=parse(html.replace(/<script>[\s\S]*?<\/script>/g,''));const listeners={};
- const document={getElementById:id=>query(tree,'#'+id)[0]||null,querySelector:s=>query(tree,s)[0]||null,querySelectorAll:s=>query(tree,s),addEventListener:(type,fn)=>(listeners[type]??=[]).push(fn)};
+ const document={createElement:tag=>new Element(tag),getElementById:id=>query(tree,'#'+id)[0]||null,querySelector:s=>query(tree,s)[0]||null,querySelectorAll:s=>query(tree,s),addEventListener:(type,fn)=>(listeners[type]??=[]).push(fn)};
  let flightPhase='ready';
- const Voyage={start:()=>{flightPhase='flying';document.getElementById('launchActions').classList.add('hidden');},stop:()=>{},status:()=>flightPhase,complete:()=>{flightPhase='success';document.getElementById('launchActions').classList.remove('hidden');}};
+ const Voyage={start:()=>{flightPhase='flying';document.getElementById('launchActions').classList.add('hidden');},stop:()=>{},status:()=>flightPhase,complete:()=>{flightPhase='success';vm.runInContext("JuniorSave.data.voyage={destination:destination.name,landed:destination.name==='Moon',score:90}",context);document.getElementById('launchActions').classList.remove('hidden');}};
  const sandbox={Voyage,document,localStorage:{getItem:k=>{if(blocked)throw Error('blocked');return storage.get(k)||null;},setItem:(k,v)=>{if(blocked)throw Error('blocked');storage.set(k,v);}},ResizeObserver:class{observe(){}},setTimeout:fn=>{timers.push(fn);return timers.length;},clearTimeout:()=>{},queueMicrotask:fn=>pending.push(fn),URLSearchParams,location:{search:''},confirm:()=>true,console};sandbox.window=sandbox;sandbox.scrollTo=()=>{};sandbox.addEventListener=()=>{};
- context=vm.createContext(sandbox);scripts.forEach(s=>vm.runInContext(s,context));
+ context=vm.createContext(sandbox);scripts.forEach(s=>vm.runInContext(s,context));if(withMissions)vm.runInContext(fs.readFileSync(__dirname+'/../assets/missions.js','utf8'),context);
  const $=document.getElementById;return {$,context,storage,active:()=>document.querySelector('.screen.active').attrs.id,click:id=>$(id).click(),run:s=>vm.runInContext(s,context),flush:()=>{while(timers.length)timers.shift()();}};
 }
 const app=boot();assert.equal(app.active(),'home');assert.equal(app.$('resumeBtn').classList.contains('hidden'),true);
@@ -94,3 +102,29 @@ assert.match(poor.$('buildHint').textContent,/Not enough credits/);
 console.log('PASS: profile, navigation, save/resume, objectives, rewards, quiz, migration, storage, unique IDs, empty workshop, all core launch gates, optional parts, refunds, resets, drops, legacy credits, insufficient funds');
 
 
+
+
+// Destination controller integration: arrivals are supplied by the separately tested engine.
+for(const name of ['Earth Orbit','Moon']){
+ const mission=boot(new Map(),false,true);mission.run('SpaceMissions.choose('+JSON.stringify(name)+')');
+ mission.run("['bodypart','engine','tank'].forEach(togglePart)");mission.click('testBtn');
+ assert.equal(mission.$('launchBtn').disabled,name==='Earth Orbit','Earth mission requires satellite');
+ if(name==='Earth Orbit'){mission.run("togglePart('satellite')");mission.click('testBtn');}
+ mission.click('launchBtn');mission.run('Voyage.complete()');mission.click('continueFlight');
+ assert.equal(mission.active(),'explore');assert(mission.$('returnBtn').disabled);
+ if(name==='Moon'){
+  const row=mission.$('destinationLearning').children.find(x=>x.attrs.class==='row');row.children.forEach(b=>b.click());
+ }else mission.click('deployBtn');
+ let rows=mission.$('destinationLearning').children.filter(x=>x.attrs.class==='row');
+ const offset=name==='Moon'?1:0,correct=name==='Moon'?[1,2]:[0,0];
+ rows[offset+1].children[correct[1]].click();assert(mission.$('returnBtn').disabled,'Second answer alone cannot complete quiz');
+ rows=mission.$('destinationLearning').children.filter(x=>x.attrs.class==='row');rows[offset].children[2].click();assert(mission.$('returnBtn').disabled,'Wrong answer keeps mission open');
+ const resumed=boot(mission.storage,false,true);resumed.click('resumeBtn');assert.equal(resumed.active(),'explore');
+ rows=resumed.$('destinationLearning').children.filter(x=>x.attrs.class==='row');rows[offset].children[correct[0]].click();
+ assert.equal(resumed.$('returnBtn').disabled,false);resumed.click('returnBtn');assert.equal(resumed.active(),'returned');
+ assert.equal(resumed.run('JuniorSave.data.academy.xp'),100);assert(resumed.run('JuniorSave.data.academy.voyages.includes('+JSON.stringify(name)+')'));
+ const paid=resumed.run('credits');resumed.click('returnBtn');assert.equal(resumed.run('credits'),paid);
+ resumed.run('Academy.awardVoyage('+JSON.stringify(name)+')');assert.equal(resumed.run('JuniorSave.data.academy.xp'),100);
+ const done=boot(resumed.storage,false,true);done.click('resumeBtn');assert.equal(done.active(),'returned');assert.equal(done.run('credits'),paid);
+ console.log('PASS: '+name+' arrival gates, objectives, quiz feedback, resume, badge, XP and duplicate reward protection');
+}

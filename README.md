@@ -168,3 +168,17 @@ The experience uses simplified game rules and is not real spacecraft guidance or
 
 
 
+
+
+
+## Step 5 — complete destination missions
+
+Start **Satellite Operator** or **Lunar Explorer** from Mission Control. Existing workshop and flight controls are shared with the other activities.
+
+- **Earth Orbit:** build a rocket with body, engine, tank and satellite; pass three navigation gates, dock at speed ≤ 65, deploy the satellite and answer two destination questions.
+- **Moon:** build, fly through the gates and reach lunar approach; land upright on the gold pad (vertical speed ≤ 28, horizontal ≤ 15 game units/s), collect three distinct samples and answer two lunar questions. The descent receives at least 65 fuel as a landing reserve. Thrust slows descent and brake consumes fuel to stabilise. The game model is simplified, not real lunar flight physics.
+- Each destination awards its own badge and **100 XP once**. Returning grants the existing design/objective credit reward once per flight. Replaying remains possible without farming badge XP.
+- Exploration objectives and quiz answers survive refresh; interrupted flights restart from readiness. Wrong quiz answers explain the fact and can be retried.
+- Mission completion is gated on the successful arrival, destination objective and both correct quiz answers. Other destination sandbox activities remain available.
+
+Validation: `npm test`. Tests cover deterministic full flight/landing routes, failed landings, objective and quiz gates, save/resume, reward idempotence, and desktop/touch browser flows. Browser checks require Playwright Chromium (`npx playwright install chromium`, or `CHROMIUM_PATH=/path/to/chromium npm test`).
