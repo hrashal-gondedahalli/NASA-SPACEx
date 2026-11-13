@@ -4,6 +4,41 @@ A browser-based space learning project for children, with one **Mission Control*
 
 Built with HTML, CSS and JavaScript. No account, backend or production build step is required.
 
+## 3D Orbital Lab (new)
+
+Open **3D Simulator** on Mission Control, or visit `simulator/`.
+This is an original SFS-inspired educational sandbox, not a copy of SFS or a claim of feature parity.
+
+- Three.js WebGL 2 rendering, procedural Earth/Moon, modular 3D rocket, chase/free camera, mouse/touch orbit and zoom. Pinned Three.js 0.170.0 and its MIT license are vendored locally: no CDN, account, API key, backend or production build is needed.
+- Two-stage snapped stack: configure 0–4 tanks and 0–3 engines per stage, plus payload mass. Live mass, Earth thrust-to-weight and ideal delta-v. Invalid designs cannot launch. This is not yet a free-placement parts editor.
+- Three-dimensional position and velocity, inverse-square gravity, finite propellant, mass-dependent acceleration, exponential atmospheric drag, manual pitch/yaw, prograde/retrograde attitude and altitude-programmed launch guidance.
+- Stage separation removes booster mass and unused fuel; it does not refill the upper stage. No artificial braking in vacuum.
+- Earth launch, Earth orbit practice and Moon landing practice (starts at 1,200 m; **not** an Earth-to-Moon transfer).
+- Globe map with a full 3D ballistic coast prediction (ignores thrust/drag), apsides, stable-orbit detection, time warp restricted to engines-off flight above the atmosphere, and landing/crash outcomes.
+- Saved rocket design and separate launch-orbit / orbit-practice / Moon-landing records in local storage (`junior-orbital-lab-v1`); guest flight works when storage is blocked. Existing academy saves are unchanged. Active flights do not survive reload.
+
+### First flight
+
+1. Keep the starter rocket and Earth launch. Enter flight and raise throttle to 100%.
+2. Launch guidance pitches gradually toward horizontal. Separate the booster after fuel exhaustion.
+3. Cut engines once apoapsis is above 80–110 km. Coast toward apoapsis, then burn prograde to raise periapsis above 75 km. Launch guidance is a pitch program, not a complete autopilot.
+4. Open the orbital map. Both apsides must clear 75 km for more than 3 seconds to record stable orbit.
+5. For easier practice, start Earth orbit directly, or try the separate Moon descent. Land below 8 m/s and within 20 degrees of upright.
+
+Keyboard: arrows/WASD pitch and yaw, X engine cutoff, Space staging (outside focused buttons), P pause. Mouse drag or touch drag rotates the camera, wheel/pinch zooms. Hold the on-screen controls on touch devices. Switching tabs pauses flight. Time warp cannot be used below 80 km on Earth or 10 km on the Moon or with engines firing.
+
+### Model limits
+
+SI units are used, but planet radii are one-tenth real size with surface gravity retained to shorten missions. Drag, attitude and surface contact are simplified. No terrain, axial rotation, heating, aerodynamic lift, n-body transfers, docking, roll, torque or full rigid-body dynamics. Touchdown uses the point-mass surface contact; scenery and attached parts do not have independent collision bodies. The Earth orbit practice scenario is recorded separately from an orbit attained by launching. Performance depends on WebGL 2 support; unsupported devices show a recovery message and a link to the training site.
+
+Physics reference: [NASA specific impulse](https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/specific-impulse/) for thrust and propellant flow. The game uses simplified fictional engine parameters.
+
+### Local checks and publishing
+
+Serve the repository root over HTTP (`python -m http.server 8000`), then open `/simulator/`. ES modules require HTTP; opening `index.html` as a `file://` URL is unsupported. `npm install && npx playwright install chromium && npm test` runs physics and browser regression checks. `CHROMIUM_PATH` can point at an existing Chromium binary. Browser tests also capture desktop/mobile previews and map screenshots in `test-results/`.
+
+GitHub Pages continues to publish from the existing repository root. All paths are relative and work under `/NASA-SPACEx/`. No hosting changes are required after this branch is merged.
+
 ## Open Mission Control
 
 [Start your astronaut adventure](https://hrashal-gondedahalli.github.io/NASA-SPACEx/).
@@ -182,3 +217,4 @@ Start **Satellite Operator** or **Lunar Explorer** from Mission Control. Existin
 - Mission completion is gated on the successful arrival, destination objective and both correct quiz answers. Other destination sandbox activities remain available.
 
 Validation: `npm test`. Tests cover deterministic full flight/landing routes, failed landings, objective and quiz gates, save/resume, reward idempotence, and desktop/touch browser flows. Browser checks require Playwright Chromium (`npx playwright install chromium`, or `CHROMIUM_PATH=/path/to/chromium npm test`).
+
