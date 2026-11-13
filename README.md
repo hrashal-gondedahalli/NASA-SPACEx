@@ -21,8 +21,8 @@ The former Orbit Academy URL redirects to Mission Control. Existing Academy prog
 ### How to play
 
 1. Select **Build a rocket** and choose a destination.
-2. Enter the workshop. Your rocket starts with an engine, fuel tank, body and nose cone.
-3. Customize the rocket with component tiles. Click or tap to add/remove optional parts, or drag a tile onto the blueprint with a mouse.
+2. Enter the workshop. New designs start with an empty blueprint and 100 credits. Saved designs resume with their installed parts.
+3. Customize the rocket with component tiles. Click or tap to add/remove any part, or drag a tile onto the blueprint with a mouse.
 4. Turn **Draw** on to sketch with a mouse, touch or pen. Use **Clear sketch** to erase the drawing.
 5. Select **Test My Rocket** to review component readiness.
 6. Begin the countdown, try the flight controls, then continue to exploration.
@@ -33,9 +33,9 @@ The former Orbit Academy URL redirects to Mission Control. Existing Academy prog
 
 - **Eight destinations:** Moon, Mars, Jupiter, Saturn, Mercury, Venus, Asteroid Belt and Earth Orbit.
 - **Six component types:** engine, fuel tank, rocket body, fins, satellite and nose cone.
-- **Workshop credits:** start with 100 credits; purchased optional parts are refunded when removed or when the design is reset. Starter parts do not generate refunds.
+- **Workshop credits:** start with 100 credits; all purchased parts are fully refunded when removed or when the design is reset. Reset leaves an empty blueprint. Free parts from older saves do not generate refunds.
 - **Blueprint canvas:** decorative freehand drawing, clear/reset controls and sketch preservation when the viewport resizes.
-- **Readiness checks:** body, engine and fuel tank are required; fins and satellite are optional.
+- **Readiness checks:** body, engine and fuel tank are required; each missing part is named and explained. Launch and Continue remain disabled until all three are installed. Fins, satellite and nose cone are optional. The progress bar tracks required parts; the design score tracks all components and starts at zero.
 - **Animated launch:** countdown, destination display, steering and animation-speed controls. Leaving the launch screen cancels its countdown.
 - **Exploration objectives:** satellite deployment and science collection, followed by a results screen and credit rewards.
 
@@ -115,7 +115,7 @@ The Playwright tests start their own local server and cover:
 
 - Desktop and emulated touch mobile layouts, including horizontal overflow checks.
 - Blueprint drawing, clearing and preservation through resizing.
-- Component purchase refunds and design reset.
+- Empty workshop, all core launch gates, optional parts, repeated refunds, empty reset, saved designs, drop persistence, legacy starter credits and insufficient funds.
 - Countdown cancellation, flight controls and mission completion.
 - Moon/Earth weight calculations.
 - Shared profile, rocket/sketch persistence, quiz resume, legacy redirect and unavailable storage.
@@ -152,10 +152,10 @@ This is an educational prototype. It has no NASA or SpaceX API integration, live
 
 Planned improvements, not yet implemented:
 
-- An empty-workshop building mode with removable core components.
 - Fuel-based gameplay, obstacles, failure feedback and retry flows.
 - Distinct Earth-orbit satellite and Moon-landing missions.
 - Expanded planet activities, quizzes and accessibility checks.
 
 The experience uses simplified game rules and is not real spacecraft guidance or astronaut training.
+
 
