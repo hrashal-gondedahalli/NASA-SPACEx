@@ -7,7 +7,7 @@
  function hash(text){let h=2166136261;for(const c of String(text))h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0;}
  const worlds=new Map();
  function world(seed){if(worlds.has(seed))return worlds.get(seed);const rng=random(seed),targets=[{id:'A',x:-24,z:-30},{id:'B',x:30,z:-58},{id:'C',x:-72,z:38},{id:'D',x:78,z:65}],craters=[{x:-28,z:-48,r:22},{x:48,z:30,r:18},{x:-90,z:-60,r:30},{x:96,z:-83,r:32}];
-  for(let i=0;i<16;i++){const c={x:(rng()-.5)*350,z:(rng()-.5)*350,r:9+rng()*22};if(Math.hypot(c.x,c.z)>28)craters.push(c);}
+  for(let i=0;i<160&&craters.length<20;i++){const c={x:(rng()-.5)*350,z:(rng()-.5)*350,r:9+rng()*22};if(Math.hypot(c.x,c.z)>c.r+22&&craters.every(a=>Math.hypot(c.x-a.x,c.z-a.z)>1.25*(c.r+a.r)))craters.push(c);}
   const rocks=[];const segmentDistance=(p,t)=>{const a=clamp((p.x*t.x+p.z*t.z)/(t.x*t.x+t.z*t.z),0,1);return Math.hypot(p.x-t.x*a,p.z-t.z*a);};
   for(let i=0;i<100;i++){const rock={x:(rng()-.5)*380,z:(rng()-.5)*380,r:.5+rng()*1.5,angle:rng()*Math.PI*2};if(Math.hypot(rock.x,rock.z)>22&&targets.every(t=>segmentDistance(rock,t)>rock.r+4))rocks.push(rock);}
   const structures=[{x:-9,z:-4,r:2.2},{x:-10,z:3,r:.6},{x:-8.9,z:3,r:.6},{x:-7.8,z:3,r:.6}];const w={targets,craters,rocks,structures};worlds.set(seed,w);if(worlds.size>20)worlds.delete(worlds.keys().next().value);return w;
