@@ -159,6 +159,7 @@ function setEditorLocked(locked){document.body.classList.toggle('flying',locked)
 $('craftName').onchange=()=>{design.name=$('craftName').value.trim()||'Pioneer';};$('payload').onchange=()=>{remember();design.payload=Number($('payload').value);edited();};$('scenario').onchange=()=>{scenario=$('scenario').value;renderEditor();updatePreview();};
 $('saveDesign').onclick=()=>{design.name=$('craftName').value.trim()||'Pioneer';savedDesign=P.design(design);writeSave('Design saved on this browser.');};$('loadDesign').onclick=()=>{if(!savedDesign){$('saveStatus').textContent='No saved design yet. Save a design first.';return;}remember();design=P.design(savedDesign);edited();$('saveStatus').textContent='Saved design loaded.';};$('defaultDesign').onclick=()=>{remember();design=P.design(P.DEFAULT);edited();};
 function clearInput(){held.clear();touches.clear();document.querySelectorAll('[data-control]').forEach(b=>b.classList.remove('held'));}
+document.addEventListener('touchcancel',()=>{clearInput();if(surfaceActive)surfaceClearInput();},{capture:true,passive:true});
 function setThrottle(value){s.throttle=P.clamp(value,0,1);$('throttle').value=Math.round(s.throttle*100);$('throttleValue').textContent=Math.round(s.throttle*100)+'%';}
 $('throttle').oninput=()=>{takeManual();setThrottle(Number($('throttle').value)/100);};$('cutoff').onclick=()=>{takeManual();setThrottle(0);};
 function status(text){$('flightStatus').textContent=text;}
