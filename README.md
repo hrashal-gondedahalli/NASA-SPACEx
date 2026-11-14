@@ -2,6 +2,23 @@
 
 Browser-based rocket building, flight and Moonbase survival. No login, backend or build step is needed.
 
+
+## Solar system and continuous Earth–Moon expedition
+
+Choose **🌍 → 🌙 Expedition** in Rocket Builder, or open settings and tap **🚀 Moon Explorer** to load a long-range rocket. Launch, then use **Reach orbit → Travel → Land**. Guidance performs finite engine burns, uses the actual remaining fuel, and separates the booster when empty. A departure-window search reduces the required transfer burn. **✋** or manual throttle/steering cancels guidance. Advanced mode provides manual flight without these guidance buttons.
+
+- The same position, velocity, mass, fuel and clock continue from Earth launch through lunar capture and landing. Changing the primary for telemetry does not teleport the spacecraft. Earth and Moon gravity, plus differential solar gravity, act during the journey.
+- Astronomy Engine supplies date-based Sun, Moon and planetary states. Mission date means UTC noon on the chosen date. Default: 2026-11-14. The 1:10 length scale is applied consistently: gravitational parameters scale by 0.01, model velocities by √0.1 and model time by √0.1. The displayed UTC date advances accordingly. These are explicitly scaled educational worlds.
+- Map → **Solar system** shows the Sun and eight planets at calculated positions. Pick a planet to inspect it. Orbital curves are osculating two-body approximations at the selected epoch; the Moon path samples the ephemeris. Point markers are enlarged for visibility. Earth has a surface image; other solar-map planet surfaces are schematic. Only Earth–Moon flight is playable in this release.
+- Map gold trajectories predict unpowered flight under the expedition gravity model. A transfer assistant is additional guidance, not a claim that the gold coast path reaches the destination without burns. Reference-frame conversion and adaptive stepping are tested.
+- Time warp offers ×1, ×5, ×20, ×100, ×1000 and ×10000. Near-surface and powered-flight limits reduce warp automatically. Pausing freezes the mission. Moon Explorer is a tested example; custom rockets may run out of fuel or fail to reach orbit.
+- Flight status is still local to the open tab; saved rocket designs and completed records persist. Existing separate practice scenarios retain their earlier model.
+- Surface collision remains a spherical-body approximation. Detailed terrain contact, Rapier rigid bodies, astronaut EVA, docking, Mars flight and a full solar-system N-body engine are not part of this milestone.
+
+### Astronomy Engine attribution
+
+[cosinekitty/astronomy](https://github.com/cosinekitty/astronomy), vendored from commit [865d3da7d8112bbc7911238052c6af4aaf877181](https://github.com/cosinekitty/astronomy/commit/865d3da7d8112bbc7911238052c6af4aaf877181), MIT license; see `simulator/vendor/ASTRONOMY-LICENSE.txt`. The bundled browser build runs locally with no API key or external runtime request. Spacekit and REBOUND are not runtime dependencies. Rapier is reserved for a later terrain/rigid-body milestone.
+
 ## Rocket Builder
 
 Open [Rocket Builder](https://hrashal-gondedahalli.github.io/NASA-SPACEx/simulator/?v=space-20261113-4).
@@ -16,7 +33,7 @@ Open [Rocket Builder](https://hrashal-gondedahalli.github.io/NASA-SPACEx/simulat
 
 ## Flight model and limits
 
-Three-dimensional position/velocity, inverse-square gravity, fuel mass flow, mass-dependent thrust, simplified atmospheric drag and heating. Planets have one-tenth real radius with surface gravity retained. Separate Earth-orbit, Moon-descent and 30 km lunar-orbit practice scenarios are available; no Earth-to-Moon transfer, terrain collision mesh, docking or full rigid-body dynamics. Parachutes do not work on the Moon. Heating, shielding, RCS, touchdown thresholds and engine parameters are fictional educational rules, not operational spacecraft engineering.
+Three-dimensional position/velocity, inverse-square gravity, fuel mass flow, mass-dependent thrust, simplified atmospheric drag and heating. Planets have one-tenth real radius with surface gravity retained. Separate Earth-orbit, Moon-descent and 30 km lunar-orbit practice scenarios are available alongside the continuous expedition above. No terrain collision mesh, docking or full rigid-body dynamics. Parachutes do not work on the Moon. Heating, shielding, RCS, touchdown thresholds and engine parameters are fictional educational rules, not operational spacecraft engineering.
 
 Arrow keys/WASD steer, X cuts thrust, Space stages, P pauses. Touch buttons support simultaneous input. Switching away or opening a dialog pauses flight. Time warp requires engines off and altitude above the atmosphere. Designs/records save in this browser; active flights do not survive a refresh.
 
