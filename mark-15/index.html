@@ -1003,3 +1003,266 @@ function movePlayer(dt){
 /* =====================================
    THIRD-PERSON FOLLOW CAMERA
 ===================================== */
+
+function updateCamera(dt,immediate=false){
+  // Find the craft's real forward direction
+  direction.set(0,0,-1);
+  direction.applyQuaternion(player.quaternion);
+  direction.normalize();
+
+  const distance=vehicleType==="spacecraft"?22:
+                 vehicleType==="astronaut"?12:15;
+
+  const height=vehicleType==="spacecraft"?8:
+               vehicleType==="astronaut"?4:6;
+
+  // Camera stays behind the moving craft
+  desiredCamera.set(
+    player.position.x-direction.x*distance,
+    player.position.y+height,
+    player.position.z-direction.z*distance
+  );
+
+  // Aim slightly ahead of the craft
+  cameraTarget.set(
+    player.position.x+direction.x*2,
+    player.position.y+1.5,
+    player.position.z+direction.z*2
+  );
+
+  if(immediate){
+    camera.position.copy(desiredCamera);
+  }else{
+    const smooth=1-Math.exp(-5*dt);
+    camera.position.lerp(desiredCamera,smooth);
+  }
+
+  camera.lookAt(cameraTarget);
+}
+
+/* =====================================
+   INTERACTIONS
+===================================== */
+
+function interact(){
+  if(emergencyActive)return;
+
+  if(activeMission==="mars"){
+    collectSample();
+  }else if(activeMission==="emergency"){
+    openEmergency();
+  }else if(activeMission==="moon"){
+    showMessage("Explore the lunar surface and landing zone!");
+  }else if(activeMission==="walk"){
+    showMessage("Spacewalk: maintain a safe distance from the spacecraft.");
+  }else{
+    showMessage("Keep piloting and explore deep space!");
+  }
+}
+
+function showMessage(text){
+  messageBox.textContent=text;
+  messageBox.style.display="block";
+
+  clearTimeout(showMessage.timer);
+
+  showMessage.timer=setTimeout(()=>{
+    messageBox.style.display="none";
+  },3500);
+}
+
+/* =====================================
+   EMERGENCY TRAINING
+===================================== */
+
+const emergencies=[
+  {
+    text:"A fire warning appears near the spacecraft wing during Earth re-entry. What should you do?",
+    options:[
+      "Activate the emergency isolation system and follow the safe re-entry procedure.",
+      "Ignore the warning and continue normally."
+    ],
+    correct:0
+  },
+  {
+    text:"Your spacecraft is losing cabin pressure. What is the safest response?",
+    options:[
+      "Open the cabin doors.",
+      "Put on an oxygen mask, isolate the leak and follow emergency procedures."
+    ],
+    correct:1
+  },
+  {
+    text:"Your spacecraft detects an approaching asteroid.",
+    options:[
+      "Check the collision path and perform a controlled avoidance manoeuvre.",
+      "Switch off the navigation system."
+    ],
+    correct:0
+  }
+];
+
+let currentEmergency=0;
+
+function openEmergency(){
+  if(emergencyActive)return;
+
+  emergencyActive=true;
+
+  currentEmergency=Math.floor(
+    Math.random()*emergencies.length
+  );
+
+  const scenario=emergencies[currentEmergency];
+
+  document.getElementById("emergencyText").textContent=
+    scenario.text;
+
+  document.getElementById("choice0").textContent=
+    scenario.options[0];
+
+  document.getElementById("choice1").textContent=
+    scenario.options[1];
+
+  document.getElementById("emergency").style.display="block";
+}
+
+function chooseEmergency(choice){
+  const scenario=emergencies[currentEmergency];
+
+  document.getElementById("emergency").style.display="none";
+  emergencyActive=false;
+
+  if(choice===scenario.correct){
+    score+=200;
+    energy=Math.min(100,energy+10);
+    showMessage("Correct emergency procedure! +200 points.");
+  }else{
+    energy=Math.max(0,energy-20);
+    showMessage("Unsafe decision! Review the emergency procedure.");
+  }
+
+  document.getElementById("score").textContent=score;
+  document.getElementById("energy").textContent=Math.floor(energy);
+}
+
+document.getElementById("choice0").addEventListener(
+  "click",()=>chooseEmergency(0)
+);
+
+document.getElementById("choice1").addEventListener(
+  "click",()=>chooseEmergency(1)
+);
+
+/* =====================================
+   START GAME
+===================================== */
+
+/* Offline ambient background music; starts after the user's Start click. */
+let musicContext=null, musicNodes=[], musicEnabled=true;
+function startAmbientMusic(){
+  if(!musicEnabled)return;
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;
+  if(!AudioCtx)return;
+  if(!musicContext)musicContext=new AudioCtx();
+  if(musicContext.state==="suspended")musicContext.resume();
+  if(musicNodes.length)return;
+  const master=musicContext.createGain();
+  master.gain.value=0.018;
+  master.connect(musicContext.destination);
+  [55,82.41,110,164.81].forEach((frequency,index)=>{
+    const oscillator=musicContext.createOscillator();
+    const gain=musicContext.createGain();
+    oscillator.type=index===3?"sine":"triangle";
+    oscillator.frequency.value=frequency;
+    gain.gain.value=index===0?0.7:0.22;
+    oscillator.connect(gain);gain.connect(master);oscillator.start();
+    musicNodes.push(oscillator,gain);
+  });
+  musicNodes.push(master);
+}
+function stopAmbientMusic(){
+  if(!musicNodes.length)return;
+  musicNodes.forEach(node=>{try{if(typeof node.stop==="function")node.stop();node.disconnect();}catch{}});
+  musicNodes=[];
+}
+document.getElementById("musicToggle").addEventListener("click",()=>{
+  musicEnabled=!musicEnabled;
+  document.getElementById("musicToggle").textContent=musicEnabled?"♫ Music: ON":"♫ Music: OFF";
+  if(musicEnabled)startAmbientMusic();else stopAmbientMusic();
+});
+
+document.getElementById("startButton").addEventListener("click",()=>{
+  startAmbientMusic();
+  const selected=document.getElementById("missionSelect").value;
+
+  loadMission(selected);
+
+  document.getElementById("menu").style.display="none";
+
+  running=true;
+  paused=false;
+});
+
+/* =====================================
+   GAME ANIMATION
+===================================== */
+
+function animate(){
+  requestAnimationFrame(animate);
+
+  // Read frame time once
+  const dt=Math.min(clock.getDelta(),.04);
+
+  if(running && !paused && !emergencyActive){
+    movePlayer(dt);
+
+    // Animate spacecraft engine flames
+    player.traverse(object=>{
+      if(object.userData.isFlame){
+        object.scale.y=.8+Math.random()*.5;
+      }
+    });
+
+    // Move distant asteroids
+    world.children.forEach(object=>{
+      if(object.userData.speed){
+        object.position.z+=object.userData.speed*dt;
+
+        if(object.position.z>300){
+          object.position.z=-300;
+        }
+      }
+    });
+  }
+
+  if(running){
+    updateCamera(dt);
+  }
+
+  renderer.render(scene,camera);
+}
+
+animate();
+
+/* =====================================
+   WINDOW RESIZE
+===================================== */
+
+window.addEventListener("resize",()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(
+    window.innerWidth,window.innerHeight
+  );
+});
+
+/* INITIAL CAMERA */
+
+camera.position.set(0,15,30);
+camera.lookAt(0,0,0);
+
+</script>
+</body>
+</html>
