@@ -3,6 +3,20 @@
 Browser-based rocket building, flight and Moonbase survival. No login, backend or build step is needed.
 
 
+
+## Moon survey: astronaut and rover exploration
+
+After a successful lunar landing in Expedition or Moon practice, choose **Explore the Moon**. The existing spacecraft remains landed while a local procedural surface survey opens in the same Three.js renderer.
+
+- Walk with WASD/arrows, hop with Space, and interact with E or the context button. Walk to the rover and use 🛞 to drive; brake before stepping out. Mobile controls support simultaneous touches and clear held inputs on cancellation, pause and focus loss.
+- Collect four samples on foot, plant one flag and physically return to the spacecraft to complete the survey. Blue site markers and a compass/minimap show destinations; the ship marker remains available before completion. The ship refills oxygen and battery.
+- Terrain geometry and player contact use the same deterministic crater height field. Boulders, the lander and equipment block movement. Lunar hopping uses 1.62 m/s². The six-wheel rover has acceleration, braking and terrain-following body attitude; this is a lightweight contact model, not full suspension or rigid-body dynamics.
+- A textured regolith surface, shaped crater rims/bowls, lit boulders, footprints, suit/rover models, equipment, shadows and static stars provide local scenery. The flight spacecraft is reused when entering from a live landing; resumed standalone surveys show a generic lander. Earth appears only when the landing site's Earth direction is above the horizon.
+- A suit-sensor alert pauses movement until a choice is made. Alert time resets for a new survey. Pause, dialogs and hidden tabs freeze the surface simulation and animations. Depleted reserves offer a safe rescue pickup that retains collected samples. The flag does not flutter in the airless environment.
+- Survey state is saved under `junior-lunar-surface-v1` after actions and periodically. **Settings → Resume Moon exploration** restores it, including after refresh. Corrupt saves are rejected; blocked storage still permits an in-memory session. Returning to flight releases surface geometry, materials, textures and shadow resources.
+- This adapts the supplied SPACE BOYS prototype's exploration idea. It does not import its separate renderer/CDN dependency or add ten differently named marker-collection missions. It replaces the broken rescue-target loop, incomplete pause, leaking mission resources and shared emergency timer with explicit survey states and tests.
+- The terrain is an illustrative local patch, not measured lunar topography. Mars exploration, free-space EVA, full Rapier rigid bodies and terrain-aware rocket touchdown remain separate future work. Surface progress does not restore or advance an active orbital flight.
+
 ## Solar system and continuous Earth–Moon expedition
 
 Choose **🌍 → 🌙 Expedition** in Rocket Builder, or open settings and tap **🚀 Moon Explorer** to load a long-range rocket. Launch, then use **Reach orbit → Travel → Land**. Guidance performs finite engine burns, uses the actual remaining fuel, and separates the booster when empty. A departure-window search reduces the required transfer burn. **✋** or manual throttle/steering cancels guidance. Advanced mode provides manual flight without these guidance buttons.
@@ -13,7 +27,7 @@ Choose **🌍 → 🌙 Expedition** in Rocket Builder, or open settings and tap 
 - Map gold trajectories predict unpowered flight under the expedition gravity model. A transfer assistant is additional guidance, not a claim that the gold coast path reaches the destination without burns. Reference-frame conversion and adaptive stepping are tested.
 - Time warp offers ×1, ×5, ×20, ×100, ×1000 and ×10000. Junior guidance selects a useful requested warp automatically; near-surface and powered-flight limits reduce the effective warp and then restore it for coasting. Arrival in Earth or lunar orbit returns to ×1. Manual control cancels the assistant and returns to ×1. A visibility fill light helps younger players see unlit spacecraft surfaces; Advanced mode retains the darker lighting. Pausing freezes the mission. Moon Explorer is a tested example; custom rockets may run out of fuel or fail to reach orbit.
 - Flight status is still local to the open tab; saved rocket designs and completed records persist. Existing separate practice scenarios retain their earlier model.
-- Surface collision remains a spherical-body approximation. Detailed terrain contact, Rapier rigid bodies, astronaut EVA, docking, Mars flight and a full solar-system N-body engine are not part of this milestone.
+- Rocket touchdown remains a spherical-body approximation. The local Moon survey above adds height-field terrain contact and astronaut/rover movement. Rapier rigid bodies, docking, Mars flight and a full solar-system N-body engine are not included.
 
 ### Astronomy Engine attribution
 
