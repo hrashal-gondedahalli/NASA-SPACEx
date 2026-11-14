@@ -23,5 +23,5 @@
 
 /* Keep the sticky header outside the dashboard's horizontal clipping container. */
 .dashboard-home{overflow-x:visible}.dashboard-home main{overflow-x:clip}
-body.voyage-active .site-header{position:sticky;top:0}.site-header{z-index:20}
+body.voyage-active .site-header{position:sticky;top:0}.site-header{position:sticky;top:0;z-index:20}
 @media(max-width:600px){body:not(.dashboard-home) .site-header{padding:10px 12px;gap:6px}body:not(.dashboard-home) .site-header>div:first-child{display:none}body:not(.dashboard-home) .site-header>.row{width:100%;justify-content:space-between;margin:0}}
