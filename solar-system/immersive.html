@@ -45,6 +45,7 @@ footer{text-align:center;color:#7284aa;font-size:11px;padding:24px 8px;line-heig
 .map-dot.sat{background:#83eaff}.map-dot.probe{background:#ffd98c}
 @media(max-width:720px){.map-marker{font-size:10px}}
 
+.all-planet-strip{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;margin:12px auto 16px;padding:12px;background:#09142be8;border:1px solid var(--line);border-radius:16px;max-width:1000px}.all-planet-strip span{font-size:10px;font-weight:800;letter-spacing:.12em;color:#91dfff;margin:0 5px}.all-planet-strip button{font-size:12px;padding:7px 11px;border:1px solid #5c86b9;background:#10213e;color:#f5f8ff;border-radius:20px;cursor:pointer}.all-planet-strip button:hover{background:#16416a;border-color:#8feaff}
 .planet-name{position:absolute;left:50%;top:calc(100% + 7px);transform:translateX(-50%) rotateX(68deg);display:block;padding:2px 6px;border:1px solid #8feaff66;border-radius:8px;background:#07142beF;color:#f5f8ff;font:700 10px/1.2 system-ui,sans-serif;letter-spacing:.02em;white-space:nowrap;text-shadow:0 1px 4px #000;z-index:8;pointer-events:none}
 @media(max-width:720px){.planet-name{font-size:9px;padding:2px 4px}}
 </style>
@@ -53,6 +54,7 @@ footer{text-align:center;color:#7284aa;font-size:11px;padding:24px 8px;line-heig
 <header><div><div class="brand">NASA-SPACEx <span style="color:#8295bd">/ 3D SOLAR SYSTEM</span></div><div class="status">OFFLINE-READY EXPLORATION</div></div><div class="top-actions"><a href="./" style="text-decoration:none">← Solar System Home</a><button id="musicToggle" aria-pressed="false">♫ Start space music</button></div></header>
 <main>
 <section class="intro"><div class="eyebrow">INTERACTIVE PLANETARY ORRERY</div><h1>Journey Through Our Solar System</h1><p>Explore all eight planets in an animated 3D-style orbital view. Select a world, discover its facts, and travel through space with an original offline soundtrack.</p></section>
+<nav class="all-planet-strip" aria-label="All eight planets"><span>ALL 8 PLANETS</span><button onclick="selectPlanet('Mercury')">Mercury</button><button onclick="selectPlanet('Venus')">Venus</button><button onclick="selectPlanet('Earth')">Earth</button><button onclick="selectPlanet('Mars')">Mars</button><button onclick="selectPlanet('Jupiter')">Jupiter</button><button onclick="selectPlanet('Saturn')">Saturn</button><button onclick="selectPlanet('Uranus')">Uranus</button><button onclick="selectPlanet('Neptune')">Neptune</button></nav>
 <section class="stage" aria-label="Interactive 3D-style solar system">
 <div class="starfield"></div><div class="system">
 <div class="sun" aria-label="Sun" title="Sun"></div>
