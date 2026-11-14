@@ -111,3 +111,16 @@ A single bundled Three.js renderer draws a textured interactive world and an out
 The dashboard reads the existing simulator design/records, validated lunar survey and outpost saves, and current Academy progress. It never rewrites these saves or invents mission statistics. The five journey milestones reflect a valid saved rocket, recorded launch height, orbit, lunar landing and completed survey. Resume survey opens only a validated saved surface session; it never restores or advances an orbital flight. Broken or blocked storage leaves navigation and training usable.
 
 Dashboard tests cover real/empty/corrupt saves, read-only state projection, desktop/mobile rendering and controls, reduced motion, activity navigation, cross-app survey resume, and combined WebGL/storage failure. Existing app regression tests remain enabled.
+
+
+## Mark 15 HD surface explorer
+
+Mark 15 now loads the bundled Three.js r170 and matching BufferGeometryUtils locally. Mars has a continuous procedural height field with a dune basin, distant eroded ridges, grain/bump detail, sunlight and haze; the Moon has shaped crater basins/rims, a black sky and a textured Earth view. These are original illustrative landscapes, not measured NASA terrain. HD/Balanced/Auto settings control resolution, terrain detail, rock count and shadow size. Boulders use instancing and vehicle geometry is batched by material.
+
+The original modeled six-wheel rover has cleated wheels and hubs, articulated suspension links, a terrain-following chassis, mast cameras, antenna, instrument deck and folded sample arm. Each wheel follows the shared height field; wheel rotation, steering, rover tracks and Mars dust respond to movement. This is a lightweight height-field/contact model, not a full rigid-body rocker-bogie simulation. Moon landing uses a detailed lander and clamps its feet to the same terrain height. Spacecraft and astronaut modes remain arcade exploration, not orbital flight dynamics.
+
+Use WASD/arrows to move/steer, E to interact, Space/Shift to change height in flight modes and P to pause. Drag/pinch/wheel orbit and zoom the camera. Touch controls support simultaneous input and cancellation. Missions opens an in-game menu, Continue resumes the current session, Restart confirms before resetting, and browser Back/Forward handles the menu/mission routes. Mission Control is always reachable. The home Space Voyage entry is now a normal link.
+
+Mark 15 saves one independent session under `junior-mark15-v1`; restoration validates data and opens the menu safely stopped. Existing simulator, Academy and outpost saves are untouched. Blocked storage leaves in-memory continuation usable. Pause, focus loss and emergency choices freeze the game and release inputs. Scene rebuilds dispose owned geometry/materials/textures; WebGL failure shows a clear return link. Existing procedural music is retained and silenced while paused/in menus.
+
+Tests cover terrain, collisions/bounds, six wheel-contact heights, acceleration/braking, pause/emergency freeze, sample completion through genuine movement, safe restore, desktop/mobile navigation, all five missions, graphics settings and missing WebGL. Surface imagery credits remain in `simulator/textures/CREDITS.md`; all new rover and surface detail is original procedural geometry/texturing.
