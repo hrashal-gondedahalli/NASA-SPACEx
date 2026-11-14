@@ -25,10 +25,11 @@ main{max-width:1280px;margin:auto;padding:22px clamp(16px,4vw,48px) 60px}.intro{
 footer{text-align:center;color:#7284aa;font-size:11px;padding:26px 12px 0;line-height:1.6}
 @media(max-width:720px){.stage{min-height:440px}.solar{transform:translate(-50%,-50%) scale(.72)}.info{grid-template-columns:1fr}.legend{font-size:9px}.hint{font-size:9px}.tag{display:none}}
 @media(prefers-reduced-motion:reduce){.orbit{animation:none}}
+header{flex-wrap:wrap}header nav a{display:inline-flex;align-items:center;min-height:44px}@media(max-width:600px){header nav{flex-basis:100%}}
 </style>
 </head>
 <body>
-<header><div class="brand">NASA-SPACEx <span style="color:#7184ad">/ EXPLORATION LAB</span></div><div class="tag">INTERACTIVE SOLAR SYSTEM · SAMPLE</div></header>
+<header><div class="brand">NASA-SPACEx <span style="color:#7184ad">/ EXPLORATION LAB</span></div><div class="tag">INTERACTIVE SOLAR SYSTEM · SAMPLE</div><nav aria-label="Page navigation" style="display:flex;gap:16px;flex-wrap:wrap"><a href="../#home" style="color:#dffaff">← Mission Control</a><a href="../#missions" style="color:#dffaff">All missions</a></nav></header>
 <main>
 <section class="intro"><div class="eyebrow">OUR COSMIC NEIGHBOURHOOD</div><h1>Explore the Solar System</h1><p>Travel from the Sun to the distant ice giants. Select any planet to discover its size, distance from the Sun and fascinating facts.</p>
 <p style="margin-top:16px"><a href="immersive.html" style="display:inline-block;padding:12px 18px;border:1px solid #72e5ff;border-radius:999px;background:#10264a;color:#dffaff;text-decoration:none;font-weight:800">✦ Open the new 3D Solar System + Offline Music →</a></p></section>
