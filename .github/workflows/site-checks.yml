@@ -7,20 +7,27 @@ permissions:
   contents: read
 jobs:
   browser-checks:
+    name: Checks (${{ matrix.suite }})
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [unit, flight, surface, features]
+    env:
+      TEST_SUITE: ${{ matrix.suite }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: npm install --ignore-scripts
-      - run: npx playwright install --with-deps chromium
-      - run: npm test
-
+      - if: matrix.suite != 'unit'
+        run: npx playwright install --with-deps chromium
+      - run: node scripts/test-suite.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: voyage-screenshots
+          name: voyage-screenshots-${{ matrix.suite }}
           path: test-results/*.png
           if-no-files-found: ignore
