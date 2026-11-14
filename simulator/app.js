@@ -4,8 +4,8 @@ let design=P.design(P.DEFAULT),scenario='launch',s=P.create(design),records={},s
 let debris=[],stackOffset=0,mapScope='local',fixedCenter=[0,30,0],fixedHalf=50,fixedManual=false,orbitData=null;
 let companion,moonOrbit,apoMarker,periMarker,sunLight,ambientLight,visibilityFill,skyScene,skyCamera;
 const sound=new window.OrbitalAudio();
-function soundUI(){const v=sound.info();$('soundToggle').textContent=v.muted?'🔇':'🔊';$('soundToggle').setAttribute('aria-label',v.muted?'Unmute sound':'Mute sound');$('soundToggle').setAttribute('aria-pressed',String(!v.muted));$('soundVolume').value=Math.round(v.volume*100);$('soundMode').value=v.mode;}
-$('soundToggle').onclick=()=>{sound.configure({muted:!sound.settings.muted});sound.unlock();soundUI();};
+function soundUI(){const v=sound.info();$('soundToggle').textContent=v.muted?'🔇':'🔊';$('soundToggle').setAttribute('aria-label',v.muted?'Unmute sound':'Mute sound');$('soundToggle').setAttribute('aria-pressed',String(!v.muted));$('musicToggle').textContent=v.music?'♫':'♪';$('musicToggle').setAttribute('aria-label',v.music?'Turn background music off':'Turn background music on');$('musicToggle').setAttribute('aria-pressed',String(v.music));$('soundVolume').value=Math.round(v.volume*100);$('soundMode').value=v.mode;}
+$('soundToggle').onclick=()=>{sound.configure({muted:!sound.settings.muted});sound.unlock();soundUI();};$('musicToggle').onclick=()=>{sound.configure({music:!sound.settings.music});sound.unlock();soundUI();};
 $('soundVolume').oninput=()=>{sound.configure({volume:Number($('soundVolume').value)/100});sound.unlock();soundUI();};
 $('soundMode').onchange=()=>{sound.configure({mode:$('soundMode').value});sound.unlock();};
 document.addEventListener('pointerdown',()=>sound.unlock(),{capture:true});
