@@ -63,7 +63,7 @@
   if(!s.hull){s.phase='crashed';s.message='Re-entry heating damaged the spacecraft.';}
   if(length(s.p)<=P.BODIES[s.body].radius){const impact=length(s.v),tilt=Math.acos(clamp(dot(s.direction,unit(s.p)),-1,1));s.p=mul(unit(s.p),P.BODIES[s.body].radius);const c=center(s);x.p=add(c.p,s.p);x.v=[...c.v];s.v=[0,0,0];s.phase=impact<=(s.legsDeployed?12:8)&&tilt<.35?'landed':'crashed';s.message=s.phase==='landed'?'Touchdown on '+s.body+'.':'Impact at '+impact.toFixed(1)+' m/s. Slow down and stay upright.';x.mission=s.phase;}
   if(s.phase!=='flying'){s.throttle=0;s.lastThrust=0;x.autopilot='off';}
-  if(now.periapsis>b.atmosphere+5000&&Number.isFinite(now.apoapsis)){s.orbitSeconds+=dt;if(s.orbitSeconds>3)s.orbit=true;}else s.orbitSeconds=0;return s;
+  if(now.periapsis>b.atmosphere+5000&&Number.isFinite(now.apoapsis)){s.orbitSeconds+=dt;if(s.orbitSeconds>3)s.orbit=true;}else{s.orbitSeconds=0;s.orbit=false;}return s;
  }
  function advance(s,input={},seconds=0){let remaining=clamp(seconds,0,10000),count=0;while(remaining>1e-8&&s.phase==='flying'&&count++<2500){const t=P.telemetry(s);let max=t.altitude<3000?.05:t.altitude<100000?.25:Math.min(20,Math.sqrt(Math.max(1,length(s.p)**3/P.BODIES[s.body].mu))*.003);if(s.throttle>0||s.expedition.autopilot==='orbit'||['capture','land'].includes(s.expedition.autopilot))max=Math.min(max,.25);if(s.expedition.autopilot==='transfer'&&s.expedition.departure>s.time)max=Math.min(max,s.expedition.departure-s.time);const dt=Math.min(remaining,max);step(s,input,dt);remaining-=dt;}return {advanced:seconds-remaining,remaining};}
  function predict(s,count=240){
