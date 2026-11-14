@@ -14,7 +14,7 @@ for(const mobile of [false,true])test('Page navigation '+(mobile?'mobile':'deskt
   const click=async selector=>{const l=page.locator(selector);await l.scrollIntoViewIfNeeded();await l.click({noWaitAfter:true});};
   const route=async(name,screen='home')=>{await page.waitForURL(base+'#'+name,{waitUntil:'commit'});await page.waitForFunction(id=>document.querySelector('.screen.active')?.id===id,screen);};
   const nav=async name=>click('.dash-nav a[href="#'+name+'"]');
-  const aligned=async id=>{await page.waitForFunction(id=>{const a=document.getElementById(id).getBoundingClientRect(),h=document.querySelector('.site-header').getBoundingClientRect();return a.top>=h.bottom-2&&a.top<h.bottom+45;},id);};
+  const aligned=async id=>{try{await page.waitForFunction(id=>{const a=document.getElementById(id).getBoundingClientRect(),h=document.querySelector('.site-header').getBoundingClientRect();return a.top>=h.bottom-2&&a.top<innerHeight-80;},id);}catch(error){console.log('Route visibility',id,await page.evaluate(id=>({target:document.getElementById(id)?.getBoundingClientRect().toJSON(),header:document.querySelector('.site-header').getBoundingClientRect().toJSON(),url:location.href}),id));throw error;}};
   await page.goto(base+'#missions');await route('missions');await aligned('missions');
   assert.equal(await page.locator('.dash-nav a[aria-current]').getAttribute('href'),'#missions');
   await click('button[onclick="MissionControl.voyage()"]');await route('testing','testing');

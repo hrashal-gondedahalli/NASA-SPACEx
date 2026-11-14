@@ -50,6 +50,7 @@
  });
  window.addEventListener('popstate',()=>navigate(location.hash.slice(1),{replace:true,restore:true}));
  window.addEventListener('hashchange',()=>navigate(location.hash.slice(1),{replace:true,restore:true}));
+ window.addEventListener('pageshow',()=>scroll(location.hash.slice(1)||'home'));
  const requested=location.hash.slice(1)||new URLSearchParams(location.search).get('activity')||active();
  navigate(requested,{replace:true,restore:true});
 })();
