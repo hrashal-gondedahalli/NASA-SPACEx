@@ -8,27 +8,27 @@ main{position:relative;width:min(1080px,92vw);margin:auto;padding:clamp(42px,9vh
 .eyebrow{text-align:center;color:#83d9ff;font-size:12px;letter-spacing:.28em;font-weight:800}
 h1{text-align:center;font-size:clamp(36px,7vw,68px);line-height:1.05;margin:12px 0;color:#f2f8ff;letter-spacing:.025em;text-shadow:0 0 35px #51b9ff55}
 .sub{text-align:center;color:#b9cce5;font-size:clamp(14px,2vw,18px);margin:0 auto 42px;max-width:650px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-.card{position:relative;display:flex;flex-direction:column;min-height:320px;padding:28px;border:1px solid #6cb9e66b;border-radius:24px;text-decoration:none;color:inherit;overflow:hidden;background:linear-gradient(145deg,#142d4beF,#071326f2 70%);box-shadow:0 22px 70px #0008;transition:transform .2s,border-color .2s,box-shadow .2s}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;width:100%}
+.card{position:relative;cursor:pointer;display:flex;flex-direction:column;min-height:320px;padding:28px;border:1px solid #6cb9e66b;border-radius:24px;text-decoration:none;color:inherit;overflow:hidden;background:linear-gradient(145deg,#142d4beF,#071326f2 70%);box-shadow:0 22px 70px #0008;transition:transform .2s,border-color .2s,box-shadow .2s}
 .card:hover,.card:focus-visible{transform:translateY(-5px);border-color:#9ce7ff;box-shadow:0 26px 80px #007ecb35;outline:none}
 .card:before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-75px;top:-95px;background:radial-gradient(circle,#59c8ff50,transparent 68%)}
 .icon{font-size:52px;line-height:1.2;margin-bottom:20px;filter:drop-shadow(0 0 18px #50bfff66)}
 .tag{color:#77d9ff;font-size:11px;letter-spacing:.18em;font-weight:800;text-transform:uppercase}
 h2{font-size:clamp(23px,3vw,32px);margin:9px 0 10px}
 p{color:#c1d2e8;line-height:1.65;margin:0 0 24px}
-.open{margin-top:auto;display:inline-flex;align-items:center;gap:10px;width:max-content;border:1px solid #70c9f0a6;background:#0b75ae;color:#fff;border-radius:12px;padding:13px 18px;font-weight:800}
+.open{margin-top:auto;min-height:54px;justify-content:center;font-size:15px;display:inline-flex;align-items:center;gap:10px;width:max-content;border:1px solid #70c9f0a6;background:#0b75ae;color:#fff;border-radius:12px;padding:13px 18px;font-weight:800}
 .card:nth-child(2){background:linear-gradient(145deg,#26334a,#101426 70%);border-color:#b9a4e26b}
 .card:nth-child(2) .tag{color:#c4b5fd}.card:nth-child(2) .open{background:#6246a7;border-color:#c7b7ff}
 footer{text-align:center;color:#8296b3;font-size:12px;margin-top:32px}
 @media(max-width:700px){main{padding-top:42px}.grid{grid-template-columns:1fr}.card{min-height:260px;padding:23px}.sub{margin-bottom:28px}}
 </style></head><body><div class="stars"></div><main>
 <div class="eyebrow">NASA-SPACEx · MISSION SELECTION</div><h1>GRAVITY PLAYGROUND</h1>
-<p class="sub">Choose your adventure. Each experience opens separately in its own full-screen space environment.</p>
+<p class="sub">Choose one of your two adventures. Tap either large button below to open it separately.</p>
 <section class="grid" aria-label="Choose an experience">
-<a class="card" href="./galaxy-lab/" aria-label="Open Galaxy Lab">
+<a class="card" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/gravity-playground/galaxy-lab/" aria-label="Open Galaxy Lab">
 <div class="icon">🌌</div><div class="tag">Explore · Discover · Learn</div><h2>Try Galaxy Lab</h2>
 <p>Enter the original Galaxy Lab experience and continue exploring planets, spacecraft and astronaut missions.</p><span class="open">ENTER GALAXY LAB <span aria-hidden="true">↗</span></span></a>
-<a class="card" href="../mark-16/" aria-label="Open Mark 16 Surface Explorer">
+<a class="card" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/mark-16/" aria-label="Open Mark 16 Surface Explorer">
 <div class="icon">🧑‍🚀</div><div class="tag">3D surface exploration</div><h2>Mark 16: Surface Explorer</h2>
 <p>Drive across planetary terrain, pilot spacecraft, explore the Moon and complete astronaut training missions.</p><span class="open">LAUNCH MARK 16 <span aria-hidden="true">↗</span></span></a>
-</section><footer>Two separate adventures · One mission hub</footer></main></body></html>
+</section><footer>Two separate adventures · One mission hub<br><a style="display:inline-block;margin-top:14px;color:#9edfff" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/">Back to NASA-SPACEx home</a></footer></main></body></html>
