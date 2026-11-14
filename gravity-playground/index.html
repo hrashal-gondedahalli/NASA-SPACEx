@@ -63,13 +63,10 @@ button:hover{background:#1c4a70}
    <option value="titan">12. Titan Exploration</option>
   </select>
   <button id="start">LAUNCH MISSION</button>
-  <button id="openMark15" type="button" style="width:100%;margin-top:10px;background:#263d59">OPEN MARK 15 · SURFACE EXPLORER</button>
-  <p style="font-size:11px;color:#9db8d4;margin:8px 0 0">Two adventures in one Gravity Playground: 12 missions here, plus the Mark 15 astronaut missions.</p>
   <p style="font-size:12px">Keyboard: W/S move · A/D turn · Q/C spacecraft roll · Arrow keys spacecraft pitch · Space/Shift altitude · E interact · P pause</p>
  </div>
 </div>
 
-<section id="mark15Overlay" style="display:none;position:fixed;inset:0;z-index:20;background:#020611"><button id="closeMark15" type="button" style="position:absolute;z-index:22;top:12px;left:12px;background:#102b47">← BACK TO GRAVITY PLAYGROUND</button><iframe title="Mark 15 Surface Explorer" src="../mark-15/" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe></section>
 <div id="hud">
  <div id="top">
   <div class="panel"><div id="brand">SPACE BOYS</div><div style="font-size:10px;color:#a7c9e8">ASTRONAUT FIELD SYSTEM</div></div>
@@ -441,8 +438,6 @@ document.querySelectorAll("#mobile button").forEach(btn=>{
  btn.addEventListener("pointerdown",e=>{e.preventDefault();setKey(code,true);if(code==="KeyE")interact();});
  ["pointerup","pointerleave","pointercancel"].forEach(ev=>btn.addEventListener(ev,()=>setKey(code,false)));
 });
-document.getElementById("openMark15").addEventListener("click",()=>{document.getElementById("menu").style.display="none";document.getElementById("mark15Overlay").style.display="block";});
-document.getElementById("closeMark15").addEventListener("click",()=>{document.getElementById("mark15Overlay").style.display="none";document.getElementById("menu").style.display="flex";});
 document.getElementById("start").addEventListener("click",()=>{
  loadMission(document.getElementById("missionSelect").value);
  beep(520,.18);
