@@ -46,6 +46,10 @@
   cue(name){
    if(!this.ctx||this.ctx.state!=='running'||this.settings.muted||!this.settings.volume||this.blocked)return false;
    const notes={
+    sample:[[523,.08,0,.08],[784,.12,.1,.07]],
+    flag:[[392,.09,0,.08],[587,.18,.12,.07]],
+    step:[[65,.05,0,.025]],
+    alert:[[880,.08,0,.06],[660,.1,.14,.06]],
     build:[[500,.035,0,.08],[740,.04,.035,.05]],
     launch:[[440,.12,0,.1],[660,.14,.15,.1]],
     ignition:[[85,.16,0,.15]],
@@ -82,3 +86,4 @@
  }
  return Sound;
 });
+
