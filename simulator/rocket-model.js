@@ -1,8 +1,15 @@
 import * as THREE from './vendor/three.module.min.js';
+import { mergeGeometries } from './vendor/BufferGeometryUtils.js';
 
 // Original parametric parts in metres. Shared by the catalogue, builder and flight.
 // These are illustrative engineering models, not manufacturer CAD or specifications.
 const P=window.OrbitalPhysics;
+function batchPart(root){
+ root.updateMatrixWorld(true);const inverse=root.matrixWorld.clone().invert(),batches=new Map(),originals=new Set();
+ root.traverse(o=>{if(!o.isMesh)return;const g=o.geometry.clone().applyMatrix4(new THREE.Matrix4().multiplyMatrices(inverse,o.matrixWorld));if(!batches.has(o.material))batches.set(o.material,[]);batches.get(o.material).push(g);originals.add(o.geometry);});
+ root.clear();for(const [material,geometries]of batches){const merged=mergeGeometries(geometries,false);if(!merged)throw Error('Incompatible part geometry');root.add(new THREE.Mesh(merged,material));geometries.forEach(g=>g.dispose());}originals.forEach(g=>g.dispose());return root;
+}
+
 export function createKit(finish='classic'){
  const steel=finish==='steel',thermal=finish==='thermal';
  const mat=(color,metalness=.25,roughness=.55)=>new THREE.MeshStandardMaterial({color,metalness,roughness});
@@ -52,7 +59,7 @@ export function createKit(finish='classic'){
 }
 
 export function createRocket(d,state){
- const kit=createKit(d.finish),g=new THREE.Group();let y=0;const attach=(parent,part,kind,stage,index,offset=0)=>{part.position.y+=offset;part.userData.part={kind,stage,index};parent.add(part);return part;};
+ const kit=createKit(d.finish),g=new THREE.Group();let y=0;const attach=(parent,part,kind,stage,index,offset=0)=>{batchPart(part);part.position.y+=offset;part.userData.part={kind,stage,index};parent.add(part);return part;};
  for(let i=state.stage;i<d.stages.length;i++){
   const st=d.stages[i],stage=new THREE.Group(),base=y;stage.userData.stage=i;g.add(stage);
   for(let e=0;e<st.engines;e++){const p=kit.engine(st.engineType),angle=e*Math.PI*2/st.engines;p.position.x=st.engines===1?0:Math.cos(angle)*.65;p.position.z=st.engines===1?0:Math.sin(angle)*.65;attach(stage,p,'engine',i,e,y);}
@@ -76,7 +83,7 @@ export function createRocket(d,state){
 export function renderCatalogue(items){
  // One short-lived renderer for every thumbnail, rather than one WebGL context per tile.
  let renderer;const kit=createKit();try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});renderer.setSize(128,128);renderer.setPixelRatio(1);renderer.outputColorSpace=THREE.SRGBColorSpace;const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(32,1,.01,100);scene.add(new THREE.HemisphereLight(0xffffff,0x65798a,2));const light=new THREE.DirectionalLight(0xfff3df,3);light.position.set(-3,5,6);scene.add(light);
-  for(const item of items){const model=kit.part(item.id);scene.add(model);model.rotation.y=-.35;const box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3()),dist=Math.max(size.y,size.x,size.z)*2.25+.3;camera.position.copy(center).add(new THREE.Vector3(dist*.18,dist*.12,dist));camera.lookAt(center);renderer.render(scene,camera);const canvas=document.createElement('canvas');canvas.width=canvas.height=128;canvas.className='part-render';canvas.setAttribute('aria-hidden','true');canvas.getContext('2d').drawImage(renderer.domElement,0,0);document.querySelector('[data-add="'+item.id+'"] .part-art').replaceWith(canvas);scene.remove(model);disposeModel(model);}
+  for(const item of items){const model=batchPart(kit.part(item.id));scene.add(model);model.rotation.y=-.35;const box=new THREE.Box3().setFromObject(model),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3()),dist=Math.max(size.y,size.x,size.z)*2.25+.3;camera.position.copy(center).add(new THREE.Vector3(dist*.18,dist*.12,dist));camera.lookAt(center);renderer.render(scene,camera);const canvas=document.createElement('canvas');canvas.width=canvas.height=128;canvas.className='part-render';canvas.setAttribute('aria-hidden','true');canvas.getContext('2d').drawImage(renderer.domElement,0,0);document.querySelector('[data-add="'+item.id+'"] .part-art').replaceWith(canvas);scene.remove(model);disposeModel(model);}
  }catch(error){console.warn('Part thumbnails unavailable; catalogue labels remain usable.',error);}finally{renderer?.dispose();renderer?.forceContextLoss();}
 }
 export function disposeModel(group){const geometries=new Set(),materials=new Set();group.traverse(o=>{if(o.geometry)geometries.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:o.material?[o.material]:[])materials.add(m);});geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());}
