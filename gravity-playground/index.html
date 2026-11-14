@@ -4,38 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b1720">
-<title>Gravity Playground · Mission Hub</title>
+<title>Space Voyage · Mission Hub</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#f3f7fb;background:#05090e}
 body{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,#172a38 0,#0b151e 48%,#05090e 100%)}
-main{width:min(880px,100%);padding:42px 38px 36px;border:1px solid #344652;border-radius:34px;background:linear-gradient(145deg,rgba(17,31,41,.98),rgba(10,21,30,.98));box-shadow:0 24px 80px #0009}
-.logo{width:64px;height:64px;display:grid;place-items:center;border:2px solid #d7e5ee;border-radius:3px;background:#081321;font-size:31px;box-shadow:0 0 0 1px #607887}
-.eyebrow{margin:34px 0 18px;color:#b8d9c7;font-size:13px;letter-spacing:.22em;font-weight:800}
-h1{margin:0 0 44px;font-size:clamp(32px,5vw,42px);line-height:1.1;letter-spacing:-.035em;color:#f4f7fb}
-.intro{max-width:760px;margin:0 0 26px;color:#bdcbd5;font-size:clamp(16px,2.4vw,23px);line-height:1.55}
-.actions{display:grid;gap:18px}
-.action{min-height:84px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px 22px;border:2px solid #31454e;border-radius:27px;color:#f3f7fb;text-decoration:none;font-size:clamp(18px,2.7vw,25px);font-weight:800;transition:transform .18s,border-color .18s,background .18s}
-.action.primary{background:#172b2e;border-color:#263e40}
-.action.secondary{background:transparent;color:#cce7d3}
-.action:hover,.action:focus-visible{transform:translateY(-2px);border-color:#9bc9ba;outline:none}
-.action.primary:hover{background:#1d3838}
-.action.secondary:hover{background:#14252a}
-footer{margin-top:26px;text-align:center;color:#8295a2;font-size:12px}
-@media(max-width:560px){body{padding:14px}main{padding:28px 22px 24px;border-radius:26px}.logo{width:54px;height:54px}.eyebrow{margin-top:27px;font-size:11px;letter-spacing:.16em}h1{margin-bottom:28px}.action{min-height:72px;border-radius:22px}}
+main{width:min(960px,100%);padding:34px;border:1px solid #344652;border-radius:30px;background:linear-gradient(145deg,rgba(17,31,41,.98),rgba(10,21,30,.98));box-shadow:0 24px 80px #0009}
+.logo{width:58px;height:58px;display:grid;place-items:center;border:2px solid #d7e5ee;border-radius:3px;background:#081321;font-size:29px;box-shadow:0 0 0 1px #607887}
+.eyebrow{margin:26px 0 14px;color:#b8d9c7;font-size:12px;letter-spacing:.2em;font-weight:800}
+h1{margin:0 0 18px;font-size:clamp(32px,5vw,44px);line-height:1.1;letter-spacing:-.035em;color:#f4f7fb}
+.intro{max-width:760px;margin:0 0 28px;color:#bdcbd5;font-size:clamp(15px,2vw,18px);line-height:1.55}
+.adventures{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.adventure{min-height:190px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:18px;padding:22px;border:1px solid #31454e;border-radius:22px;color:#f3f7fb;text-decoration:none;background:#14242c;transition:transform .18s,border-color .18s,background .18s}
+.adventure.primary{background:linear-gradient(145deg,#1b3438,#14262e)}
+.adventure.secondary{background:linear-gradient(145deg,#14232d,#101c26)}
+.adventure:hover,.adventure:focus-visible{transform:translateY(-3px);border-color:#9bc9ba;outline:none}
+.adventure-icon{font-size:30px;line-height:1}
+.adventure-title{font-size:clamp(17px,2vw,21px);font-weight:850;line-height:1.25}
+.adventure-description{margin-top:8px;color:#b9c8d1;font-size:14px;line-height:1.45}
+.open{align-self:flex-end;color:#cce7d3;font-size:13px;font-weight:800}
+footer{margin-top:22px;text-align:center;color:#8295a2;font-size:12px}
+@media(max-width:620px){body{padding:14px}main{padding:26px 20px 22px;border-radius:25px}.adventures{grid-template-columns:1fr}.adventure{min-height:150px;padding:20px}.eyebrow{font-size:10px;letter-spacing:.15em}}
 </style>
 </head>
 <body>
 <main>
 <div class="logo" aria-hidden="true">🌌</div>
-<div class="eyebrow">ONE GRAVITY PLAYGROUND HUB · TWO ADVENTURES</div>
-<h1>Gravity Playground</h1>
-<p class="intro">Choose either adventure from this single mission hub. Continue with the classic Galaxy Lab, or jump into the full-screen Mark 16 3D surface explorer.</p>
-<nav class="actions" aria-label="Choose an adventure">
-<a class="action primary" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/gravity-playground/galaxy-lab/">🌌 Try Galaxy Lab</a>
-<a class="action secondary" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/mark-16/">👨‍🚀 Mark 16: Surface Explorer ↗</a>
+<div class="eyebrow">ONE SPACE VOYAGE HUB · TWO ADVENTURES</div>
+<h1>Space Voyage</h1>
+<p class="intro">Choose either adventure from this single mission hub. Keep your classic rocket-building and flight journey, or jump into the full-screen Mark 15 3D astronaut adventure.</p>
+<nav class="adventures" aria-label="Choose an adventure">
+<a class="adventure primary" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/gravity-playground/galaxy-lab/">
+  <span class="adventure-icon" aria-hidden="true">🚀</span>
+  <span><span class="adventure-title">Classic Space Voyage</span><span class="adventure-description">Build your rocket and continue your spaceflight journey.</span></span>
+  <span class="open">Open adventure ↗</span>
+</a>
+<a class="adventure secondary" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/mark-15/">
+  <span class="adventure-icon" aria-hidden="true">👨‍🚀</span>
+  <span><span class="adventure-title">Mark 15: Surface Explorer</span><span class="adventure-description">Explore the planetary surface in a full-screen 3D adventure.</span></span>
+  <span class="open">Open adventure ↗</span>
+</a>
 </nav>
-<footer>Two separate adventures · One mission hub</footer>
+<footer>Two adventures · One Space Voyage hub</footer>
 </main>
 </body>
 </html>
