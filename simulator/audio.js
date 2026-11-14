@@ -24,9 +24,9 @@
      this.noise=c.createBufferSource();this.noise.buffer=buffer;this.noise.loop=true;
      this.filter=c.createBiquadFilter();this.filter.type='lowpass';this.filter.frequency.value=240;
      this.noise.connect(this.filter);this.filter.connect(this.engine);this.noise.start();
-     const length=c.sampleRate*12,buffer=c.createBuffer(1,length,c.sampleRate),samples=buffer.getChannelData(0),bass=[65.41,73.42,55,82.41],lead=[261.63,329.63,392,329.63,293.66,220,246.94,293.66];
+     const length=c.sampleRate*12,musicBuf=c.createBuffer(1,length,c.sampleRate),samples=musicBuf.getChannelData(0),bass=[65.41,73.42,55,82.41],lead=[261.63,329.63,392,329.63,293.66,220,246.94,293.66];
      for(let i=0;i<length;i++){const t=i/c.sampleRate,bar=Math.floor(t/3)%4,step=Math.floor(t/1.5)%8,phase=t%1.5,fade=Math.min(1,phase/.12,(1.5-phase)/.18);const low=Math.sin(2*Math.PI*bass[bar]*t)*.12;const note=lead[step],melody=(Math.sin(2*Math.PI*note*t)+.32*Math.sin(2*Math.PI*note*2*t))*.045*Math.max(0,fade);const pad=(Math.sin(2*Math.PI*(bass[bar]*2)*t)+Math.sin(2*Math.PI*(bass[bar]*2.5)*t))*.025;samples[i]=low+melody+pad;}
-     this.musicBuffer=buffer;
+     this.musicBuffer=musicBuf;
      this.rumble=c.createOscillator();this.rumble.type='sine';this.rumble.frequency.value=42;
      this.rumbleGain=c.createGain();this.rumbleGain.gain.value=.15;this.rumble.connect(this.rumbleGain);this.rumbleGain.connect(this.engine);this.rumble.start();
     }
