@@ -1,34 +1,41 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050b18"><title>Gravity Playground · Mission Hub</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1720">
+<title>Gravity Playground · Mission Hub</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#f4f8ff;background:#030817}
-body{min-height:100vh;overflow-x:hidden;background:radial-gradient(ellipse at 50% 5%,#16345c 0,#09162e 36%,#030817 75%)}
-.stars{position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 12% 18%,#fff9 45%,transparent 60%),radial-gradient(1px 1px at 75% 25%,#dff6ffb8 45%,transparent 60%),radial-gradient(2px 2px at 88% 72%,#fff8 45%,transparent 60%),radial-gradient(1px 1px at 32% 82%,#dff6ffb8 45%,transparent 60%),radial-gradient(1px 1px at 54% 48%,#fff9 45%,transparent 60%);opacity:.8}
-main{position:relative;width:min(1080px,92vw);margin:auto;padding:clamp(42px,9vh,90px) 0 50px}
-.eyebrow{text-align:center;color:#83d9ff;font-size:12px;letter-spacing:.28em;font-weight:800}
-h1{text-align:center;font-size:clamp(36px,7vw,68px);line-height:1.05;margin:12px 0;color:#f2f8ff;letter-spacing:.025em;text-shadow:0 0 35px #51b9ff55}
-.sub{text-align:center;color:#b9cce5;font-size:clamp(14px,2vw,18px);margin:0 auto 42px;max-width:650px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;width:100%}
-.card{position:relative;cursor:pointer;display:flex;flex-direction:column;min-height:320px;padding:28px;border:1px solid #6cb9e66b;border-radius:24px;text-decoration:none;color:inherit;overflow:hidden;background:linear-gradient(145deg,#142d4beF,#071326f2 70%);box-shadow:0 22px 70px #0008;transition:transform .2s,border-color .2s,box-shadow .2s}
-.card:hover,.card:focus-visible{transform:translateY(-5px);border-color:#9ce7ff;box-shadow:0 26px 80px #007ecb35;outline:none}
-.card:before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;right:-75px;top:-95px;background:radial-gradient(circle,#59c8ff50,transparent 68%)}
-.icon{font-size:52px;line-height:1.2;margin-bottom:20px;filter:drop-shadow(0 0 18px #50bfff66)}
-.tag{color:#77d9ff;font-size:11px;letter-spacing:.18em;font-weight:800;text-transform:uppercase}
-h2{font-size:clamp(23px,3vw,32px);margin:9px 0 10px}
-p{color:#c1d2e8;line-height:1.65;margin:0 0 24px}
-.open{margin-top:auto;min-height:54px;justify-content:center;font-size:15px;display:inline-flex;align-items:center;gap:10px;width:max-content;border:1px solid #70c9f0a6;background:#0b75ae;color:#fff;border-radius:12px;padding:13px 18px;font-weight:800}
-.card:nth-child(2){background:linear-gradient(145deg,#26334a,#101426 70%);border-color:#b9a4e26b}
-.card:nth-child(2) .tag{color:#c4b5fd}.card:nth-child(2) .open{background:#6246a7;border-color:#c7b7ff}
-footer{text-align:center;color:#8296b3;font-size:12px;margin-top:32px}
-@media(max-width:700px){main{padding-top:42px}.grid{grid-template-columns:1fr}.card{min-height:260px;padding:23px}.sub{margin-bottom:28px}}
-</style></head><body><div class="stars"></div><main>
-<div class="eyebrow">NASA-SPACEx · MISSION SELECTION</div><h1>GRAVITY PLAYGROUND</h1>
-<p class="sub">Choose one of your two adventures. Tap either large button below to open it separately.</p>
-<section class="grid" aria-label="Choose an experience">
-<a class="card" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/gravity-playground/galaxy-lab/" aria-label="Open Galaxy Lab">
-<div class="icon">🌌</div><div class="tag">Explore · Discover · Learn</div><h2>Try Galaxy Lab</h2>
-<p>Enter the original Galaxy Lab experience and continue exploring planets, spacecraft and astronaut missions.</p><span class="open">ENTER GALAXY LAB <span aria-hidden="true">↗</span></span></a>
-<a class="card" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/mark-16/" aria-label="Open Mark 16 Surface Explorer">
-<div class="icon">🧑‍🚀</div><div class="tag">3D surface exploration</div><h2>Mark 16: Surface Explorer</h2>
-<p>Drive across planetary terrain, pilot spacecraft, explore the Moon and complete astronaut training missions.</p><span class="open">LAUNCH MARK 16 <span aria-hidden="true">↗</span></span></a>
-</section><footer>Two separate adventures · One mission hub<br><a style="display:inline-block;margin-top:14px;color:#9edfff" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/">Back to NASA-SPACEx home</a></footer></main></body></html>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:#f3f7fb;background:#05090e}
+body{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,#172a38 0,#0b151e 48%,#05090e 100%)}
+main{width:min(880px,100%);padding:42px 38px 36px;border:1px solid #344652;border-radius:34px;background:linear-gradient(145deg,rgba(17,31,41,.98),rgba(10,21,30,.98));box-shadow:0 24px 80px #0009}
+.logo{width:64px;height:64px;display:grid;place-items:center;border:2px solid #d7e5ee;border-radius:3px;background:#081321;font-size:31px;box-shadow:0 0 0 1px #607887}
+.eyebrow{margin:34px 0 18px;color:#b8d9c7;font-size:13px;letter-spacing:.22em;font-weight:800}
+h1{margin:0 0 44px;font-size:clamp(32px,5vw,42px);line-height:1.1;letter-spacing:-.035em;color:#f4f7fb}
+.intro{max-width:760px;margin:0 0 26px;color:#bdcbd5;font-size:clamp(16px,2.4vw,23px);line-height:1.55}
+.actions{display:grid;gap:18px}
+.action{min-height:84px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px 22px;border:2px solid #31454e;border-radius:27px;color:#f3f7fb;text-decoration:none;font-size:clamp(18px,2.7vw,25px);font-weight:800;transition:transform .18s,border-color .18s,background .18s}
+.action.primary{background:#172b2e;border-color:#263e40}
+.action.secondary{background:transparent;color:#cce7d3}
+.action:hover,.action:focus-visible{transform:translateY(-2px);border-color:#9bc9ba;outline:none}
+.action.primary:hover{background:#1d3838}
+.action.secondary:hover{background:#14252a}
+footer{margin-top:26px;text-align:center;color:#8295a2;font-size:12px}
+@media(max-width:560px){body{padding:14px}main{padding:28px 22px 24px;border-radius:26px}.logo{width:54px;height:54px}.eyebrow{margin-top:27px;font-size:11px;letter-spacing:.16em}h1{margin-bottom:28px}.action{min-height:72px;border-radius:22px}}
+</style>
+</head>
+<body>
+<main>
+<div class="logo" aria-hidden="true">🌌</div>
+<div class="eyebrow">ONE GRAVITY PLAYGROUND HUB · TWO ADVENTURES</div>
+<h1>Gravity Playground</h1>
+<p class="intro">Choose either adventure from this single mission hub. Continue with the classic Galaxy Lab, or jump into the full-screen Mark 16 3D surface explorer.</p>
+<nav class="actions" aria-label="Choose an adventure">
+<a class="action primary" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/gravity-playground/galaxy-lab/">🌌 Try Galaxy Lab</a>
+<a class="action secondary" href="https://hrashal-gondedahalli.github.io/NASA-SPACEx/mark-16/">👨‍🚀 Mark 16: Surface Explorer ↗</a>
+</nav>
+<footer>Two separate adventures · One mission hub</footer>
+</main>
+</body>
+</html>
