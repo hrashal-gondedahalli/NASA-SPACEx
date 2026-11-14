@@ -28,6 +28,7 @@
   }));
  }
  function navigate(route,{replace=false,restore=false}={}){
+  if(route==='more-adventures')route='missions';
   if(!sections.has(route)&&!screens.has(route))route='home';
   // History restores a launch at readiness; it must not ignite a new flight.
   if(restore&&route==='launch')route='testing';
