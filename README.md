@@ -100,3 +100,14 @@ The builder, part catalogue and flight share original parametric Three.js engine
 Choose **Twin Lift** for a launchable two-stage rocket with a fairing, a central engine cluster and two side boosters, inspired by the supplied reference. Tap a section in the blueprint or 3D preview to select it; **Parts** provides an accessible list of the same components. The inspector moves selected tanks up/down in their stage or removes a selected component. Undo restores edits. Removing one of a pair of boosters preserves the remaining side. **Parts → Finish** offers black/white, brushed steel or thermal orange; finishes are cosmetic. Save/load includes tank order, finish and booster side.
 
 Assembly remains a bounded two-stage snap stack, with 6 tanks and 3 same-type engines per stage and up to 2 side boosters. It is not arbitrary free-position CAD. Tank and engine variants drive existing fuel, mass and thrust; the visual fittings do not introduce separate physical subsystems. Existing point-mass flight, staging, missions and surface exploration remain in place. Tests cover selected-component edits, invariants, save compatibility, mouse/touch picking, catalogue rendering, responsive layouts, launch and separation.
+
+
+## Cinematic Mission Control
+
+The homepage uses an Earth–Moon dashboard inspired by the supplied visual reference. Build a rocket opens the existing Rocket Lab, the Moon journey opens Expedition, Solar system opens the existing immersive explorer, and the Moonbase ribbon opens the existing outpost game. Training, practice, astronaut profiles and badges remain below the dashboard.
+
+A single bundled Three.js renderer draws a textured interactive world and an outline preview of the saved rocket (or a labeled starter preview). Earth/Moon buttons change the preview; drag or arrow keys rotate it. The view is illustrative, not a live ephemeris or a scale orbital map. It respects reduced-motion preferences, has a pause button, stops rendering when hidden/offscreen, and falls back to a local texture when WebGL is unavailable. No external image/model service or backend is required.
+
+The dashboard reads the existing simulator design/records, validated lunar survey and outpost saves, and current Academy progress. It never rewrites these saves or invents mission statistics. The five journey milestones reflect a valid saved rocket, recorded launch height, orbit, lunar landing and completed survey. Resume survey opens only a validated saved surface session; it never restores or advances an orbital flight. Broken or blocked storage leaves navigation and training usable.
+
+Dashboard tests cover real/empty/corrupt saves, read-only state projection, desktop/mobile rendering and controls, reduced motion, activity navigation, cross-app survey resume, and combined WebGL/storage failure. Existing app regression tests remain enabled.
