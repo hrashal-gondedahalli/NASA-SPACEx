@@ -32,3 +32,18 @@ for(const epoch of ['2026-11-14','2026-11-20','2026-12-01','2027-01-01'])test('f
  for(let i=0;i<10000&&s.phase==='flying'&&s.fuel[s.stage]>0;i++)E.advance(s,{},2);
  assert.equal(s.phase,'landed');assert(s.time>time);assert(s.fuel[s.stage]>0&&s.fuel[s.stage]<fuel);assert.equal(s.expedition.mission,'landed');
 });
+
+test('orbit guidance hands over without an attitude snap and coasting preserves inertial pointing',()=>{
+ const s=E.create(E.DEFAULT);s.phase='flying';E.command(s,'orbit');let previous=[...s.direction],worst=0;
+ for(let i=0;i<20000&&s.expedition.autopilot!=='off';i++){E.advance(s,{},.05);worst=Math.max(worst,Math.acos(P.clamp(P.dot(previous,s.direction),-1,1)));previous=[...s.direction];}
+ assert.equal(s.expedition.mission,'earth-orbit');const direction=[...s.direction];E.advance(s,{},.05);worst=Math.max(worst,Math.acos(P.clamp(P.dot(direction,s.direction),-1,1)));assert(worst<2*Math.PI/180,'No frame may snap by two degrees at 0.05 s cadence');
+ E.advance(s,{},30);assert(P.length(sub(direction,s.direction))<1e-9,'No input means no uncommanded rotation in inertial space');
+});
+test('cancelling guidance preserves current pointing and manual steering begins from that attitude',()=>{
+ const s=E.create(E.DEFAULT);s.phase='flying';E.command(s,'orbit');E.advance(s,{},150);assert(s.expedition.autopilot!=='off');const direction=[...s.direction];E.command(s,'manual');E.advance(s,{},.05);assert(P.length(sub(direction,s.direction))<1e-9);
+ const fuel=s.rcsFuel;E.advance(s,{yaw:1},.05);const turn=Math.acos(P.clamp(P.dot(direction,s.direction),-1,1));assert(turn>0&&turn<.1);assert(s.rcsFuel<fuel);
+});
+test('lunar coast prediction stays in the moving Moon frame rather than spiralling away',()=>{
+ const s=E.create(E.DEFAULT),moon=E.center(s,'Moon'),r=P.BODIES.Moon.radius+30000;s.phase='flying';s.expedition.p=P.add(moon.p,[0,r,0]);s.expedition.v=P.add(moon.v,[Math.sqrt(P.BODIES.Moon.mu/r),0,0]);E.localize(s);
+ assert.equal(s.body,'Moon');const saved=JSON.stringify(s),points=E.predict(s);assert.equal(JSON.stringify(s),saved);assert(points.length>200);assert(points.every(p=>Math.abs(P.length(p)-r)<5000),'A circular 204 km radius lunar orbit must stay near that radius throughout the prediction');
+});
