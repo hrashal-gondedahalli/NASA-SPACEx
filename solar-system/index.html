@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050816">
+<title>NASA-SPACEx | Solar System Explorer</title>
+<style>
+:root{color-scheme:dark;--bg:#050816;--panel:rgba(13,22,48,.82);--line:rgba(148,180,255,.18);--muted:#9aabd0;--cyan:#72e5ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 42%,#172653 0,#080f25 38%,#030611 78%);color:#f4f7ff;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh;overflow-x:hidden}
+header{padding:26px clamp(18px,5vw,64px) 10px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font-size:13px;letter-spacing:.2em;color:var(--cyan);font-weight:800}.tag{font-size:12px;color:#a9b8dc;border:1px solid var(--line);border-radius:99px;padding:8px 12px}
+main{max-width:1280px;margin:auto;padding:22px clamp(16px,4vw,48px) 60px}.intro{text-align:center;margin:18px auto 24px}.eyebrow{color:var(--cyan);font-size:11px;letter-spacing:.24em;font-weight:800}.intro h1{font-size:clamp(32px,5vw,58px);line-height:1.05;margin:12px 0;background:linear-gradient(90deg,#fff,#a8d9ff 55%,#b9a8ff);background-clip:text;color:transparent}.intro p{color:var(--muted);margin:0 auto;max-width:650px;line-height:1.6}
+.stage{position:relative;min-height:570px;border:1px solid var(--line);border-radius:26px;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,rgba(30,57,111,.25),rgba(4,9,24,.86) 65%);box-shadow:0 25px 90px #0008}
+.stars,.stars:before,.stars:after{position:absolute;inset:0;content:"";pointer-events:none;background-image:radial-gradient(1px 1px at 10% 20%,#fff 99%,transparent),radial-gradient(1px 1px at 72% 16%,#fff 99%,transparent),radial-gradient(2px 2px at 83% 73%,#b8d5ff 99%,transparent),radial-gradient(1px 1px at 28% 82%,#fff 99%,transparent),radial-gradient(1px 1px at 47% 12%,#fff 99%,transparent),radial-gradient(1px 1px at 91% 42%,#fff 99%,transparent);background-size:330px 260px;opacity:.75}
+.solar{position:absolute;width:min(88vw,610px);height:min(88vw,610px);max-height:570px;max-width:570px;left:50%;top:50%;transform:translate(-50%,-50%)}
+.sun{position:absolute;width:62px;height:62px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff8b4,#ffbd35 45%,#f36b12 78%);box-shadow:0 0 28px 10px #ffb52a99,0 0 85px 30px #ff8a1640;z-index:2}
+.orbit{position:absolute;left:50%;top:50%;border:1px solid rgba(142,173,236,.22);border-radius:50%;transform:translate(-50%,-50%);animation:spin linear infinite}
+.orbit .planet{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);border:0;border-radius:50%;cursor:pointer;box-shadow:0 0 12px #ffffff40;transition:filter .2s,scale .2s}
+.orbit .planet:hover,.orbit .planet.active{filter:brightness(1.45);scale:1.35;outline:2px solid #d8f6ff;outline-offset:4px}
+.o1{width:112px;height:112px;animation-duration:8s}.o2{width:165px;height:165px;animation-duration:13s}.o3{width:220px;height:220px;animation-duration:18s}.o4{width:280px;height:280px;animation-duration:24s}.o5{width:370px;height:370px;animation-duration:34s}.o6{width:460px;height:460px;animation-duration:44s}.o7{width:530px;height:530px;animation-duration:54s}.o8{width:590px;height:590px;animation-duration:64s}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.mercury{width:8px;height:8px;background:#aaa7a0}.venus{width:13px;height:13px;background:#e8bd78}.earth{width:15px;height:15px;background:radial-gradient(circle at 35% 35%,#a4f5ff 0 18%,#238bdb 20% 58%,#3dbb79 60%)}.mars{width:12px;height:12px;background:#d66a43}.jupiter{width:29px;height:29px;background:repeating-linear-gradient(0deg,#c58b61 0 4px,#ead0a1 4px 8px)}.saturn{width:25px;height:25px;background:#e6d19a}.saturn:after{content:"";position:absolute;left:-9px;top:8px;width:43px;height:9px;border:3px solid #c9b37d;border-radius:50%;transform:rotate(-18deg)}.uranus{width:19px;height:19px;background:#8edbdc}.neptune{width:18px;height:18px;background:#426ee9}
+.legend{position:absolute;left:18px;bottom:16px;color:#91a4cf;font-size:11px;letter-spacing:.08em}.hint{position:absolute;right:18px;bottom:16px;color:#a8b9df;font-size:11px}
+.info{display:grid;grid-template-columns:1.1fr 1fr;gap:16px;margin-top:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px;backdrop-filter:blur(12px)}.planet-title{display:flex;align-items:center;gap:13px}.planet-dot{width:34px;height:34px;border-radius:50%;background:var(--planet,#72bfff);box-shadow:0 0 22px var(--planet,#72bfff)}h2{font-size:25px;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:4px}.desc{color:#c2cde5;line-height:1.65;font-size:14px;margin:18px 0}.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.fact{padding:12px;border-radius:12px;background:#ffffff08;border:1px solid #ffffff10}.fact small{display:block;color:#91a4cf;font-size:10px;letter-spacing:.1em;text-transform:uppercase}.fact strong{display:block;margin-top:6px;font-size:14px}.planet-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}.planet-list button{background:#101d3b;color:#c9d8fa;border:1px solid var(--line);border-radius:99px;padding:9px 12px;cursor:pointer;font-size:12px}.planet-list button[aria-pressed=true]{background:#1b4770;border-color:#72dfff;color:white}
+footer{text-align:center;color:#7284aa;font-size:11px;padding:26px 12px 0;line-height:1.6}
+@media(max-width:720px){.stage{min-height:440px}.solar{transform:translate(-50%,-50%) scale(.72)}.info{grid-template-columns:1fr}.legend{font-size:9px}.hint{font-size:9px}.tag{display:none}}
+@media(prefers-reduced-motion:reduce){.orbit{animation:none}}
+</style>
+</head>
+<body>
+<header><div class="brand">NASA-SPACEx <span style="color:#7184ad">/ EXPLORATION LAB</span></div><div class="tag">INTERACTIVE SOLAR SYSTEM · SAMPLE</div></header>
+<main>
+<section class="intro"><div class="eyebrow">OUR COSMIC NEIGHBOURHOOD</div><h1>Explore the Solar System</h1><p>Travel from the Sun to the distant ice giants. Select any planet to discover its size, distance from the Sun and fascinating facts.</p></section>
+<section class="stage" aria-label="Animated solar system. Select a planet to learn about it."><div class="stars"></div><div class="solar">
+<div class="sun" title="Sun"></div>
+<div class="orbit o1"><button class="planet mercury" data-planet="Mercury" aria-label="Mercury"></button></div>
+<div class="orbit o2"><button class="planet venus" data-planet="Venus" aria-label="Venus"></button></div>
+<div class="orbit o3"><button class="planet earth active" data-planet="Earth" aria-label="Earth"></button></div>
+<div class="orbit o4"><button class="planet mars" data-planet="Mars" aria-label="Mars"></button></div>
+<div class="orbit o5"><button class="planet jupiter" data-planet="Jupiter" aria-label="Jupiter"></button></div>
+<div class="orbit o6"><button class="planet saturn" data-planet="Saturn" aria-label="Saturn"></button></div>
+<div class="orbit o7"><button class="planet uranus" data-planet="Uranus" aria-label="Uranus"></button></div>
+<div class="orbit o8"><button class="planet neptune" data-planet="Neptune" aria-label="Neptune"></button></div>
+</div><div class="legend">☀ SUN AT THE CENTRE · ORBITS ARE ILLUSTRATIVE</div><div class="hint">SELECT A PLANET TO EXPLORE ↗</div></section>
+<section class="info">
+<article class="card" aria-live="polite"><div class="planet-title"><div class="planet-dot" id="planetDot"></div><div><h2 id="planetName">Earth</h2><div class="sub" id="planetType">Terrestrial planet · Our home</div></div></div><p class="desc" id="planetDesc">Earth is the only world known to support life. Its liquid-water oceans, protective atmosphere and active geology make it uniquely suited to living things.</p><div class="facts"><div class="fact"><small>Diameter</small><strong id="diameter">12,742 km</strong></div><div class="fact"><small>Average distance from Sun</small><strong id="distance">149.6 million km</strong></div><div class="fact"><small>Length of a year</small><strong id="year">365.25 Earth days</strong></div><div class="fact"><small>Moons</small><strong id="moons">1</strong></div></div></article>
+<article class="card"><div class="eyebrow">PLANET DIRECTORY</div><h2 style="margin-top:8px">Choose your destination</h2><p class="sub" style="line-height:1.6">Select a planet here or tap its moving model above. Distances and sizes are approximate mean values.</p><div class="planet-list" id="planetList"></div><p class="desc" style="font-size:12px;margin-bottom:0">Learning note: the planet sizes and orbital spacing in this visualisation are not to scale. Real planetary distances are vastly larger.</p></article>
+</section>
+<footer>Educational interactive sample for NASA-SPACEx · Planet facts are approximate reference values · Not an official NASA product</footer>
+</main>
+<script>
+const planets={
+Mercury:{type:"Terrestrial planet · Closest to the Sun",desc:"Mercury is the smallest planet and the closest to the Sun. Its surface is heavily cratered, and temperatures swing dramatically between day and night.",diameter:"4,879 km",distance:"57.9 million km",year:"88 Earth days",moons:"0",color:"#aaa7a0"},
+Venus:{type:"Terrestrial planet · Hottest planet",desc:"Venus has a thick atmosphere rich in carbon dioxide and clouds of sulphuric acid. Its powerful greenhouse effect makes it the hottest planet.",diameter:"12,104 km",distance:"108.2 million km",year:"225 Earth days",moons:"0",color:"#e8bd78"},
+Earth:{type:"Terrestrial planet · Our home",desc:"Earth is the only world known to support life. Its liquid-water oceans, protective atmosphere and active geology make it uniquely suited to living things.",diameter:"12,742 km",distance:"149.6 million km",year:"365.25 Earth days",moons:"1",color:"#238bdb"},
+Mars:{type:"Terrestrial planet · The Red Planet",desc:"Mars is a cold desert world with a thin atmosphere. It has the largest volcano in the Solar System, Olympus Mons, and evidence of ancient flowing water.",diameter:"6,779 km",distance:"227.9 million km",year:"687 Earth days",moons:"2",color:"#d66a43"},
+Jupiter:{type:"Gas giant · Largest planet",desc:"Jupiter is the largest planet, with colourful cloud bands and a giant storm called the Great Red Spot. It also has a large family of moons.",diameter:"139,820 km",distance:"778.6 million km",year:"11.86 Earth years",moons:"95 known",color:"#c58b61"},
+Saturn:{type:"Gas giant · Famous rings",desc:"Saturn is a gas giant surrounded by spectacular rings made mostly of pieces of ice and rock. It is less dense than water.",diameter:"116,460 km",distance:"1.43 billion km",year:"29.4 Earth years",moons:"146 known",color:"#e6d19a"},
+Uranus:{type:"Ice giant · Rotates on its side",desc:"Uranus is a pale blue ice giant. Its axis is tilted so far that it appears to rotate on its side, producing extreme seasons.",diameter:"50,724 km",distance:"2.87 billion km",year:"84 Earth years",moons:"28 known",color:"#8edbdc"},
+Neptune:{type:"Ice giant · Farthest major planet",desc:"Neptune is a deep-blue, windy ice giant. It is the most distant recognised planet in our Solar System.",diameter:"49,244 km",distance:"4.50 billion km",year:"164.8 Earth years",moons:"16 known",color:"#426ee9"}
+};
+function selectPlanet(name){const p=planets[name];if(!p)return;document.getElementById("planetName").textContent=name;document.getElementById("planetType").textContent=p.type;document.getElementById("planetDesc").textContent=p.desc;document.getElementById("diameter").textContent=p.diameter;document.getElementById("distance").textContent=p.distance;document.getElementById("year").textContent=p.year;document.getElementById("moons").textContent=p.moons;document.getElementById("planetDot").style.setProperty("--planet",p.color);document.querySelectorAll("[data-planet]").forEach(b=>{const active=b.dataset.planet===name;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active))});document.querySelectorAll("#planetList button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.planet===name)))}
+const list=document.getElementById("planetList");Object.keys(planets).forEach(name=>{const b=document.createElement("button");b.textContent=name;b.dataset.planet=name;b.setAttribute("aria-pressed",String(name==="Earth"));b.addEventListener("click",()=>selectPlanet(name));list.appendChild(b)});document.querySelectorAll(".planet").forEach(b=>b.addEventListener("click",()=>selectPlanet(b.dataset.planet)));
+</script>
+</body>
+</html>
