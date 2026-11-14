@@ -22,7 +22,7 @@ a{color:var(--cyan)} header{flex-wrap:wrap}.build-layout>*{min-width:0}button,a{
 <main>
 <div class="academy">
 <section id="home" class="screen active">
-<div class="hero"><div><div class="eyebrow">✦ MISSION CONTROL</div><h1>Ready to become a<br><span>Junior Astronaut?</span></h1><p>Train your astronaut skills, explore amazing worlds, solve space challenges and earn your mission badges. Your adventure starts at Mission Control!</p><div class="row"><a href="simulator/?v=space-20261113-4" class="simulator-link" style="display:inline-block;background:#a7e6ce;color:#08231c;padding:12px 18px;border-radius:12px;font-weight:800;text-decoration:none">🚀 Build a rocket →</a><button id="startBtn">🎮 Practice game</button><button id="resumeBtn" class="hidden">Continue adventure →</button><a href="solar-system/" class="simulator-link" style="display:inline-block;background:#182d58;color:#b9efff;border:1px solid #4b8bb4;padding:12px 18px;border-radius:12px;font-weight:800;text-decoration:none">🪐 Explore the Solar System →</a></div><p id="welcomeCadet" class="muted"></p></div><div class="hero-art"><span class="spark s1">✦</span><span class="spark s2">✧</span><span class="spark s3">✦</span><div class="planet-art"></div><div class="astronaut">🧑‍🚀</div></div></div>
+<div class="hero"><div><div class="eyebrow">✦ MISSION CONTROL</div><h1>Ready to become a<br><span>Junior Astronaut?</span></h1><p>Train your astronaut skills, explore amazing worlds, solve space challenges and earn your mission badges. Your adventure starts at Mission Control!</p><div class="row"><a href="simulator/?v=space-20261113-4" class="simulator-link" style="display:inline-block;background:#a7e6ce;color:#08231c;padding:12px 18px;border-radius:12px;font-weight:800;text-decoration:none">🚀 Build a rocket →</a><button id="startBtn">🎮 Practice game</button><button id="resumeBtn" class="hidden">Continue adventure →</button><a href="solar-system/immersive.html" class="simulator-link" style="display:inline-block;background:#182d58;color:#b9efff;border:1px solid #4b8bb4;padding:12px 18px;border-radius:12px;font-weight:800;text-decoration:none">🪐 Explore the Solar System →</a></div><p id="welcomeCadet" class="muted"></p></div><div class="hero-art"><span class="spark s1">✦</span><span class="spark s2">✧</span><span class="spark s3">✦</span><div class="planet-art"></div><div class="astronaut">🧑‍🚀</div></div></div>
 <div class="stats"><div class="stat"><strong id="a-xpStat">0</strong><span>⭐ EXPERIENCE POINTS</span></div><div class="stat"><strong id="a-badgeStat">0/5</strong><span>🏅 BADGES EARNED</span></div><div class="stat"><strong id="a-missionStat">0/2</strong><span>🚀 TRAINING MISSIONS</span></div><div class="stat"><strong id="a-levelStat">1</strong><span>🪐 CADET LEVEL</span></div></div>
 <div class="section-head"><div><div class="eyebrow">YOUR TRAINING DECK</div><h2>Choose your next mission</h2><p>Complete activities to earn XP and unlock achievements.</p></div></div>
 <div class="missions"><article class="mission"><span class="emoji">🏠</span><span class="tag">NEW · OUTPOST SURVIVAL · AGES 7–12</span><h3>Moonbase: Seven Days</h3><p>Keep two astronauts healthy. Share power, recycle water, grow food and shelter from a NASA archive-inspired space-weather event.</p><a href="outpost/" class="outpost-link" style="color:#a7e6ce;font-weight:800">Start your outpost mission →</a></article><article class="mission"><span class="emoji">🌐</span><span class="tag">NEW · 3D SPACEFLIGHT SANDBOX</span><h3>Rocket Builder</h3><p>Build a two-stage rocket, launch under gravity, follow your orbital trajectory and practise landing on the Moon. Three-dimensional flight and camera controls.</p><a href="simulator/?v=space-20261113-4" style="color:#a7e6ce;font-weight:800">Open rocket builder →</a></article>
@@ -282,6 +282,33 @@ window.Academy={awardVoyage:(id)=>{state.voyages=state.voyages||[];if(!state.voy
 </script>
 <script src="assets/missions.js"></script>
 <div class="toast" id="a-toast" role="status"></div>
+
+<style>
+#spaceAudioDock{position:fixed;right:16px;bottom:16px;z-index:1000;display:flex;gap:8px;align-items:center;background:#09142bf2;border:1px solid #6be5ff66;border-radius:16px;padding:9px;box-shadow:0 8px 28px #0009}
+#spaceAudioDock button{font-size:13px;padding:9px 12px}
+#spaceAudioDock small{color:#a9b6d9;font-size:10px;max-width:115px}
+@media(max-width:520px){#spaceAudioDock small{display:none}}
+</style>
+<div id="spaceAudioDock" aria-label="Built-in space audio">
+ <button id="spaceMusicButton" type="button" aria-pressed="false">♫ Space music: OFF</button>
+ <button id="spaceSfxButton" type="button" aria-pressed="true">🔊 SFX ON</button>
+ <small id="spaceAudioStatus">Built-in audio · works offline</small>
+</div>
+<script>
+(()=>{'use strict';
+ let ctx=null,music=false,sfx=true,master=null,oscillators=[];
+ const $=id=>document.getElementById(id);
+ function audio(){if(!ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C){$('spaceAudioStatus').textContent='Audio unavailable in this browser';return null}ctx=new C()}if(ctx.state==='suspended')ctx.resume();return ctx}
+ function tone(freq,duration=.18,wave='sine',level=.055){const c=audio();if(!c||!sfx)return;const o=c.createOscillator(),g=c.createGain();o.type=wave;o.frequency.setValueAtTime(freq,c.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(45,freq*.68),c.currentTime+duration);g.gain.setValueAtTime(level,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+duration);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+duration)}
+ function start(){const c=audio();if(!c)return;master=c.createGain();master.gain.value=.035;master.connect(c.destination);[55,82.4,110,164.8].forEach((hz,i)=>{const o=c.createOscillator(),g=c.createGain(),filter=c.createBiquadFilter();o.type=i?'triangle':'sine';o.frequency.value=hz;filter.type='lowpass';filter.frequency.value=420;g.gain.value=i?.16:.24;o.connect(filter);filter.connect(g);g.connect(master);o.start();oscillators.push(o)});music=true;$('spaceMusicButton').textContent='♫ Space music: ON';$('spaceMusicButton').setAttribute('aria-pressed','true');$('spaceAudioStatus').textContent='Original synthesized ambience playing'}
+ function stop(){oscillators.forEach(o=>{try{o.stop()}catch(e){}});oscillators=[];if(master){master.disconnect();master=null}music=false;$('spaceMusicButton').textContent='♫ Space music: OFF';$('spaceMusicButton').setAttribute('aria-pressed','false');$('spaceAudioStatus').textContent='Built-in audio ready · works offline'}
+ $('spaceMusicButton').addEventListener('click',()=>music?stop():start());
+ $('spaceSfxButton').addEventListener('click',()=>{sfx=!sfx;$('spaceSfxButton').textContent=sfx?'🔊 SFX ON':'🔇 SFX OFF';$('spaceSfxButton').setAttribute('aria-pressed',String(sfx));if(sfx)tone(660,.12)});
+ document.addEventListener('click',e=>{if(e.target.closest('#spaceAudioDock'))return;if(e.target.closest('button,a'))tone(520,.09,'sine',.035)});
+ document.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')tone(520,.08,'sine',.025)});
+})();
+</script>
+
 </body></html>
 
 
