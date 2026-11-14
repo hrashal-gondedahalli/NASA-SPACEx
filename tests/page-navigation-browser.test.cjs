@@ -7,7 +7,8 @@ for(const mobile of [false,true])test('Page navigation '+(mobile?'mobile':'deskt
  try{
   browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader'],...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{channel:'chromium'})});
   const context=await browser.newContext({viewport:mobile?{width:390,height:844}:{width:1440,height:900},isMobile:mobile,hasTouch:mobile,reducedMotion:'reduce'}),page=await context.newPage(),errors=[],failed=[];
-  page.on('pageerror',e=>errors.push(e.message));page.on('requestfailed',r=>failed.push(r.url()));page.setDefaultTimeout(15000);
+  page.on('pageerror',e=>errors.push(e.message));// Check page routes and repository assets; the older Solar System's remote artwork is outside this navigation test.
+  page.on('requestfailed',r=>{if(new URL(r.url()).origin===new URL(page.url()).origin||r.isNavigationRequest())failed.push(r.url());});page.setDefaultTimeout(15000);
   // Route behavior must also work with the dashboard's non-WebGL fallback.
   await page.addInitScript(()=>{if(location.pathname==='/NASA-SPACEx/'){const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return String(type).includes('webgl')?null:get.call(this,type,...args);};}});
   const base='http://127.0.0.1:'+server.address().port+prefix;
