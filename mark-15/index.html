@@ -15,6 +15,9 @@ body{
   font-family:Arial,sans-serif;
 }
 canvas{display:block}
+#returnHome{position:fixed;top:15px;right:15px;z-index:12;padding:11px 14px;border-radius:9px;background:#123b5d;color:#fff;text-decoration:none;border:1px solid #40cfff;font-weight:bold}
+#returnHome:hover{background:#078bd0}
+#hud button{width:100%;margin-top:8px}
 #hud{
   position:fixed;
   top:15px;
@@ -118,9 +121,6 @@ button:hover{background:#13b5ee}
 @media(min-width:850px){
   #mobile{display:none}
 }
-#returnHome{position:fixed;top:15px;right:15px;z-index:12;padding:11px 14px;border-radius:9px;background:#123b5d;color:#fff;text-decoration:none;border:1px solid #40cfff;font-weight:bold}
-#returnHome:hover{background:#078bd0}
-#hud button{width:100%;margin-top:8px}
 </style>
 </head>
 
@@ -180,9 +180,9 @@ button:hover{background:#13b5ee}
   <button data-key="KeyW">▲</button>
   <button data-key="Space">UP</button>
   <button data-key="KeyE">E</button>
-  <button data-key="KeyA">◀</button>
+  <button data-key="KeyA">◀️</button>
   <button data-key="KeyS">▼</button>
-  <button data-key="KeyD">▶</button>
+  <button data-key="KeyD">▶️</button>
   <button data-key="ShiftLeft">DOWN</button>
 </div>
 
@@ -1158,7 +1158,7 @@ document.getElementById("choice1").addEventListener(
    START GAME
 ===================================== */
 
-/* Offline ambient background music; starts after the user's Start click. */
+/* Offline ambient background music; browsers start audio after a user click. */
 let musicContext=null, musicNodes=[], musicEnabled=true;
 function startAmbientMusic(){
   if(!musicEnabled)return;
@@ -1167,16 +1167,11 @@ function startAmbientMusic(){
   if(!musicContext)musicContext=new AudioCtx();
   if(musicContext.state==="suspended")musicContext.resume();
   if(musicNodes.length)return;
-  const master=musicContext.createGain();
-  master.gain.value=0.018;
-  master.connect(musicContext.destination);
+  const master=musicContext.createGain(); master.gain.value=0.018; master.connect(musicContext.destination);
   [55,82.41,110,164.81].forEach((frequency,index)=>{
-    const oscillator=musicContext.createOscillator();
-    const gain=musicContext.createGain();
-    oscillator.type=index===3?"sine":"triangle";
-    oscillator.frequency.value=frequency;
-    gain.gain.value=index===0?0.7:0.22;
-    oscillator.connect(gain);gain.connect(master);oscillator.start();
+    const oscillator=musicContext.createOscillator(), gain=musicContext.createGain();
+    oscillator.type=index===3?"sine":"triangle"; oscillator.frequency.value=frequency;
+    gain.gain.value=index===0?0.7:0.22; oscillator.connect(gain); gain.connect(master); oscillator.start();
     musicNodes.push(oscillator,gain);
   });
   musicNodes.push(master);
