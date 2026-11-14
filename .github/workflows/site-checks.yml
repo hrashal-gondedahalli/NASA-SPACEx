@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [unit, flight, surface, features, mark15]
+        suite: [unit, flight, surface, features, mark15, navigation]
     env:
       TEST_SUITE: ${{ matrix.suite }}
     steps:

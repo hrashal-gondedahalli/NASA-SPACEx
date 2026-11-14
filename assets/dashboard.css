@@ -14,3 +14,9 @@
 .dash-audio-mount{pointer-events:auto;margin-top:14px}.dashboard-home #dashAudioMount #spaceAudioDock{position:static;display:inline-flex;width:max-content;max-width:100%;margin:0;padding:2px 5px;box-shadow:none;border-color:#617e7138}.dashboard-home #dashAudioMount #spaceAudioDock button{font-size:9px;min-height:36px;padding:7px 9px}.dash-scroll{display:none}.rocket-preview:before{content:'';position:absolute;width:80%;height:45%;left:10%;top:25%;border:1px solid #bed9bb17;border-radius:50%;transform:rotate(-28deg)}
 @media(min-width:901px){.dash-copy{padding-top:50px;padding-bottom:28px}#home .dash-copy h1{font-size:clamp(58px,5.6vw,88px);line-height:1.04}.dash-eyebrow{margin-bottom:22px}.dash-lede{margin:20px 0 24px;font-size:16px}.dash-welcome{margin-top:18px!important}}
 @media(max-width:600px){.dashboard-home .site-header{display:grid;grid-template-columns:minmax(0,1fr) auto}.dashboard-home .site-header>div:first-child{grid-column:1;grid-row:1}.dashboard-home .site-header>.row{grid-column:2;grid-row:1;margin-left:0;flex-wrap:nowrap}.dashboard-home .site-header>.dash-nav{grid-column:1/-1;grid-row:2;order:unset}.dash-audio-mount{margin-top:10px}.dashboard-home #dashAudioMount #spaceAudioDock button{font-size:8px;min-height:36px}.journey-card li{font-size:11px}.dash-button{font-size:12px}}
+
+/* Keep page navigation reachable from every training/activity screen. */
+.site-header{flex-wrap:wrap}.site-header .dash-nav{display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+#missions,#voyage,#profile{scroll-margin-top:160px}
+@media(max-width:900px){.site-header .dash-nav{order:3;flex:1 0 100%;justify-content:center}.site-header>.row{margin-left:auto}}
+@media(max-width:600px){.dash-nav a{padding:9px 10px;min-height:44px}.site-header .brand{font-size:17px}.site-header .tag{font-size:9px}.site-header>.row{font-size:11px}.dashboard-home .dash-nav{flex-wrap:nowrap}}
