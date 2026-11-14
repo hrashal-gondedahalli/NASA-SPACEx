@@ -270,3 +270,6 @@ renderCatalogue(OrbitalParts);renderAssemblyList();renderEditor();hud();requestA
 
 
 
+
+// Home dashboard deep link resumes only a validated surface save, never an orbital flight.
+if(new URLSearchParams(location.search).get('resume')==='surface'&&surfaceSaved)surfaceBegin(LS.restore(LS.serialize(surfaceSaved)));
